@@ -159,7 +159,7 @@ class Schedule
     }
 
     /**
-     * @return \Date
+     * @return \DateTime
      */
     public function getDateFrom()
     {
