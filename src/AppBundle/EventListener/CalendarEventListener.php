@@ -58,6 +58,14 @@ class CalendarEventListener
 
             foreach ($scheduleBlock as $block) {
                 $blockEvent = new EventEntity("Plage horaire", new \DateTime($block->getDateFrom()->format("Y-m-d H:i:s")), new \DateTime($block->getDateTo()->format("Y-m-d H:i:s")));
+
+                //optional calendar event settings
+                $blockEvent->setAllDay(false); // default is false, set to true if this is an all day event
+                $blockEvent->setBgColor('green'); //set the background color of the event's label
+                $blockEvent->setFgColor('#FFFFFF'); //set the foreground color of the event's label
+                #$blockEvent->setUrl('http://www.google.com'); // url to send user to when event label is clicked
+                $blockEvent->setCssClass(''); // a custom class you may want to apply to event labels
+
                 $calendarEvent->addEvent($blockEvent);
             }
         }
@@ -102,7 +110,7 @@ class CalendarEventListener
                 $companyEvent = $this->entityManager->getRepository('AppBundle:Event')->findOneByEmployeBetweenDate($selected_employe, $startTime, $endTime);
 
                 if (is_object($companyEvent) && $companyEvent instanceof Event) {
-                    $blockEvent->setTitle(utf8_encode('Réservé'));
+                    $blockEvent->setTitle(utf8_encode('Rï¿½servï¿½'));
 
                     if ($companyEvent->getEmploye()->getId() == 2) {
                         $eventClass = 'unavailable julee-unavailable';
