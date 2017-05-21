@@ -60,7 +60,7 @@
                     </div>
                 </div>
             {% endfor %}
-            
+
             <div class="row">
                 <div class="col-sm-12">
                     {% block body %}{% endblock %}
@@ -95,6 +95,8 @@
         {% block javascripts %}
         {% endblock %}
         <script>
+            var lastUrl = '';
+
             $( document ).ready(function() {
 
                 $('select[data-select="true"').select2();
@@ -104,12 +106,13 @@
                     $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
                 }
 
+
                 // Change hash for page-reload
                 /*
-                $('.nav-pills a').on('shown.bs.tab', function (e) {
-                    window.location.hash = e.target.hash;
-                })
-                */
+                 $('.nav-pills a').on('shown.bs.tab', function (e) {
+                 window.location.hash = e.target.hash;
+                 })
+                 */
 
                 $('.schedule_rangepicker').daterangepicker({
                     timePicker: true,

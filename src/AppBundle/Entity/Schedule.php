@@ -51,14 +51,14 @@ class Schedule
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_from", type="date")
+     * @ORM\Column(name="date_from", type="datetime")
      */
     private $dateFrom;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_to", type="date")
+     * @ORM\Column(name="date_to", type="datetime")
      */
     private $dateTo;
 

@@ -96,30 +96,35 @@ class ScheduleController extends Controller
         if($request->isXmlHttpRequest()) {
 
             if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
 
                 // Save ScheduleBlock
                 {
                     // Delete all block from the Schedule so we can recreate them
                     {
-                        $em = $this->getDoctrine()->getManager();
                         foreach ($schedule->getBlocks() as $key => $block) {
                             $em->remove($block);
                         }
                         $this->getDoctrine()->getManager()->flush();
                     }
 
-                    // Create new Block
-                    $start = $request->get('start');
-                    $end = $request->get('end');
-                    foreach ($start as $key => $value) {
-                        $dateFrom = new \DateTime($start[$key]);
-                        $dateTo = new \DateTime($end[$key]);
-                        if (!$em->getRepository('AppBundle:ScheduleBlock')->findOneBetweenDate($dateFrom, $dateTo)) {
-                            $scheduleBlock = new ScheduleBlock();
-                            $scheduleBlock->setDateFrom($dateFrom);
-                            $scheduleBlock->setDateTo($dateTo);
-                            $schedule->addBlock($scheduleBlock);
-                        }
+                    // Get Block startTime and endTime
+                    $block_startTime = $request->get('start');
+                    $block_endTime = $request->get('end');
+
+                    // Set Date Range of schedule by setting dateFrom and dateTo
+                    $schedule->setDateFrom(new \DateTime(min($block_startTime)));
+                    $schedule->setDateTo(new \DateTime(max($block_endTime)));
+                    $schedule->setEmploye($employe);
+
+                    // Create ScheduleBlock
+                    foreach ($block_startTime as $key => $date) {
+                        $scheduleBlock = new ScheduleBlock();
+                        $scheduleBlock->setDateFrom(new \DateTime($block_startTime[$key]));
+                        $scheduleBlock->setDateTo(new \DateTime($block_endTime[$key]));
+                        $scheduleBlock->setSchedule($schedule);
+
+                        $em->persist($scheduleBlock);
                     }
 
                     // Insert in database;

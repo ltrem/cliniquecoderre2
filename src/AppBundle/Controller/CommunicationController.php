@@ -71,7 +71,9 @@ class CommunicationController extends Controller
                 $communication->setContent($communication_template);
 
                 // Add the communication to the Client
-                $client->addCommunication($communication);
+                if ($client instanceof Client) {
+                    $client->addCommunication($communication);
+                }
 
                 // Send Communication
                 $mailerService = $this->get('app.communication_mailer');
