@@ -1,0 +1,489 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+
+    {{ form_start(form, {'method': 'post', 'action': path('admin_employe_edit', { 'id': employe.id }), 'attr': {'class': 'fos_user_registration_register'}}) }}
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="row">
+                    <div class="page-header">
+                        <h2>
+                            {{ form.vars.value.firstname }} {{ form.vars.value.lastname }}
+                            <small>{{ form.vars.value.user.username }}</small>
+                            <!-- Profile picture -->
+                            {% if employe.picture|length %}
+                                <div class="pull-right">
+                                    <img height="50" src="{{ vich_uploader_asset(employe.picture, 'imageFile') }}" alt="Photo de l'employer" />
+                                </div>
+                            {% endif %}
+                        </h2>
+                        <label class="label label-default">
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                Super Administrateur
+                            {% elseif is_granted('ROLE_ADMIN') %}
+                                Administrateur
+                            {% endif %}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-pills pull-left" role="tablist" style="margin-bottom: 15px;">
+                            <li role="presentation" class="active"><a href="#events" aria-controls="events" role="tab" data-toggle="tab">Rendez-vous</a></li>
+                            <li role="presentation"><a href="#info" aria-controls="employe" role="tab" data-toggle="tab">Informations générales</a></li>
+                            <li role="presentation"><a href="#communications" aria-controls="communcations" role="tab" data-toggle="tab">Communications</a></li>
+                            <li role="presentation"><a href="#configurations" aria-controls="configurations" role="tab" data-toggle="tab">Configurations de l'horaire</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+
+
+                    <div role="tabpanel" class="tab-pane active" id="events">
+                        <div class="col-xs-12">
+                            <div class="page-header">
+                                <h3>Horaire <a data-toggle="modal" href="{{ path('admin_event_new', { 'employe': employe.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Créer un rendez-vous</a></h3>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    {% include 'ADesignsCalendarBundle::calendar.html.twig' %}
+                                </div>
+                            </div>
+
+                            <div class="page-header">
+                                <h3>Rendez-vous à venir</h3>
+                            </div>
+
+
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Date et heure du rendez-vous</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if upcomingEvents|length %}
+                                    {% for event in upcomingEvents %}
+
+                                        {% if event.cancellation|length %}
+                                            <tr class="cancelled danger hide">
+                                        {% else %}
+                                            <tr>
+                                        {% endif %}
+                                        {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
+                                        <td>{{ event.name }}</td>
+                                        <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
+                                        <td>
+                                            {% if event.cancellation|length  %}
+                                                <a data-toggle="modal" class="btn btn-xs btn-info">Rendez-vous annuler</a>
+                                            {% else %}
+                                                <a href="{{ path('event_cancel', { 'id': event.id }) }}" data-target="#myModal" class="btn btn-xs btn-danger">Annuler le rendez-vous</a>
+                                            {% endif %}
+                                        </td>
+                                        </tr>
+                                        {% if event.cancellation|length  %}
+                                            <tr class="danger cancelled hide">
+                                                <td style="padding-left: 15px; font-size: 10px;" colspan="3">
+                                                    Annulé: J'avais mal au ventre
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="3">
+                                            Aucun rendez-vous à venir
+                                        </td>
+                                    </tr>
+                                {% endif %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="info">
+
+                        <div class="col-xs-12">
+
+                            <div class="page-header">
+                                <h3>{{ 'admin.employe.edit.title'|trans({}, 'messages') }}</h3>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form_label(form.firstname, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                    {{ form_errors(form.firstname) }}
+                                    {{ form_widget(form.firstname, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form_label(form.lastname, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                    {{ form_errors(form.lastname) }}
+                                    {{ form_widget(form.lastname, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form_row(form.birthdate) }}
+                                    {{ form_errors(form.birthdate) }}
+                                    {{ form_widget(form.birthdate, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form_label(form.gender, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                    {{ form_errors(form.gender) }}
+                                    {{ form_widget(form.gender, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form_label(form.coordinates[0].address, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                    {{ form_errors(form.coordinates[0].address) }}
+                                    {{ form_widget(form.coordinates[0].address, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form_label(form.coordinates[0].city, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                    {{ form_errors(form.coordinates[0].city) }}
+                                    {{ form_widget(form.coordinates[0].city, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form_label(form.coordinates[0].province, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                    {{ form_errors(form.coordinates[0].province) }}
+                                    {{ form_widget(form.coordinates[0].province, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form_label(form.coordinates[0].country, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                    {{ form_errors(form.coordinates[0].country) }}
+                                    {{ form_widget(form.coordinates[0].country, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form_label(form.contacts[0].phoneCell, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                    {{ form_errors(form.contacts[0].phoneCell) }}
+                                    {{ form_widget(form.contacts[0].phoneCell, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form_label(form.contacts[0].phoneCellCarrier, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                    {{ form_errors(form.contacts[0].phoneCellCarrier) }}
+                                    {{ form_widget(form.contacts[0].phoneCellCarrier, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form_label(form.contacts[0].phoneHome, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                    {{ form_errors(form.contacts[0].phoneHome) }}
+                                    {{ form_widget(form.contacts[0].phoneHome, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form_label(form.contacts[0].phoneWork, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                    {{ form_errors(form.contacts[0].phoneWork) }}
+                                    {{ form_widget(form.contacts[0].phoneWork, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12" id="employe_coordinates">
+                                {{ form_rest(form) }}
+                            </div>
+
+                            <div class="row" style="margin-top:20px;">
+                                <div class="col-xs-4">
+                                    <a class="btn btn-default btn-md" href="{{ path('admin_client') }}">
+                                        <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+                                        Annuler et rien modifier.
+                                    </a>
+                                </div>
+                                <div class="col-xs-8">
+                                    <input class="btn btn-lg btn-success pull-right" type="submit" id="_submit" name="_submit" value="{{ 'registration.edit.submit_and_appointment'|trans }}" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="communications">
+
+                        <div class="page-header">
+                            <h3>
+                                {{ 'admin.client.communications.title'|trans }}
+                                <a data-toggle="modal" href="{{ path('communication_new', { 'employe': employe.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Envoyer une communication</a>
+                            </h3>
+
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Date d'envoi</th>
+                                <th>Titre</th>
+                                <th>Contenu de la communication</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if employe.communications|length %}
+                                {% for communication in client.communications %}
+                                    <tr>
+                                        <td>{{ communication.dateSent|date('Y-m-d H:i:s') }}</td>
+                                        <td>{{ communication.title }}</td>
+                                        <td>{{ communication.content }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">
+                                        Aucune communication
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div role="tabpanel"  class="tab-pane " id="configurations">
+                        <div class="page-header">
+                            <h3>
+                                Plages horaires <a data-toggle="modal" href="{{ path('admin_schedule_new', { 'employe': employe.id }) }}" data-target="#myModal" class="btn btn-xs btn-success open_schedule_new">Créer un horaire</a>
+                            </h3>
+                        </div>
+
+                        <div class="col-xs-12">
+
+                            {# CLIENTS TABLE #}
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>{{ knp_pagination_sortable(schedules, 'id', 's.id') }}</th>
+                                    <th>{{ knp_pagination_sortable(schedules, 'admin.profile.schedule.table.name'|trans, 's.name') }}</th>
+                                    <th>{{ knp_pagination_sortable(schedules, 'admin.profile.schedule.table.dateFrom'|trans, 's.dateFrom') }}</th>
+                                    <th>{{ knp_pagination_sortable(schedules, 'admin.profile.schedule.table.dateTo'|trans, 's.dateTo') }}</th>
+                                    <th>Jour de semaine disponible</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {%  if schedules|length %}
+                                    {% for key, schedule in schedules %}
+                                        <tr>
+                                            <td><a href="{{ path('admin_schedule_edit', { 'id': schedule.id }) }}">{{ schedule.id }}</a></td>
+                                            <td>
+                                                {{ schedule.name }}
+                                            </td>
+                                            <td>
+                                                {{ schedule.dateFrom|date('Y-m-d') }}
+                                            </td>
+                                            <td>
+                                                {{ schedule.dateTo|date('Y-m-d') }}
+                                            </td>
+                                            <td>
+                                                <ul>
+                                                    {% for day in schedule.workingDays %}
+                                                        <li>
+                                                            {{ ('references.weekday.' ~ day)|trans }}
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </td>
+                                            <td>
+                                                <a data-toggle="modal" href="{{ path('admin_schedule_edit', { 'id': schedule.id }) }}" data-schedule="{{ schedule.id }}" data-target="#myModal" class="btn btn-xs btn-info open_schedule_edit">Modifier</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr class="danger">
+                                        <td colspan="6">
+                                            {{ 'admin.client.table.noResult'|trans }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
+
+                            {# display navigation #}
+                            <div class="navigation text-center">
+                                {{ knp_pagination_render(schedules) }}
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {% do form.picture.setRendered %}
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{# https://symfony.com/doc/current/form/form_customization.html#how-to-customize-a-collection-prototype #}
+    {% form_theme form _self %}
+
+    {% block _employe_coordinates_entry_row %}
+        {% spaceless %}
+            {{ form_label(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+        {% endspaceless %}
+    {% endblock %}
+    {% block _employe_coordinates_entry_label %}
+    {% endblock %}
+
+
+    {% block _employe_contacts_entry_row %}
+        {% spaceless %}
+            {{ form_label(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+        {% endspaceless %}
+    {% endblock %}
+
+    {% block _employe_contacts_entry_label %}
+    {% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {# <script type="text/javascript" src="{{ asset('bundles/adesignscalendar/js/calendar-settings-admin.js') }}"></script> #}
+
+    <script>
+        $( document ).ready(function() {
+
+            // Render Schedule Calendar
+            //$('#myModal').on('shown.bs.modal', function () {
+            //    $("#calendar-schedule").fullCalendarScheduler('render');
+            //});
+
+/*
+            $(document).on("click",".open_schedule_edit",function(e) {
+                e.preventDefault();
+
+                // Load .modal-content with ajax form
+                $('#myModal').find('.modal-content').load( $(this).attr('href'), function() {
+                    // When content is loaded, show modal
+                    $('#myModal').modal('show');
+                });
+            });
+*/
+            $('.isPrimary').parent().hide();
+
+            var date = new Date();
+            var d = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
+
+            $('#calendar-holder').fullCalendar({
+                lang: 'en',
+                hiddenDays: [0, 6],
+                height: 650,
+                allDaySlot: false,
+                header: {
+                    left: 'prev, next',
+                    center: 'title',
+                    right: 'month, agendaWeek, agendaDay'
+                },
+                slotMinutes: 15,
+                minTime: '06:00:00', // a start time (10am in this example)
+                maxTime: '19:00:00', // an end time (6pm in this example)
+                defaultView: 'agendaWeek',
+                eventSources: [
+                    {
+                        events: function(start, end, timezone, callback) {
+                            $.ajax({
+                                url: Routing.generate('fullcalendar_loader'),
+                                type: 'POST',
+                                dataType: 'JSON',
+                                data: {
+                                    // our hypothetical feed requires UNIX timestamps
+                                    start: start.unix(),
+                                    end: end.unix(),
+                                    employe: {{ employe.id }},
+                                    isEmploye: true,
+                                },
+                                success: function(data) {
+
+                                    var events = [];
+                                    $.each(data, function(index) {
+                                        events.push({
+                                            allDay: false,
+                                            backgroundColor: data[index].backgroundColor,
+                                            borderColor: data[index].borderColor,
+                                            className: data[index].className,
+                                            end: data[index].end,
+                                            start: data[index].start,
+                                            textColor: data[index].textColor,
+                                            title: data[index].title,
+                                        });
+                                    });
+
+
+                                    $('.loading').hide();
+
+                                    callback(events);
+                                }
+                            });
+                        }
+                    }
+                ],
+                eventClick: function(calEvent, jsEvent, view) {
+
+                    $('.myEvent').each(function() {
+                        $(this).removeClass('myEvent');
+                    });
+
+                    // change the border color just for fun
+                    if (!$(this).hasClass('unavailable')) {
+
+                        // Update Starttime in the form
+                        starttime = moment(calEvent.start).format('YYYY-MM-DD HH:mm');
+                        $('#event_startTime').val(starttime);
+
+                        $(this).addClass('myEvent');
+                    } else {
+                        alert('{{ 'event.error.notFree'|trans }}');
+                    }
+                },
+            });
+
+        });
+    </script>
+{% endblock %}

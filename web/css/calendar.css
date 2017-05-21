@@ -1,0 +1,29 @@
+.fc-view-container .available {
+    background-color: #34789a;
+    border-color: #2d6987;
+    cursor: pointer;
+}
+
+.fc-view-container .unavailable {
+    background-color: #FF9859;
+    border-color: #E88B51;
+}
+
+.fc-view-container .unavailable:hover {
+    cursor: not-allowed;
+}
+
+.fc-view-container .simon-unavailable {
+    background-color: #FF9859;
+    border-color: #E88B51;
+}
+
+.fc-view-container .julee-unavailable {
+    background-color: #e09284;
+    border-color: #e22b0b;
+}
+
+.fc-view-container .myEvent {
+    background-color: green;
+    border-color: white;
+}

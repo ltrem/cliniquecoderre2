@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - cliniquecoderre@localhost" uuid="ce10dff1-20c2-4e2f-9422-aff4d90a5fcf">
+    <database-info product="MySQL" version="5.5.5-10.1.21-MariaDB" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.40 ( Revision: 402933ef52cad9aa82624e80acbea46e3a701ce6 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <schema name="" catalog="cliniquecoderre"/>
+    <table name="appointment_availability_notification" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="event_id_freed" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="event_id_to_replace" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="communication_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="token" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="answer" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_34D9C7B31C2D1E0C" columns="communication_id" ref-table="communication" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_34D9C7B33D629CB" columns="event_id_to_replace" ref-table="event" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_34D9C7B3A546866F" columns="event_id_freed" ref-table="event" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="UNIQ_34D9C7B31C2D1E0C" unique="true" columns="communication_id"/>
+      <index name="IDX_34D9C7B33D629CB" unique="false" columns="event_id_to_replace"/>
+      <index name="IDX_34D9C7B3A546866F" unique="false" columns="event_id_freed"/>
+    </table>
+    <table name="cell_carrier" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="mailToSMS" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="available" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_4C62E63872451E7" table="contact" schema="" catalog="cliniquecoderre" columns="phone_cell_carrier_id"/>
+    </table>
+    <table name="client" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="picture_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="firstname" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="lastname" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="birthdate" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="gender" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_C7440455A76ED395" columns="user_id" ref-table="user" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="2" deferrability="2"/>
+      <foreign-key name="FK_C7440455EE45BDBF" columns="picture_id" ref-table="image" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="2" deferrability="2"/>
+      <exported-key name="FK_8E198FDF19EB6921" table="client_communication" schema="" catalog="cliniquecoderre" columns="client_id"/>
+      <exported-key name="FK_4C62E63819EB6921" table="contact" schema="" catalog="cliniquecoderre" columns="client_id"/>
+      <exported-key name="FK_CB9CBA1719EB6921" table="coordinate" schema="" catalog="cliniquecoderre" columns="client_id"/>
+      <exported-key name="FK_3BAE0AA719EB6921" table="event" schema="" catalog="cliniquecoderre" columns="client_id"/>
+      <index name="UNIQ_C7440455A76ED395" unique="true" columns="user_id"/>
+      <index name="UNIQ_C7440455EE45BDBF" unique="true" columns="picture_id"/>
+    </table>
+    <table name="client_communication" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="client_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="communication_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="client_id,communication_id"/>
+      <foreign-key name="FK_8E198FDF19EB6921" columns="client_id" ref-table="client" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="0" deferrability="2"/>
+      <foreign-key name="FK_8E198FDF1C2D1E0C" columns="communication_id" ref-table="communication" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="0" deferrability="2"/>
+      <index name="IDX_8E198FDF19EB6921" unique="false" columns="client_id"/>
+      <index name="IDX_8E198FDF1C2D1E0C" unique="false" columns="communication_id"/>
+    </table>
+    <table name="communication" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="title" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="content" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="phone" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="type" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="dateSent" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_34D9C7B31C2D1E0C" table="appointment_availability_notification" schema="" catalog="cliniquecoderre" columns="communication_id"/>
+      <exported-key name="FK_8E198FDF1C2D1E0C" table="client_communication" schema="" catalog="cliniquecoderre" columns="communication_id"/>
+      <exported-key name="FK_F420622D1C2D1E0C" table="employe_communication" schema="" catalog="cliniquecoderre" columns="communication_id"/>
+      <exported-key name="FK_16DD57FF1C2D1E0C" table="event_cancellation" schema="" catalog="cliniquecoderre" columns="communication_id"/>
+      <exported-key name="FK_6DBA6901C2D1E0C" table="event_reminder" schema="" catalog="cliniquecoderre" columns="communication_id"/>
+    </table>
+    <table name="contact" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="phone_cell_carrier_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="client_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="employe_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="phone_cell" sqlType="VARCHAR" precision="35" scale="0" nullable="false" jdbcType="12" remarks="KERDMlR5cGU6cGhvbmVfbnVtYmVyKQ=="/>
+      <column name="phone_work" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="phone_home" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_4C62E63819EB6921" columns="client_id" ref-table="client" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_4C62E6381B65292" columns="employe_id" ref-table="employe" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_4C62E63872451E7" columns="phone_cell_carrier_id" ref-table="cell_carrier" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="IDX_4C62E63819EB6921" unique="false" columns="client_id"/>
+      <index name="IDX_4C62E6381B65292" unique="false" columns="employe_id"/>
+      <index name="IDX_4C62E63872451E7" unique="false" columns="phone_cell_carrier_id"/>
+    </table>
+    <table name="coordinate" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="client_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="employe_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="isPrimary" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="address" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="city" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="province" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="country" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_CB9CBA1719EB6921" columns="client_id" ref-table="client" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_CB9CBA171B65292" columns="employe_id" ref-table="employe" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="IDX_CB9CBA1719EB6921" unique="false" columns="client_id"/>
+      <index name="IDX_CB9CBA171B65292" unique="false" columns="employe_id"/>
+    </table>
+    <table name="employe" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="picture_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="firstname" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="lastname" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="birthdate" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="gender" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_F804D3B9A76ED395" columns="user_id" ref-table="user" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="2" deferrability="2"/>
+      <foreign-key name="FK_F804D3B9EE45BDBF" columns="picture_id" ref-table="image" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="2" deferrability="2"/>
+      <exported-key name="FK_4C62E6381B65292" table="contact" schema="" catalog="cliniquecoderre" columns="employe_id"/>
+      <exported-key name="FK_CB9CBA171B65292" table="coordinate" schema="" catalog="cliniquecoderre" columns="employe_id"/>
+      <exported-key name="FK_F420622D1B65292" table="employe_communication" schema="" catalog="cliniquecoderre" columns="employe_id"/>
+      <exported-key name="FK_3BAE0AA71B65292" table="event" schema="" catalog="cliniquecoderre" columns="employe_id"/>
+      <exported-key name="FK_5A3811FB1B65292" table="schedule" schema="" catalog="cliniquecoderre" columns="employe_id"/>
+      <index name="UNIQ_F804D3B9A76ED395" unique="true" columns="user_id"/>
+      <index name="UNIQ_F804D3B9EE45BDBF" unique="true" columns="picture_id"/>
+    </table>
+    <table name="employe_communication" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="employe_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="communication_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="employe_id,communication_id"/>
+      <foreign-key name="FK_F420622D1B65292" columns="employe_id" ref-table="employe" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="0" deferrability="2"/>
+      <foreign-key name="FK_F420622D1C2D1E0C" columns="communication_id" ref-table="communication" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="0" deferrability="2"/>
+      <index name="IDX_F420622D1B65292" unique="false" columns="employe_id"/>
+      <index name="IDX_F420622D1C2D1E0C" unique="false" columns="communication_id"/>
+    </table>
+    <table name="event" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="client_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="employe_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="event_cancellation_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="emergency" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="startTime" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="endTime" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_3BAE0AA719EB6921" columns="client_id" ref-table="client" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_3BAE0AA71B65292" columns="employe_id" ref-table="employe" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_3BAE0AA7D5419431" columns="event_cancellation_id" ref-table="event_cancellation" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="0" deferrability="2"/>
+      <exported-key name="FK_34D9C7B33D629CB" table="appointment_availability_notification" schema="" catalog="cliniquecoderre" columns="event_id_to_replace"/>
+      <exported-key name="FK_34D9C7B3A546866F" table="appointment_availability_notification" schema="" catalog="cliniquecoderre" columns="event_id_freed"/>
+      <exported-key name="FK_6DBA69071F7E88B" table="event_reminder" schema="" catalog="cliniquecoderre" columns="event_id"/>
+      <index name="UNIQ_3BAE0AA7D5419431" unique="true" columns="event_cancellation_id"/>
+      <index name="IDX_3BAE0AA719EB6921" unique="false" columns="client_id"/>
+      <index name="IDX_3BAE0AA71B65292" unique="false" columns="employe_id"/>
+    </table>
+    <table name="event_cancellation" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="communication_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="reason" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_16DD57FF1C2D1E0C" columns="communication_id" ref-table="communication" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_3BAE0AA7D5419431" table="event" schema="" catalog="cliniquecoderre" columns="event_cancellation_id"/>
+      <index name="UNIQ_16DD57FF1C2D1E0C" unique="true" columns="communication_id"/>
+    </table>
+    <table name="event_reminder" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="event_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="communication_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_6DBA6901C2D1E0C" columns="communication_id" ref-table="communication" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_6DBA69071F7E88B" columns="event_id" ref-table="event" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="UNIQ_6DBA6901C2D1E0C" unique="true" columns="communication_id"/>
+      <index name="IDX_6DBA69071F7E88B" unique="false" columns="event_id"/>
+    </table>
+    <table name="image" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="image_name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_C7440455EE45BDBF" table="client" schema="" catalog="cliniquecoderre" columns="picture_id"/>
+      <exported-key name="FK_F804D3B9EE45BDBF" table="employe" schema="" catalog="cliniquecoderre" columns="picture_id"/>
+    </table>
+    <table name="migration_versions" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="version" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="version"/>
+    </table>
+    <table name="schedule" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="employe_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="date_from" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="date_to" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="working_days" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1" remarks="KERDMlR5cGU6YXJyYXkp"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_5A3811FB1B65292" columns="employe_id" ref-table="employe" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_7F42577EA40BC2D5" table="schedule_block" schema="" catalog="cliniquecoderre" columns="schedule_id"/>
+      <index name="IDX_5A3811FB1B65292" unique="false" columns="employe_id"/>
+    </table>
+    <table name="schedule_block" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="schedule_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="date_from" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="date_to" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_7F42577EA40BC2D5" columns="schedule_id" ref-table="schedule" ref-schema="" ref-catalog="cliniquecoderre" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="IDX_7F42577EA40BC2D5" unique="false" columns="schedule_id"/>
+    </table>
+    <table name="scheduled_command" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="ID_SCHEDULED_COMMAND" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="NAME" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="COMMAND" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="ARGUMENTS" sqlType="VARCHAR" precision="250" scale="0" nullable="true" jdbcType="12"/>
+      <column name="CRON_EXPRESSION" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="DH_LAST_EXECUTION" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="LAST_RETURN_CODE" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="LOG_FILE" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="PRIORITY" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="B_EXECUTE_IMMEDIATELY" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="B_DISABLED" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="B_LOCKED" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="ID_SCHEDULED_COMMAND"/>
+    </table>
+    <table name="user" schema="" catalog="cliniquecoderre" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="roles" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1" remarks="KERDMlR5cGU6anNvbl9hcnJheSk="/>
+      <column name="reset_password_token" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="reset_password_date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_C7440455A76ED395" table="client" schema="" catalog="cliniquecoderre" columns="user_id"/>
+      <exported-key name="FK_F804D3B9A76ED395" table="employe" schema="" catalog="cliniquecoderre" columns="user_id"/>
+      <index name="UNIQ_8D93D649E7927C74" unique="true" columns="email"/>
+    </table>
+  </data-source>
+  <data-source name="SQLite -" uuid="a42fbec1-67bb-4629-8e32-7ed42aaac56f">
+    <database-info product="SQLite" version="3.16.1" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
+    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
+    <schema name="" catalog=""/>
+    <table name="SCHEDULED_COMMAND" schema="" catalog="" type="TABLE">
+      <column name="ID_SCHEDULED_COMMAND" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="NAME" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="COMMAND" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="ARGUMENTS" sqlType="VARCHAR(250)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <column name="CRON_EXPRESSION" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <column name="DH_LAST_EXECUTION" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="LAST_RETURN_CODE" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="LOG_FILE" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <column name="PRIORITY" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="B_EXECUTE_IMMEDIATELY" sqlType="BOOLEAN" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="B_DISABLED" sqlType="BOOLEAN" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="B_LOCKED" sqlType="BOOLEAN" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <primary-key columns="id_scheduled_command"/>
+    </table>
+    <table name="appointment_availability_notification" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="event_id_freed" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="event_id_to_replace" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="communication_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="token" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="answer" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_appointment_availability_notification_1" columns="communication_id" ref-table="communication" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_appointment_availability_notification_2" columns="event_id_to_replace" ref-table="event" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_appointment_availability_notification_3" columns="event_id_freed" ref-table="event" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="UNIQ_34D9C7B31C2D1E0C" unique="true" columns="communication_id"/>
+      <index name="IDX_34D9C7B33D629CB" unique="true" columns="event_id_to_replace"/>
+      <index name="IDX_34D9C7B3A546866F" unique="true" columns="event_id_freed"/>
+    </table>
+    <table name="cell_carrier" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="mailToSMS" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="available" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_contact_3" table="contact" schema="" catalog="" columns="phone_cell_carrier_id"/>
+    </table>
+    <table name="client" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="picture_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="firstname" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="lastname" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="birthdate" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <column name="gender" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_client_1" columns="picture_id" ref-table="image" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="2" deferrability="1"/>
+      <foreign-key name="#FAKE_client_2" columns="user_id" ref-table="user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="2" deferrability="1"/>
+      <exported-key name="#FAKE_client_communication_2" table="client_communication" schema="" catalog="" columns="client_id"/>
+      <exported-key name="#FAKE_contact_2" table="contact" schema="" catalog="" columns="client_id"/>
+      <exported-key name="#FAKE_coordinate_2" table="coordinate" schema="" catalog="" columns="client_id"/>
+      <exported-key name="#FAKE_event_3" table="event" schema="" catalog="" columns="client_id"/>
+      <index name="UNIQ_C7440455EE45BDBF" unique="true" columns="picture_id"/>
+      <index name="UNIQ_C7440455A76ED395" unique="true" columns="user_id"/>
+    </table>
+    <table name="client_communication" schema="" catalog="" type="TABLE">
+      <column name="client_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="communication_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <primary-key columns="communication_id"/>
+      <foreign-key name="#FAKE_client_communication_1" columns="communication_id" ref-table="communication" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
+      <foreign-key name="#FAKE_client_communication_2" columns="client_id" ref-table="client" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
+      <index name="IDX_8E198FDF1C2D1E0C" unique="true" columns="communication_id"/>
+      <index name="IDX_8E198FDF19EB6921" unique="true" columns="client_id"/>
+    </table>
+    <table name="communication" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="title" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="content" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="phone" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <column name="email" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <column name="type" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="dateSent" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_appointment_availability_notification_1" table="appointment_availability_notification" schema="" catalog="" columns="communication_id"/>
+      <exported-key name="#FAKE_client_communication_1" table="client_communication" schema="" catalog="" columns="communication_id"/>
+      <exported-key name="#FAKE_employe_communication_1" table="employe_communication" schema="" catalog="" columns="communication_id"/>
+      <exported-key name="#FAKE_event_cancellation_1" table="event_cancellation" schema="" catalog="" columns="communication_id"/>
+      <exported-key name="#FAKE_event_reminder_1" table="event_reminder" schema="" catalog="" columns="communication_id"/>
+    </table>
+    <table name="contact" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="phone_cell_carrier_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="client_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="employe_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="phone_cell" sqlType="VARCHAR(35)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="phone_work" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <column name="phone_home" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_contact_1" columns="employe_id" ref-table="employe" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_contact_2" columns="client_id" ref-table="client" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_contact_3" columns="phone_cell_carrier_id" ref-table="cell_carrier" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="IDX_4C62E6381B65292" unique="true" columns="employe_id"/>
+      <index name="IDX_4C62E63819EB6921" unique="true" columns="client_id"/>
+      <index name="IDX_4C62E63872451E7" unique="true" columns="phone_cell_carrier_id"/>
+    </table>
+    <table name="coordinate" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="client_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="employe_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="isPrimary" sqlType="BOOLEAN" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="address" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <column name="city" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <column name="province" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <column name="country" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_coordinate_1" columns="employe_id" ref-table="employe" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_coordinate_2" columns="client_id" ref-table="client" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="IDX_CB9CBA171B65292" unique="true" columns="employe_id"/>
+      <index name="IDX_CB9CBA1719EB6921" unique="true" columns="client_id"/>
+    </table>
+    <table name="employe" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="picture_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="firstname" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="lastname" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="birthdate" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="gender" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_employe_1" columns="picture_id" ref-table="image" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="2" deferrability="1"/>
+      <foreign-key name="#FAKE_employe_2" columns="user_id" ref-table="user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="2" deferrability="1"/>
+      <exported-key name="#FAKE_contact_1" table="contact" schema="" catalog="" columns="employe_id"/>
+      <exported-key name="#FAKE_coordinate_1" table="coordinate" schema="" catalog="" columns="employe_id"/>
+      <exported-key name="#FAKE_employe_communication_2" table="employe_communication" schema="" catalog="" columns="employe_id"/>
+      <exported-key name="#FAKE_event_2" table="event" schema="" catalog="" columns="employe_id"/>
+      <exported-key name="#FAKE_schedule_1" table="schedule" schema="" catalog="" columns="employe_id"/>
+      <index name="UNIQ_F804D3B9EE45BDBF" unique="true" columns="picture_id"/>
+      <index name="UNIQ_F804D3B9A76ED395" unique="true" columns="user_id"/>
+    </table>
+    <table name="employe_communication" schema="" catalog="" type="TABLE">
+      <column name="employe_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="communication_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <primary-key columns="communication_id"/>
+      <foreign-key name="#FAKE_employe_communication_1" columns="communication_id" ref-table="communication" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
+      <foreign-key name="#FAKE_employe_communication_2" columns="employe_id" ref-table="employe" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
+      <index name="IDX_F420622D1C2D1E0C" unique="true" columns="communication_id"/>
+      <index name="IDX_F420622D1B65292" unique="true" columns="employe_id"/>
+    </table>
+    <table name="event" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="client_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="employe_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="event_cancellation_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="emergency" sqlType="BOOLEAN" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="startTime" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="endTime" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_event_1" columns="event_cancellation_id" ref-table="event_cancellation" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="1"/>
+      <foreign-key name="#FAKE_event_2" columns="employe_id" ref-table="employe" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_event_3" columns="client_id" ref-table="client" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_appointment_availability_notification_2" table="appointment_availability_notification" schema="" catalog="" columns="event_id_to_replace"/>
+      <exported-key name="#FAKE_appointment_availability_notification_3" table="appointment_availability_notification" schema="" catalog="" columns="event_id_freed"/>
+      <exported-key name="#FAKE_event_reminder_2" table="event_reminder" schema="" catalog="" columns="event_id"/>
+      <index name="UNIQ_3BAE0AA7D5419431" unique="true" columns="event_cancellation_id"/>
+      <index name="IDX_3BAE0AA71B65292" unique="true" columns="employe_id"/>
+      <index name="IDX_3BAE0AA719EB6921" unique="true" columns="client_id"/>
+    </table>
+    <table name="event_cancellation" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="communication_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="reason" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_event_cancellation_1" columns="communication_id" ref-table="communication" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_event_1" table="event" schema="" catalog="" columns="event_cancellation_id"/>
+      <index name="UNIQ_16DD57FF1C2D1E0C" unique="true" columns="communication_id"/>
+    </table>
+    <table name="event_reminder" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="event_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="communication_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_event_reminder_1" columns="communication_id" ref-table="communication" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_event_reminder_2" columns="event_id" ref-table="event" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="UNIQ_6DBA6901C2D1E0C" unique="true" columns="communication_id"/>
+      <index name="IDX_6DBA69071F7E88B" unique="true" columns="event_id"/>
+    </table>
+    <table name="image" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="image_name" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_client_1" table="client" schema="" catalog="" columns="picture_id"/>
+      <exported-key name="#FAKE_employe_1" table="employe" schema="" catalog="" columns="picture_id"/>
+    </table>
+    <table name="schedule" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="employe_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <column name="date_from" sqlType="DATE" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="date_to" sqlType="DATE" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="working_days" sqlType="CLOB" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_schedule_1" columns="employe_id" ref-table="employe" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_schedule_block_1" table="schedule_block" schema="" catalog="" columns="schedule_id"/>
+      <index name="IDX_5A3811FB1B65292" unique="true" columns="employe_id"/>
+    </table>
+    <table name="schedule_block" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="schedule_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4" def="TlVMTA=="/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="date_from" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="date_to" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_schedule_block_1" columns="schedule_id" ref-table="schedule" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="IDX_7F42577EA40BC2D5" unique="true" columns="schedule_id"/>
+    </table>
+    <table name="user" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="email" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="roles" sqlType="CLOB" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="reset_password_token" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <column name="reset_password_date" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12" def="J05VTEwn"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_client_2" table="client" schema="" catalog="" columns="user_id"/>
+      <exported-key name="#FAKE_employe_2" table="employe" schema="" catalog="" columns="user_id"/>
+      <index name="UNIQ_8D93D649E7927C74" unique="true" columns="email"/>
+    </table>
+  </data-source>
+</component>

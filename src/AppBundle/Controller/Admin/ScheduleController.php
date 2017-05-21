@@ -1,0 +1,169 @@
+<?php
+
+namespace AppBundle\Controller\Admin;
+
+use AppBundle\Entity\Employe;
+use AppBundle\Entity\Schedule;
+use AppBundle\Entity\ScheduleBlock;
+use AppBundle\Entity\User;
+use AppBundle\Form\ScheduleType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+/**
+ * Admin controller.
+ *
+ * @Route("admin/schedule")
+ */
+class ScheduleController extends Controller
+{
+
+    /**
+     * New schedule.
+     *
+     * @Route("/new/{employe}", name="admin_schedule_new")
+     * @Method({"GET", "POST"})
+     */
+    public function scheduleNewAction(Request $request, Employe $employe)
+    {
+        $schedule = new Schedule();
+
+        $form = $this->createForm(ScheduleType::class, $schedule);
+        $form->handleRequest($request);
+
+        // Verify if it's an Ajax call
+        if($request->isXmlHttpRequest()) {
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+
+                // Get Block startTime and endTime
+                $block_startTime = $request->get('start');
+                $block_endTime = $request->get('end');
+
+                // Set Date Range of schedule by setting dateFrom and dateTo
+                $schedule->setDateFrom(new \DateTime(min($block_startTime)));
+                $schedule->setDateTo(new \DateTime(max($block_endTime)));
+                $schedule->setEmploye($employe);
+
+                // Create ScheduleBlock
+                foreach ($block_startTime as $key => $date) {
+                    $scheduleBlock = new ScheduleBlock();
+                    $scheduleBlock->setDateFrom(new \DateTime($block_startTime[$key]));
+                    $scheduleBlock->setDateTo(new \DateTime($block_endTime[$key]));
+                    $scheduleBlock->setSchedule($schedule);
+
+                    $em->persist($scheduleBlock);
+                }
+
+                // Persist Schedule to database
+                $em->persist($schedule);
+                $em->flush();
+
+                return new Response(json_encode(array('status'=>'success')));
+            }
+
+            return $this->render('admin/schedule/schedule_ajax.html.twig', array(
+                'schedule' => $schedule,
+                'employe' => $employe,
+                'form' => $form->createView(),
+            ));
+        }
+    }
+
+    /**
+     * Displays a form to edit an existing schedule entity.
+     *
+     * @Route("/{id}", name="admin_schedule_edit")
+     * @Method({"GET", "POST"})
+     */
+    public function scheduleEditAction(Request $request, Schedule $schedule)
+    {
+        $user = $this->getUser();
+        if (!is_object($user) || !$user instanceof User) {
+            throw new AccessDeniedException('This user does not have access to this sections.');
+        }
+
+        $employe = $schedule->getEmploye();
+
+        $editForm = $this->createForm(ScheduleType::class, $schedule);
+        $editForm->handleRequest($request);
+
+        // Verify if it's an Ajax call
+        if($request->isXmlHttpRequest()) {
+
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+
+                // Save ScheduleBlock
+                {
+                    // Delete all block from the Schedule so we can recreate them
+                    {
+                        $em = $this->getDoctrine()->getManager();
+                        foreach ($schedule->getBlocks() as $key => $block) {
+                            $em->remove($block);
+                        }
+                        $this->getDoctrine()->getManager()->flush();
+                    }
+
+                    // Create new Block
+                    $start = $request->get('start');
+                    $end = $request->get('end');
+                    foreach ($start as $key => $value) {
+                        $dateFrom = new \DateTime($start[$key]);
+                        $dateTo = new \DateTime($end[$key]);
+                        if (!$em->getRepository('AppBundle:ScheduleBlock')->findOneBetweenDate($dateFrom, $dateTo)) {
+                            $scheduleBlock = new ScheduleBlock();
+                            $scheduleBlock->setDateFrom($dateFrom);
+                            $scheduleBlock->setDateTo($dateTo);
+                            $schedule->addBlock($scheduleBlock);
+                        }
+                    }
+
+                    // Insert in database;
+                    $this->getDoctrine()->getManager()->flush();
+                }
+
+                return new Response(json_encode(array('status'=>'success')));
+                //return $this->redirect($request->headers->get('referer'));
+            }
+
+            return $this->render('admin/schedule/schedule_ajax.html.twig', array(
+                'schedule' => $schedule,
+                'form' => $editForm->createView(),
+                'employe' => $employe
+            ));
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Filter query
+        {
+            $queryBuilder = $em->getRepository('AppBundle:Schedule')->createQueryBuilder('s');
+            $query = $queryBuilder->getQuery();
+        }
+
+        /**
+         * @var $paginator \Knp\Component\Pager\Paginator
+         */
+        $paginator = $this->get('knp_paginator');
+        $result = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 15),
+            array(
+                'wrap-queries' => true
+            )
+
+        );
+
+        return $this->render('admin/user/profile.html.twig', array(
+            'user' => $user,
+            'schedule_form' => $editForm->createView(),
+            'schedules' => $result,
+            'employe' => $employe
+        ));
+    }
+}

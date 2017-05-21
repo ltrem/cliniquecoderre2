@@ -1,0 +1,38 @@
+{% if client is not empty %}
+    {{ form_start(form, {'attr': {'id': 'communication_new'}, 'action': path('communication_new', { 'client': client.id })}) }}
+{% endif %}
+{% if employe is not empty %}
+    {{ form_start(form, {'attr': {'id': 'communication_new'}, 'action': path('communication_new', { 'employe': employe.id })}) }}
+{% endif %}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="exampleModalLabel">Envoyer une communication</h4>
+</div>
+<div class="modal-body">
+    {{ form_widget(form) }}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+    <button type="submit" class="btn btn-success" data-loading-text="Envoi en cours...">Envoyer maintenant</button>
+</div>
+{{ form_end(form) }}
+
+
+<script>
+    $("#communication_new").submit(function(e){
+
+        e.preventDefault();
+
+        $(this).find(':submit').button('loading');
+
+        var formSerialize = $(this).serialize();
+        $.post($(this).attr('action'), formSerialize, function(response){
+
+            //your callback here
+            $('.main-container').prepend(response.status);
+            $('#myModal').modal("toggle");
+
+        },'JSON');
+    });
+</script>

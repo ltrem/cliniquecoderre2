@@ -1,0 +1,140 @@
+AppBundle\Entity\User:
+    user_1:
+        email: superadmin+1@gmail.com
+        plainPassword: iliketurtles
+        roles: ['ROLE_SUPER_ADMIN']
+    user_{2..5}:
+        email: admin+<current()>@gmail.com
+        plainPassword: iliketurtles
+        roles: ['ROLE_ADMIN']
+    user_{6}:
+        email: lautrem2@hotmail.com
+        plainPassword: iliketurtles
+        roles: ['ROLE_CLIENT']
+    user_{7}:
+        email: lautrem2@gmail.com
+        plainPassword: iliketurtles
+        roles: ['ROLE_CLIENT']
+    user_{8..50}:
+        email: client+<current()>@gmail.com
+        plainPassword: iliketurtles
+        roles: ['ROLE_CLIENT']
+AppBundle\Entity\Employe:
+    employe_1:
+        firstname: Simon
+        lastname: Coderre
+        birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
+        gender: Homme
+        user: "@user_1"
+    employe_2:
+        firstname: Ju-Lee
+        lastname: Boissonneau
+        birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
+        gender: Femme
+        user: "@user_2"
+
+AppBundle\Entity\Client:
+    client_{6}:
+        firstname: Firstname <current()>
+        lastname: Lastname <current()>
+        birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
+        gender: Homme
+        user: "@user_6"
+    client_{7}:
+        firstname: Firstname <current()>
+        lastname: Lastname <current()>
+        birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
+        gender: Homme
+        user: "@user_7"
+    client_{8..50}:
+        firstname: Firstname <current()>
+        lastname: Lastname <current()>
+        birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
+        gender: Homme
+        user: "@user_<current()>"
+
+AppBundle\Entity\Event:
+    event_{1}:
+        name: Rendez-vous <current()>
+        startTime: <(new \DateTime('2017-07-31 13:00:00'))>
+        endTime: <(new \DateTime('2017-07-31 14:00:00'))>
+        client: "@client_6"
+        emergency: 1
+    event_{2}:
+        name: Rendez-vous <current()>
+        startTime: <(new \DateTime('2017-05-07 14:00:00'))>
+        endTime: <(new \DateTime('2017-05-07 15:00:00'))>
+        client: "@client_7"
+        emergency: 0
+
+JMose\CommandSchedulerBundle\Entity\ScheduledCommand:
+    command_1:
+        name: Appointment Availability Notification - Event 2
+        command: app:appointment_availability_notification
+        arguments: --event_id=2 --schedule_command_id=1
+        cronExpression: "* * * * *"
+        executeImmediately: true
+        priority: 1
+        disabled: false
+        locked: false
+
+AppBundle\Entity\Coordinate:
+    coordinate_1:
+        address: 395, rue Cormier
+        city: Drummondville
+        province: Quebec
+        country: Canada
+        employe: "@employe_1"
+        isPrimary: true
+    coordinate_2:
+        address: 395, rue Cormier
+        city: Drummondville
+        province: Quebec
+        country: Canada
+        employe: "@employe_2"
+        isPrimary: true
+    coordinate_{6..50}:
+        address: test <current()>
+        city: Drummondville
+        province: Quebec
+        country: Canada
+        client: "@client_<current()>"
+        isPrimary: true
+
+AppBundle\Entity\Contact:
+    contact_1:
+        phoneCell: <phoneNumber()>
+        phoneCellCarrier: "@cell_carrier_3"
+        phoneHome: 11
+        phoneWork: 11
+        employe: "@employe_1"
+    contact_2:
+        phoneCell: <phoneNumber()>
+        phoneCellCarrier: "@cell_carrier_3"
+        phoneHome: 11
+        phoneWork: 11
+        employe: "@employe_2"
+    contact_{6..50}:
+        phoneCell: <phoneNumber()>
+        phoneCellCarrier: "@cell_carrier_3"
+        phoneHome: 11
+        phoneWork: 11
+        client: "@client_<current()>"
+
+AppBundle\Entity\CellCarrier:
+    cell_carrier_1:
+        name: Bell Canada
+        mailToSms: txt.bellmobility.ca
+        available: 1
+    cell_carrier_2:
+        name: Fido
+        mailToSms: fido.ca
+        available: 1
+    cell_carrier_3:
+        name: Telus
+        mailToSms: msg.telus.com
+        available: 1
+    cell_carrier_4:
+        name: Virgin Mobile Canada
+        mailToSms: vmobile.ca
+        available: 1

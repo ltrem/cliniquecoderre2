@@ -1,0 +1,180 @@
+AppBundle\Entity\User:
+    user_1:
+        email: superadmin+1@gmail.com
+        plainPassword: iliketurtles
+        roles: ['ROLE_SUPER_ADMIN']
+    user_{2}:
+        email: admin+<current()>@gmail.com
+        plainPassword: iliketurtles
+        roles: ['ROLE_ADMIN']
+    user_{3}:
+        email: lautrem2@bla.com
+        plainPassword: iliketurtles
+        roles: ['ROLE_CLIENT']
+    user_{4}:
+        email: lautrem2@gmail.com
+        plainPassword: iliketurtles
+        roles: ['ROLE_CLIENT']
+    user_{5}:
+        email: lautrem2@hotmail.com
+        plainPassword: iliketurtles
+        roles: ['ROLE_CLIENT']
+AppBundle\Entity\Employe:
+    employe_1:
+        firstname: Simon
+        lastname: Coderre
+        birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
+        gender: Homme
+        user: "@user_1"
+    employe_2:
+        firstname: Ju-Lee
+        lastname: Boissonneau
+        birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
+        gender: Femme
+        user: "@user_2"
+
+AppBundle\Entity\Client:
+    client_{3}:
+        firstname: Firstname <current()>
+        lastname: Lastname <current()>
+        birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
+        gender: Homme
+        user: "@user_3"
+    client_{4}:
+        firstname: Firstname <current()>
+        lastname: Lastname <current()>
+        birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
+        gender: Homme
+        user: "@user_4"
+    client_{5}:
+        firstname: Firstname <current()>
+        lastname: Lastname <current()>
+        birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
+        gender: Homme
+        user: "@user_5"
+
+
+AppBundle\Entity\EventCancellation:
+    event_cancellation_{1}:
+        reason: Cancellation 1
+
+AppBundle\Entity\Event:
+    event_{1}:
+        name: Rendez-vous <current()>
+        startTime: <(new \DateTime('2017-05-31 13:00:00'))>
+        endTime: <(new \DateTime('2017-05-31 14:00:00'))>
+        client: "@client_3"
+        employe: "@employe_1"
+        emergency: 0
+        cancellation: "@event_cancellation_1"
+    event_{2}:
+        name: Rendez-vous <current()>
+        startTime: <(new \DateTime('2017-06-07 14:00:00'))>
+        endTime: <(new \DateTime('2017-06-07 15:00:00'))>
+        client: "@client_4"
+        employe: "@employe_2"
+        emergency: 1
+    event_{3}:
+        name: Rendez-vous <current()>
+        startTime: <(new \DateTime('2017-09-07 14:00:00'))>
+        endTime: <(new \DateTime('2017-09-07 15:00:00'))>
+        client: "@client_5"
+        employe: "@employe_2"
+        emergency: 1
+
+JMose\CommandSchedulerBundle\Entity\ScheduledCommand:
+    command_1:
+        name: Appointment Availability Notification - Event 1
+        command: app:appointment_availability_notification
+        arguments: --event_id=1 --schedule_command_id=1
+        cronExpression: "* * * * *"
+        executeImmediately: true
+        priority: 1
+        disabled: false
+        locked: false
+
+AppBundle\Entity\Coordinate:
+    coordinate_1:
+        address: 395, rue Cormier
+        city: Drummondville
+        province: Quebec
+        country: Canada
+        employe: "@employe_1"
+        isPrimary: true
+    coordinate_2:
+        address: 395, rue Cormier
+        city: Drummondville
+        province: Quebec
+        country: Canada
+        employe: "@employe_2"
+        isPrimary: true
+    coordinate_3:
+        address: 395, rue Cormier
+        city: Drummondville
+        province: Quebec
+        country: Canada
+        client: "@client_3"
+        isPrimary: true
+    coordinate_4:
+        address: 395, rue Cormier
+        city: Drummondville
+        province: Quebec
+        country: Canada
+        client: "@client_4"
+        isPrimary: true
+    coordinate_5:
+        address: 395, rue Cormier
+        city: Drummondville
+        province: Quebec
+        country: Canada
+        client: "@client_5"
+        isPrimary: true
+
+AppBundle\Entity\Contact:
+    contact_1:
+        phoneCell: <phoneNumber()>
+        phoneCellCarrier: "@cell_carrier_3"
+        phoneHome: 11
+        phoneWork: 11
+        employe: "@employe_1"
+    contact_2:
+        phoneCell: <phoneNumber()>
+        phoneCellCarrier: "@cell_carrier_3"
+        phoneHome: 11
+        phoneWork: 11
+        employe: "@employe_2"
+    contact_3:
+        phoneCell: <phoneNumber()>
+        phoneCellCarrier: "@cell_carrier_3"
+        phoneHome: 11
+        phoneWork: 11
+        client: "@client_3"
+    contact_4:
+        phoneCell: <phoneNumber()>
+        phoneCellCarrier: "@cell_carrier_3"
+        phoneHome: 11
+        phoneWork: 11
+        client: "@client_4"
+    contact_5:
+        phoneCell: <phoneNumber()>
+        phoneCellCarrier: "@cell_carrier_3"
+        phoneHome: 11
+        phoneWork: 11
+        client: "@client_5"
+AppBundle\Entity\CellCarrier:
+    cell_carrier_1:
+        name: Bell Canada
+        mailToSms: txt.bellmobility.ca
+        available: 1
+    cell_carrier_2:
+        name: Fido
+        mailToSms: fido.ca
+        available: 1
+    cell_carrier_3:
+        name: Telus
+        mailToSms: msg.telus.com
+        available: 1
+    cell_carrier_4:
+        name: Virgin Mobile Canada
+        mailToSms: vmobile.ca
+        available: 1

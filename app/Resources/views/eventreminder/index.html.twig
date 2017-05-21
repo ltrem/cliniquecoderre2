@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Eventreminders list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Createdat</th>
+                <th>Updatedat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for eventReminder in eventReminders %}
+            <tr>
+                <td><a href="{{ path('eventreminder_show', { 'id': eventReminder.id }) }}">{{ eventReminder.id }}</a></td>
+                <td>{% if eventReminder.createdAt %}{{ eventReminder.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if eventReminder.updatedAt %}{{ eventReminder.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('eventreminder_show', { 'id': eventReminder.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('eventreminder_edit', { 'id': eventReminder.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('eventreminder_new') }}">Create a new eventReminder</a>
+        </li>
+    </ul>
+{% endblock %}

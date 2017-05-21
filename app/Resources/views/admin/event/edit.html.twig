@@ -1,0 +1,51 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form, {'method': 'post', 'action': path('admin_event_edit', { 'id': event.id }), 'attr': {'class': 'fos_user_registration_register'}}) }}
+
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="page-header">
+                <h3>{{ 'admin.event.edit.title'|trans({}, 'messages') }}</h3>
+            </div>
+
+            <div class="col-sm-12">
+                {{ form_rest(form) }}
+            </div>
+        </div>
+
+    </div>
+
+    {{ form_rest(form) }}
+
+    <input class="btn btn-lg btn-primary btn-block" type="submit" id="_submit" name="_submit" value="{{ 'admin.event.edit.submit'|trans }}" />
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{# https://symfony.com/doc/current/form/form_customization.html#how-to-customize-a-collection-prototype #}
+    {% form_theme form _self %}
+    {% block _admin_client_client_coordinates_entry_row %}
+        {% spaceless %}
+            {{ form_label(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+        {% endspaceless %}
+    {% endblock %}
+
+    {% block _admin_client_client_coordinates_entry_label %}
+    {% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('bundles/adesignscalendar/js/calendar-settings-admin.js') }}"></script>
+
+    <script>
+        $( document ).ready(function() {
+            $('.isPrimary').parent().hide();
+        });
+    </script>
+{% endblock %}

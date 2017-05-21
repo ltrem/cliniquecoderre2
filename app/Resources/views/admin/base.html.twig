@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="../../favicon.ico">
+
+        <title>{% block title %}Welcome!{% endblock %}</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css" rel="stylesheet" crossorigin="anonymous">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+        {# <link rel="stylesheet" href="{{ asset('bundles/adesignscalendar/css/fullcalendar/fullcalendar.css') }}" /> #}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css" />
+
+        <link rel="stylesheet" href="{{ asset('css/calendar.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/stylesheet.css') }}" />
+
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        <link rel="stylesheet" href="{{ asset('plugin/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css') }}" />
+
+
+
+    </head>
+
+    <body>
+
+        <nav class="navbar navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navitation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Clinique Coderre</a>
+                </div>
+
+                {{ include('admin/menu.html.twig') }}
+
+            </div>
+        </nav>
+
+        <div class="container main-container">
+
+            {% for flash_message in app.session.flashbag.get('notice') %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="alert alert-success"> {{ flash_message }} </div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+            <div class="row">
+                <div class="col-sm-12">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+        </div><!-- /.container -->
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.js"></script>
+
+        <script type="text/javascript" src="{{ asset('plugin/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js') }}"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+
+        <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+        {# <script type="text/javascript" src="{{ asset('bundles/adesignscalendar/js/fullcalendar/jquery.fullcalendar.min.js') }}"></script> #}
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
+
+        {% block javascripts %}
+        {% endblock %}
+        <script>
+            $( document ).ready(function() {
+
+                $('select[data-select="true"').select2();
+
+                var url = document.location.toString();
+                if (url.match('#')) {
+                    $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+                }
+
+                // Change hash for page-reload
+                /*
+                $('.nav-pills a').on('shown.bs.tab', function (e) {
+                    window.location.hash = e.target.hash;
+                })
+                */
+
+                $('.schedule_rangepicker').daterangepicker({
+                    timePicker: true,
+                    timePickerIncrement: 30,
+                    locale: {
+                        format: 'MM/DD/YYYY'
+                    }
+                });
+
+                $(".schedule_datepicker").datetimepicker({
+                    bootcssVer: 3,
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    stepping: 60,
+                    minView: 'month',
+                    todayHighlight: true,
+                });
+
+                $(".birthdate_datepicker").datetimepicker({
+                    bootcssVer: 3,
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    minView: 'month'
+                });
+
+                $(".event_datetimepicker").datetimepicker({
+                    bootcssVer: 3,
+                    format: 'yyyy-mm-dd hh:ii',
+                    autoclose: true,
+                    stepping: 60,
+                    minView: 'day',
+                    todayHighlight: true,
+                    {#todayBtn: true,#}
+                    {#pickerPosition: "bottom-left",#}
+                })
+                .on('changeDate', function(ev){
+                    starttime = moment(ev.date).startOf('hour').format('YYYY-MM-DD HH:mm');
+                    endtime = moment(ev.date).add(1, 'hour').format('YYYY-MM-DD HH:mm');
+                    $('.client_event #event_endTime').val(endtime);
+                    $('.client_event #event_startTime').val(starttime);
+                });
+
+
+                {% block documentready %}
+                {% endblock %}
+            });
+        </script>
+
+    </body>
+</html>

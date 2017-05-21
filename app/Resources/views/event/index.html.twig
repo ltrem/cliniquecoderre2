@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Events list</h1>
+
+    <form action="{{ path('event_index') }}" method="get">
+        <label for="filter">Filter</label>
+        <input type="text" name="filter">
+        <button class="btn btn-default btn-xs">
+            Filter Now
+        </button>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(events, 'id', 'e.id') }}</th>
+                <th>{{ knp_pagination_sortable(events, 'Name', 'e.name') }}</th>
+                <th>Starttime</th>
+                <th>Endtime</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <td><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td>
+                <td>{{ event.name }}</td>
+                <td>{{ event.startTime|date('Y-m-d H:i') }}</td>
+                <td>{{ event.endTime|date('Y-m-d H:i') }}</td>
+                <td>
+                    <a href="{{ path('event_edit', { 'id': event.id }) }}" class="btn btn-xs btn-default">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(events) }}
+    </div>
+
+    <ul>
+        <li>
+            <a href="{{ path('event_new') }}">Create a new event</a>
+        </li>
+    </ul>
+{% endblock %}

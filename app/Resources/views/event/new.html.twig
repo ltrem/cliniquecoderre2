@@ -1,0 +1,249 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+
+        <div class="page-header">
+            <h3>
+                {{ 'event.new'|trans }}
+            </h3>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-lg-6">
+
+                    <label>{{ 'event.selectProfessional'|trans }}</label>
+                    <div class="row">
+
+                        {% if employes|length %}
+                            {% for employe in employes %}
+                                <div class="col-xs-6">
+                                    <div class="thumbnail employe-selector" data-employe-id="{{ employe.id }}">
+                                        <img src="{{ vich_uploader_asset(employe.picture, 'imageFile') }}" alt="Photo de l'employer" class="img-thumbnail" />
+                                        <div class="caption">
+                                            <h3>
+                                                {{ employe.firstname}} {{ employe.lastname }}
+                                                <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
+                                            </h3>
+                                            {# <button type="button" class="btn btn-primary" data-employe-id="{{ employe.id }}">{{ employe.firstname}} {{ employe.lastname }}</button> #}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <div class="hidden">
+                            {{ form_label(form.employe) }}
+                            {{ form_errors(form.employe) }}
+                            {{ form_widget(form.employe) }}
+                        </div>
+                    </div>
+
+                    <div class="row" style="padding-top: 10px">
+                        <div class="col-sm-12">
+
+                            <div class="client_event">
+                                {{ form_label(form.name) }}
+                                {{ form_errors(form.name) }}
+                                {{ form_widget(form.name) }}
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-12" style="padding-top: 20px;">
+                            <input class="btn btn-lg btn-success" type="submit" id="_submit" name="_submit" value="{{ 'event.create'|trans }}" />
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-sm-12 col-lg-6">
+
+                    <label>{{ 'event.selectEmpty'|trans }}</label>
+                    {{ form_errors(form.startTime) }}
+                    {{ form_widget(form.startTime) }}
+
+
+
+                    <div class="col-sm-12">
+                        {{ form_label(form.emergency) }}
+                        {{ form_widget(form.emergency) }}
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="well" style="position:relative">
+                                <div class="loading">Loading&#8230;</div>
+                                {% include 'ADesignsCalendarBundle::calendar.html.twig' %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block documentready %}
+    {#$('input[type=datetime]').prop("disabled", true);#}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $( document ).ready(function() {
+
+            $(document).on('click', '.employe-selector', function() {
+
+                // Show loading
+                $('.loading').show();
+
+                $('#event_employe').val($(this).data("employeId"));
+
+                $('.employe-selector').removeClass('alert-success');
+
+                if (!$(this).hasClass('alert-success')) {
+                    $(this).addClass('alert-success');
+
+                    // Reload event
+                    $.when( $('#calendar-holder').fullCalendar( 'refetchEvents' )).then(function(){
+                        $('.loading').hide();
+                    })
+                }
+            });
+
+                var date = new Date();
+                var d = date.getDate();
+                var m = date.getMonth();
+                var y = date.getFullYear();
+
+                $('#calendar-holder').fullCalendar({
+                    lang: 'en',
+                    weekends: false,
+                    height: "auto",
+                    allDaySlot: false,
+                    header: {
+                        left: 'prev, next',
+                        center: 'title',
+                        right: 'agendaWeek, agendaDay'
+                    },
+                    slotMinutes: 15,
+                    slotLabelFormat:"HH:mm a",
+                    firstHour: 8,
+                    /*columnFormat: 'ddd',
+                    views: {
+                        basic: {
+                            // options apply to basicWeek and basicDay views
+                        },
+                        agenda: {
+                            // options apply to agendaWeek and agendaDay views
+                        },
+                        week: {
+                            // options apply to basicWeek and agendaWeek views
+                        },
+                        day: {
+                            // options apply to basicDay and agendaDay views
+                            titleFormat: 'dddd M/D'
+                        }
+                    },*/
+                    minTime: '08:00:00', // a start time (8am in this example)
+                    maxTime: '20:00:00', // an end time (20pm in this example)
+                    defaultView: 'agendaDay',
+                    eventSources: [
+                        {
+                            events: function(start, end, timezone, callback) {
+                                $.ajax({
+                                    url: Routing.generate('fullcalendar_loader'),
+                                    type: 'POST',
+                                    dataType: 'JSON',
+                                    data: {
+                                        // our hypothetical feed requires UNIX timestamps
+                                        start: start.unix(),
+                                        end: end.unix(),
+                                        employe: ($('.employe-selector.alert-success').data('employeId') ? $('.employe-selector.alert-success').data('employeId') : 1) ,
+                                        isClient: true
+                                    },
+                                    success: function(data) {
+
+                                        var events = [];
+                                        $.each(data, function(index) {
+                                            events.push({
+                                                allDay: false,
+                                                backgroundColor: data[index].backgroundColor,
+                                                borderColor: data[index].borderColor,
+                                                className: data[index].className,
+                                                end: data[index].end,
+                                                start: data[index].start,
+                                                textColor: data[index].textColor,
+                                                title: data[index].title,
+                                            });
+                                        });
+
+
+                                        $('.loading').hide();
+
+                                        callback(events);
+                                    }
+                                });
+                            }
+                        }
+                    ],
+                    eventClick: function(calEvent, jsEvent, view) {
+
+                        // alert('Event: ' + calEvent.title);
+                        //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                        // alert('View: ' + view.name);
+
+                        $('.myEvent').each(function() {
+                            $(this).removeClass('myEvent');
+                        });
+
+                        // change the border color just for fun
+                        if (!$(this).hasClass('unavailable')) {
+
+                            // Update Starttime in the form
+                            starttime = moment(calEvent.start).format('YYYY-MM-DD HH:mm');
+                            $('#event_startTime').val(starttime);
+
+                            $(this).addClass('myEvent');
+                        } else {
+                            alert('{{ 'event.error.notFree'|trans }}');
+                            $('#event_startTime').val('');
+                        }
+                    },
+                    viewRender: function(currentView){
+                        console.log(currentView);
+
+                        var minDate = moment().add(1, 'day').format('YYYY-MM-DD'),
+                                maxDate = moment().add(2, 'months').format('YYYY-MM-DD');
+
+                        // Past
+                        if (minDate >= currentView.start.format('YYYY-MM-DD') && minDate <= currentView.end.format('YYYY-MM-DD')) {
+                            $(".fc-prev-button").prop('disabled', true);
+                            $(".fc-prev-button").addClass('fc-state-disabled');
+                            $(".fc-prev-button").css("visibility", "hidden");
+                        }
+                        else {
+                            $(".fc-prev-button").removeClass('fc-state-disabled');
+                            $(".fc-prev-button").prop('disabled', false);
+                            $(".fc-prev-button").css("visibility", "visible");
+                        }
+                        // Future
+                        if (maxDate >= currentView.start.format('YYYY-MM-DD') && maxDate <= currentView.end.format('YYYY-MM-DD')) {
+                            $(".fc-next-button").prop('disabled', true);
+                            $(".fc-next-button").addClass('fc-state-disabled');
+                            $(".fc-next-button").css("visibility", "hidden");
+                        } else {
+                            $(".fc-next-button").removeClass('fc-state-disabled');
+                            $(".fc-next-button").prop('disabled', false);
+                            $(".fc-next-button").css("visibility", "visible");
+                        }
+                    }
+                });
+
+        });
+    </script>
+{% endblock %}

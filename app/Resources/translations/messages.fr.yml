@@ -1,0 +1,217 @@
+references:
+    weekday:
+        1: 'Lundi'
+        2: 'Mardi'
+        3: 'Mercredi'
+        4: 'Jeudi'
+        5: 'Vendredi'
+        6: 'Samedi'
+        7: 'Dimanche'
+general:
+    modal:
+        close: 'Fermer'
+        cancel: 'Annuler'
+    info:
+        name: "Nom"
+        firstname: 'Prénom'
+        lastname: "Nom"
+        address: "Adresse"
+        phoneCell: "Téléphone (cellulaire)"
+        phoneCellCarrier: "Fournisseur"
+        phoneWork: "Téléphone (travail)"
+        phoneHome: "Téléphone (maison)"
+        birthdate: "Date de naissance"
+        gender: "Genre"
+        city: "Ville"
+        province: "Province"
+        country: "Country"
+        email: "Courriel"
+
+event:
+    message:
+        create:
+            success: 'Vous avez un nouveau rendez-vous de scédulé!'
+    new: 'Prendre un RENDEZ-VOUS!'
+    selectEmpty: 'Une de ces dates vous convient-elle?'
+    selectProfessional: 'Avec qui voulez-vous prendre un rendez-vous?'
+    selectReason: 'Quel est la raison de votre rendez-vous?'
+    create: 'Réserver mon rendez-vous'
+    form:
+        name: 'Nom'
+        startTime: 'Date et heure du rendez-vous'
+        reason: 'Raison'
+        endTime: 'Fin'
+        categories: 'Catégories'
+        cancellationReason: 'Pourquoi voulez-vous annuler votre rendez-vous?'
+        emergency: 'Me prévenir si une plage horaire ce libère'
+    error:
+        notFree: 'Impossible de sélectionner une case déjà réservé!'
+    availability:
+        question: 'Voulez-vous ce rendez-vous?'
+        answer:
+            yes: 'Oui, je veux ce rendez-vous.'
+            no: 'Non, merci'
+        submit: 'Accepter ce rendez-vous!'
+    cancellation:
+        title: 'Annuler mon rendez-vous'
+        submit: 'Je confirme vouloir annuler mon rendez-vous!'
+registration:
+    title: 'Enregistrement'
+    new:
+        title: 'Entrez vos informations personnel pour vous inscrires'
+        submit_and_appointment: 'Créer un profil et prendre un rendez-vous'
+    edit:
+        title: 'Editer vos information personnel'
+        submit_and_appointment: 'Enregistrer mes modifications'
+    yourprofile: 'Votre profil'
+    email:
+        first: 'Courriel'
+        second: 'Confirmation du courriel'
+    password:
+        first: 'Mot de passe'
+        second: 'Confirmation du mot de passe'
+
+communication:
+    message:
+        create:
+            success: 'Le courriel c''est envoyé avec succès!'
+admin:
+    profile:
+        schedule:
+            table:
+                noResult: 'Aucun résultat'
+                name: 'Nom'
+                dateFrom: 'Date de'
+                dateTo: 'Date à'
+    event:
+        message:
+            create:
+                success: 'Vous avez un nouveau rendez-vous de scédulé!'
+        selectEmpty: 'Une de ces dates vous convient-elle?'
+        selectProfessional: 'Avec qui voulez-vous prendre un rendez-vous?'
+        selectReason: 'Quel est la raison de votre rendez-vous?'
+        create: 'Réserver mon rendez-vous'
+        form:
+            name: 'Nom'
+            startTime: 'Date et heure du rendez-vous'
+            reason: 'Raison'
+            endTime: 'Fin'
+            categories: 'Catégories'
+            cancellationReason: 'Pourquoi voulez-vous annuler votre rendez-vous?'
+            emergency: 'Me prévenir si une plage horaire ce libère'
+        error:
+            notFree: 'Impossible de sélectionner une case déjà réservé!'
+        filter:
+            client: 'Client'
+        table:
+            note: 'Note client'
+            noResult: 'Aucun résultat'
+        new:
+            title: 'Nouveau RENDEZ-VOUS'
+            submit: 'Créer le rendez-vous'
+        edit:
+            title: 'Modifier les informations du rendez-vous'
+            success: 'Le rendez-vous à été modifié avec succès!'
+            submit: 'Modifier le rendez-vous'
+    employe:
+        filter:
+            name: 'Nom de l''employé'
+            phone: 'Téléphone'
+        table:
+            noResult: 'Aucun résultat'
+            name: 'Nom de l''employé'
+            createdat: 'Date de création'
+            birthdate: 'Date de naissance'
+            gender: 'Genre'
+            phoneCell: 'Téléphone cellulaire'
+            nextEvent: 'Prochain rendez-vous'
+        new:
+            title: 'Nouveau EMPLOYÉ'
+            profile_title: 'Information de connexion de l''employé'
+            submit: 'Créer le nouveau employé'
+        edit:
+            title: 'Modifier les informations de l''employé'
+    client:
+        filter:
+            name: 'Nom du client'
+            phone: 'Téléphone'
+        table:
+            noResult: 'Aucun résultat'
+            name: 'Nom du client'
+            createdat: 'Date de création'
+            birthdate: 'Date de naissance'
+            gender: 'Genre'
+            phoneCell: 'Téléphone cellulaire'
+            nextEvent: 'Prochain rendez-vous'
+        new:
+            title: 'Nouveau CLIENT'
+            profile_title: 'Information de connexion du client'
+            submit: 'Créer le nouveau client'
+        edit:
+            title: 'Modifier les informations du client'
+        communications:
+            title: 'Communications'
+            new: 'Nouvelle communication'
+
+login:
+    title: 'Connexion'
+    forgot: 'Mot de passe oublié?'
+    username: 'Courriel'
+    password: 'Mot de passe'
+    button: 'Connexion'
+profile:
+    edit:
+        title: 'Modifier vos informations personnel'
+        link: 'Modifier mes informations personnel'
+client:
+    firstname: 'Prénom'
+    lastname: 'Nom'
+    address: 'Adresse complète'
+    city: 'Ville'
+    province: 'Province'
+    country: 'Pays'
+    gender: 'Genre'
+    phoneCell: 'Téléphone cellulaire'
+    phoneCellCarrier: 'Fournisseur cellulaire'
+    phoneHome: 'Téléphone maison'
+    phoneWork: 'Téléphone travail'
+    birthdate: 'Année de naissance'
+    picture: 'Photo'
+    email:
+        new:
+            title: 'Nouveau client'
+            # content: 'Bienvenue!'
+
+employe:
+    firstname: 'Prénom'
+    lastname: 'Nom'
+    address: 'Adresse complète'
+    city: 'Ville'
+    province: 'Province'
+    country: 'Pays'
+    gender: 'Genre'
+    phoneCell: 'Téléphone cellulaire'
+    phoneCellCarrier: 'Fournisseur cellulaire'
+    phoneHome: 'Téléphone maison'
+    phoneWork: 'Téléphone travail'
+    birthdate: 'Année de naissance'
+    email:
+        new:
+            title: 'Nouveau employé'
+            # content: 'Bienvenue!'
+
+sex:
+    homme: 'Homme'
+    femme: 'Femme'
+
+Previous: 'Précédent'
+Next: 'Suivant'
+
+resetting:
+    request:
+        title: 'Envoyez moi une demande de réinitialisation de mot de passe'
+        send: 'Envoyer'
+    form:
+        title: 'Entrez votre courriel et votre nouveau mot de passe!'
+    email:
+        message: 'Veuillez confirmer votre inscription %confirmationUrl%'

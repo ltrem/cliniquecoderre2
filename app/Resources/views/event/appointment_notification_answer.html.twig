@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {{ form_start(form, {'attr': {'class': 'fos_user_registration_register'}}) }}
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="page-header">
+                <h3>{{ 'Rendez-vous disponible pour le'|trans({}, 'messages') }} : {{ availabilityNotification.eventFreed.startTime|date('Y-m-d H:i') }} </h3>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_label(form.answer, 'event.availability.question', { 'label_attr': {'class': 'control-label'}}) }}
+                            {{ form_errors(form.answer) }}
+                            {{ form_widget(form.answer, { 'attr': {'class': ''} }) }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 25px">
+        <div class="col-xs-6">
+            <a class="btn btn-default btn-md" href="{{ path('user_profile') }}">
+                <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+                Je ne sais pas... (vous avez moins de 15 minutes pour y penser)
+            </a>
+        </div>
+        <div class="col-xs-6">
+            <input class="btn btn-lg btn-success btn-block" type="submit" id="_submit" name="_submit" value="{{ 'event.availability.submit'|trans }}" />
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

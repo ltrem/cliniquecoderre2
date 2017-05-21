@@ -1,0 +1,53 @@
+{% if client is not empty %}
+    {{ form_start(form, {'attr': {'id': 'event_new'}, 'action': path('admin_event_new', { 'client': client.id })}) }}
+{% endif %}
+{% if employe is not empty %}
+    {{ form_start(form, {'attr': {'id': 'event_new'}, 'action': path('admin_event_new', { 'employe': employe.id })}) }}
+{% endif %}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="exampleModalLabel">Ajouter un rendez-vous</h4>
+</div>
+<div class="modal-body">
+    {{ form_widget(form) }}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+    <button type="submit" class="btn btn-success" data-loading-text="Envoi en cours...">{{ 'admin.event.new.submit'|trans({}, 'messages') }}</button>
+</div>
+{{ form_end(form) }}
+
+
+<script>
+
+    $(".event_datetimepicker").datetimepicker({
+        bootcssVer: 3,
+        format: 'yyyy-mm-dd hh:ii',
+        autoclose: true,
+        stepping: 60,
+        minView: 'day',
+        todayHighlight: true,
+        {#todayBtn: true,#}
+        {#pickerPosition: "bottom-left",#}
+    })
+    .on('changeDate', function(ev){
+        starttime = moment(ev.date).startOf('hour').format('YYYY-MM-DD HH:mm');
+        endtime = moment(ev.date).add(1, 'hour').format('YYYY-MM-DD HH:mm');
+        $('.client_event #event_endTime').val(endtime);
+        $('.client_event #event_startTime').val(starttime);
+    });
+
+    $("#event_new").submit(function(e){
+        e.preventDefault();
+        $(this).find(':submit').button('loading');
+        var formSerialize = $(this).serialize();
+        $.post($(this).attr('action'), formSerialize, function(response){
+
+            //your callback here
+            $('.main-container').prepend(response.status);
+            $('#myModal').modal("toggle");
+
+        },'JSON');
+    });
+</script>

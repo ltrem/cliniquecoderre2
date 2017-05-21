@@ -1,0 +1,94 @@
+{% extends "admin/base.html.twig" %}
+
+{% block body %}
+
+    {# SEARCH FORM #}
+    {{ form_start(search_event_form) }}
+        <div class="row well">
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    {{ form_label(search_event_form.search_client, 'admin.event.filter.client', { 'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_errors(search_event_form.search_client) }}
+                    {{ form_widget(search_event_form.search_client, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    {{ form_label(search_event_form.search_phone, 'admin.client.table.phoneCell', { 'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_errors(search_event_form.search_phone) }}
+                    {{ form_widget(search_event_form.search_phone, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-info btn-md">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    Chercher
+                </button>
+
+                <a href="{{ path('admin_event') }}" class="btn btn-success btn-md">
+                    Afficher tout
+                </a>
+            </div>
+        </div>
+    {{ form_end(search_event_form) }}
+
+    <div class="page-header">
+        <h1>
+            Liste des rendez-vous
+            <a class="btn btn-lg btn-success pull-right" href="{{ path('admin_event_new') }}">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ 'admin.event.new.title'|trans }}
+            </a>
+        </h1>
+    </div>
+
+    {# CLIENTS TABLE #}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>{{ knp_pagination_sortable(events, 'id', 'e.id') }}</th>
+            <th>{{ knp_pagination_sortable(events, 'admin.client.table.nextEvent'|trans, 'e.startTime') }}</th>
+            <th>{{ knp_pagination_sortable(events, 'admin.event.table.note'|trans, 'e.name') }}</th>
+            <th>{{ knp_pagination_sortable(events, 'admin.client.table.name'|trans, 'client.firstname') }}</th>
+            <th>{{ knp_pagination_sortable(events, 'admin.client.table.phoneCell'|trans, 'client.firstname') }}</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {%  if events|length %}
+            {% for event in events %}
+                <tr>
+                    <td><a href="{{ path('admin_event_edit', { 'id': event.id }) }}">{{ event.id }}</a></td>
+                    <td>
+                        {{ event.startTime|date('Y-m-d H:i') }}h
+                    </td>
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.client.firstname }} {{ event.client.lastname }}</td>
+                    <td>
+                        {% if event.client.contacts|length %}
+                            {{ event.client.contacts[0].phoneCell|phone_number_format('NATIONAL') }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a class="btn btn-xs btn-info" href="{{ path('admin_event_edit', { 'id': event.id }) }}">Modifier</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr class="danger">
+                <td colspan="6">
+                    {{ 'admin.event.table.noResult'|trans }}
+                </td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+    {# display navigation #}
+    <div class="navigation text-center">
+        {{ knp_pagination_render(events) }}
+    </div>
+
+{% endblock %}

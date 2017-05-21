@@ -1,0 +1,10 @@
+{% block subject %}
+    {% autoescape false %}
+        Ceci est mon sujet Appointment Notification - Voulez vous ce rnedez-vous?
+    {% endautoescape %}
+{% endblock %}
+{% block body_html %}
+    <a href="{{ availabilityNotificationYesUrl }}">{{ 'event.availability.answer.yes'|trans }}</a>
+
+    <a href="{{ availabilityNotificationNoUrl }}">{{ 'event.availability.answer.no'|trans }}</a>
+{% endblock %}

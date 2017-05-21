@@ -1,0 +1,207 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form, {'method': 'post', 'action': path('admin_employe_new'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+
+        <div class="row">
+            <div class="col-xs-12">
+
+
+                <div class="page-header">
+                    <h3>{{ 'admin.employe.new.title'|trans({}, 'messages') }}</h3>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_label(form.employe.firstname, null, { 'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_errors(form.employe.firstname) }}
+                        {{ form_widget(form.employe.firstname, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_label(form.employe.lastname, null, { 'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_errors(form.employe.lastname) }}
+                        {{ form_widget(form.employe.lastname, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_row(form.employe.birthdate) }}
+                        {{ form_errors(form.employe.birthdate) }}
+                        {{ form_widget(form.employe.birthdate, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_label(form.employe.gender, 'employe.gender', { 'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_errors(form.employe.gender) }}
+                        {{ form_widget(form.employe.gender, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_label(form.employe.coordinates[0].address, 'employe.address', { 'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_errors(form.employe.coordinates[0].address) }}
+                        {{ form_widget(form.employe.coordinates[0].address, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_label(form.employe.coordinates[0].city, 'employe.city', { 'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_errors(form.employe.coordinates[0].city) }}
+                        {{ form_widget(form.employe.coordinates[0].city, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_label(form.employe.coordinates[0].province, 'employe.province', { 'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_errors(form.employe.coordinates[0].province) }}
+                        {{ form_widget(form.employe.coordinates[0].province, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_label(form.employe.coordinates[0].country, 'employe.country', { 'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_errors(form.employe.coordinates[0].country) }}
+                        {{ form_widget(form.employe.coordinates[0].country, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_label(form.employe.contacts[0].phoneCell, 'employe.phoneCell', { 'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_errors(form.employe.contacts[0].phoneCell) }}
+                        {{ form_widget(form.employe.contacts[0].phoneCell, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_label(form.employe.contacts[0].phoneCellCarrier, 'employe.phoneCellCarrier', { 'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_errors(form.employe.contacts[0].phoneCellCarrier) }}
+                        {{ form_widget(form.employe.contacts[0].phoneCellCarrier, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_label(form.employe.contacts[0].phoneHome, 'employe.phoneHome', { 'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_errors(form.employe.contacts[0].phoneHome) }}
+                        {{ form_widget(form.employe.contacts[0].phoneHome, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_label(form.employe.contacts[0].phoneWork, 'employe.phoneWork', { 'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_errors(form.employe.contacts[0].phoneWork) }}
+                        {{ form_widget(form.employe.contacts[0].phoneWork, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="col-sm-12" id="employe_coordinates">
+                    {{ form_rest(form.employe) }}
+                </div>
+
+                {#
+                                <div class="col-sm-12">
+                                    <div class="row">
+
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                {{ form_label(form.employe.contact.phoneCellCarrier, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                                {{ form_errors(form.employe.contact.phoneCellCarrier) }}
+                                                {{ form_widget(form.employe.contact.phoneCellCarrier, { 'attr': {'class': 'form-control'} }) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form_label(form.employe.contact.phoneHome, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                        {{ form_errors(form.employe.contact.phoneHome) }}
+                                        {{ form_widget(form.employe.contact.phoneHome, { 'attr': {'class': 'form-control'} }) }}
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form_label(form.employe.contact.phoneWork, null, { 'label_attr': {'class': 'control-label'}}) }}
+                                        {{ form_errors(form.employe.contact.phoneWork) }}
+                                        {{ form_widget(form.employe.contact.phoneWork, { 'attr': {'class': 'form-control'} }) }}
+                                    </div>
+                                </div>
+                #}
+
+            </div>
+
+            <div class="col-xs-12">
+
+                <div class="page-header">
+                    <h3>{{ 'admin.employe.new.profile_title'|trans({}, 'messages') }}</h3>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_label(form.email.first, 'registration.email.first', { 'label_attr': {'class': 'control-label'}}) }}
+                                {{ form_errors(form.email.first) }}
+                                {{ form_widget(form.email.first, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_label(form.email.second, 'registration.email.second', { 'label_attr': {'class': 'control-label'}}) }}
+                                {{ form_errors(form.email.second) }}
+                                {{ form_widget(form.email.second, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+
+        <input class="btn btn-lg btn-primary btn-block" type="submit" id="_submit" name="_submit" value="{{ 'admin.employe.new.submit'|trans }}" />
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{# https://symfony.com/doc/current/form/form_customization.html#how-to-customize-a-collection-prototype #}
+    {% form_theme form _self %}
+    {% block _employe_profile_form_employe_coordinates_entry_row %}
+        {% spaceless %}
+            {{ form_label(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+        {% endspaceless %}
+    {% endblock %}
+
+    {% block _employe_profile_form_employe_coordinates_entry_label %}
+    {% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $( document ).ready(function() {
+            $('.isPrimary').parent().hide();
+        });
+    </script>
+{% endblock %}

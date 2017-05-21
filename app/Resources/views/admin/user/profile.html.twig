@@ -1,0 +1,184 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="row">
+                <!-- Nav tabs -->
+                <div class="col-xs-6">
+
+                    <ul class="nav nav-pills" role="tablist" style="margin-bottom: 15px;">
+                        <li role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Mon profil</a></li>
+                        <li role="presentation"><a href="#configurations" aria-controls="configurations" role="tab" data-toggle="tab">Configurations</a></li>
+                        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+                        <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+                    </ul>
+
+                </div>
+
+                {% if user.client|length %}
+                    <div class="col-xs-6">
+                        <a class="btn btn-success btn-lg pull-right" href="{{ path('event_new') }}">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            Prendre un nouveau rendez-vous!
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+
+
+            {% if user.client|length %}
+                {% set profile = user.client %}
+            {% endif %}
+            {% if user.employe|length %}
+                {% set profile = user.employe %}
+            {% endif %}
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+
+                <div role="tabpanel" class="tab-pane active" id="profile">
+
+                    <div class="page-header">
+                        <h3>Vos informations personnelles</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>{{ 'general.info.name'|trans({}, 'messages') }}</label>
+                                <br />
+                                {{ profile.firstname }} {{ profile.lastname }}
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>{{ 'general.info.birthdate'|trans({}, 'messages') }}</label>
+                                <br />
+                                {{ profile.birthdate|date('Y-m-d') }}
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>{{ 'general.info.address'|trans({}, 'messages') }}</label>
+                                <br />
+                                {{ profile.coordinates[0].address }}
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>{{ 'general.info.city'|trans({}, 'messages') }}</label>
+                                <br />
+                                {{ profile.coordinates[0].city }},
+                                {{ profile.coordinates[0].province }},
+                                {{ profile.coordinates[0].country }}
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>{{ 'general.info.phoneCell'|trans({}, 'messages') }}</label>
+                                <br />
+                                {{ profile.contacts[0].phoneCell}} ({{ profile.contacts[0].phoneCellCarrier}})
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="page-header">
+                        <h3>Votre profil</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label>{{ 'general.info.email'|trans({}, 'messages') }}</label>
+                                <br />
+                                {{ user.username }}
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <a href="{{ path('user_profile_edit')}}" class="btn btn-default">{{ 'profile.edit.link'|trans }}</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div role="tabpanel"  class="tab-pane " id="configurations">
+                    <div class="page-header">
+                        <h3>
+                            Plages horaires
+                        </h3>
+                    </div>
+
+                    <div class="col-xm-12">
+
+                        {{ form(schedule_form) }}
+
+                        {# CLIENTS TABLE #}
+                        {% if schedules|length %}
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>{{ knp_pagination_sortable(schedules, 'id', 's.id') }}</th>
+                                    <th>{{ knp_pagination_sortable(schedules, 'admin.profile.schedule.table.name'|trans, 's.name') }}</th>
+                                    <th>{{ knp_pagination_sortable(schedules, 'admin.profile.schedule.table.dateFrom'|trans, 's.dateFrom') }}</th>
+                                    <th>{{ knp_pagination_sortable(schedules, 'admin.profile.schedule.table.dateTo'|trans, 's.dateTo') }}</th>
+                                    <th>Jour de semaine disponible</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {%  if schedules|length %}
+                                    {% for schedule in schedules %}
+                                        <tr>
+                                            <td><a href="{{ path('admin_schedule_edit', { 'id': schedule.id }) }}">{{ schedule.id }}</a></td>
+                                            <td>{{ schedule.name }}</td>
+                                            <td>{{ schedule.dateFrom|date('Y-m-d') }}</td>
+                                            <td>{{ schedule.dateTo|date('Y-m-d') }}</td>
+                                            <td>
+                                                {% if schedule.workingDays|length %}
+                                                    <ul>
+                                                        {% for workingDay in schedule.workingDays %}
+                                                            <li>
+                                                                {{ ('references.weekday.' ~ workingDay)|trans }}
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-xs btn-info" href="{{ path('admin_schedule_edit', { 'id': schedule.id }) }}">Modifier</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr class="danger">
+                                        <td colspan="6">
+                                            {{ 'admin.client.table.noResult'|trans }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
+
+
+                            {# display navigation #}
+                            <div class="navigation text-center">
+                                {{ knp_pagination_render(schedules) }}
+                            </div>
+                        {% endif %}
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Event edit</h1>
+
+    {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+        <input type="submit" value="Edit" />
+    {{ form_end(edit_form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('event_index') }}">Back to the list</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
+
+{% block documentready %}
+
+    {#$('input[type=datetime]').prop("disabled", true);#}
+
+    $(".form_datetime").datetimepicker({
+    bootcssVer: 3,
+    format: 'yyyy-mm-dd hh:ii',
+    autoclose: true,
+    minuteStep: 60,
+    minView: 'day',
+    initialDate: 'today',
+    todayHighlight: true,
+    {#todayBtn: true,#}
+    {#pickerPosition: "bottom-left",#}
+    })
+    .on('changeDate', function(ev){
+    starttime = moment(ev.date).format('YYYY-MM-DD HH:mm');
+    endtime = moment(ev.date).add(1, 'hour').format('YYYY-MM-DD HH:mm');
+    $('.client_event #event_endTime').val(endtime);
+    $('.client_event #event_startTime').val(starttime);
+    });
+{% endblock %}

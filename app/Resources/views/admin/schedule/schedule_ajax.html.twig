@@ -1,0 +1,140 @@
+{% if schedule.id %}
+    {{ form_start(form, {'attr': {'id': 'event_schedule'}, 'action': path('admin_schedule_edit', { 'id': schedule.id })}) }}
+{% else %}
+    {{ form_start(form, {'attr': {'id': 'event_new'}, 'action': path('admin_schedule_new', { 'employe': employe.id })}) }}
+{% endif %}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="exampleModalLabel">Modifier l'horaire</h4>
+</div>
+<div class="modal-body">
+    {{ form_widget(form) }}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="calendar-schedule"></div>
+        </div>
+    </div>
+
+    <div class="schedule-blocks hidden"></div>
+</div>
+
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+    <button type="submit" class="btn btn-success">Sauvegarder</button>
+</div>
+{{ form_end(form) }}
+
+
+<script type="text/javascript" src="{{ asset('js/fullCalendarScheduler.js') }}"></script>
+<script>
+
+    $("#event_new").submit(function(e){
+
+        $(this).find('.schedule-blocks').html('');
+
+        e.preventDefault();
+        $(this).find(':submit').button('loading');
+
+        // Append as many input as there are schedule block selected
+        $('#calendar-schedule').fullCalendarScheduler('clientEvents').forEach(function(entry) {
+
+            console.log({start: entry.start.format(), end: entry.end.format()});
+            $('.schedule-blocks').append($('<input />').attr('name', 'start[]').val(entry.start.format('YYYY-MM-DD HH:mm')));
+            $('.schedule-blocks').append($('<input />').attr('name', 'end[]').val(entry.end.format('YYYY-MM-DD HH:mm')));
+        });
+
+        // Serialize form and submit it over $.post
+        var formSerialize = $(this).serializeArray();
+
+        $.post($(this).attr('action'), formSerialize, function(response){
+            //your callback here
+            location.reload();
+        },'JSON');
+    });
+
+    $(document).ready(function() {
+
+        let calendar = $('#calendar-schedule');
+
+        calendar.fullCalendarScheduler({
+            allDaySlot: false,
+            defaultView: 'agendaWeek',
+            eventClick: function(event, jsEvent) {
+                calendar.fullCalendar('removeEvents', event._id);
+            },
+            minTime: "08:00:00",
+            maxTime: "20:00:00",
+            slotLabelFormat:"HH:mm a",
+            lang: 'fr',
+            height: "auto",
+            nowIndicator: true,
+            selectable: true,
+            selectHelper: false,
+            selectOverlap: false,
+            eventOverlap: false,
+            editable: true,
+            expandThrough: false, // <------- false enables horizontal range selection
+            displayEventTime: true,
+            eventConstraint: {
+                start: '08:00:00',
+                end: '23:00:00'
+            },
+            select: function(start, end) {
+                var eventData = {
+                    start: start,
+                    end: end
+                };
+
+                calendar.fullCalendarScheduler('renderEvent', eventData, true);
+                calendar.fullCalendarScheduler('unselect');
+            },
+            eventSources: [
+                {
+                    events: function(start, end, timezone, callback) {
+                        $.ajax({
+                            url: Routing.generate('fullcalendar_loader'),
+                            type: 'POST',
+                            dataType: 'JSON',
+                            data: {
+                                // our hypothetical feed requires UNIX timestamps
+                                start: start.unix(),
+                                end: end.unix(),
+                                isSchedule: true,
+                                employe: {{ employe.id }},
+                                {% if schedule.id %}
+                                    schedule: {{ schedule.id }}
+                                {% endif %}
+
+                            },
+                            success: function(data) {
+
+                                var events = [];
+                                $.each(data, function(index) {
+                                    events.push({
+                                        allDay: false,
+                                        backgroundColor: data[index].backgroundColor,
+                                        borderColor: data[index].borderColor,
+                                        className: data[index].className,
+                                        end: data[index].end,
+                                        start: data[index].start,
+                                        textColor: data[index].textColor,
+                                        title: data[index].title,
+                                    });
+                                });
+
+
+                                $('.loading').hide();
+
+                                callback(events);
+                            }
+                        });
+                    }
+                }
+            ],
+        });
+
+    });
+</script>

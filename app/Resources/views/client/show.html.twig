@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Client</h1>
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ client.id }}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{% if client.createdAt %}{{ client.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updatedat</th>
+                <td>{% if client.updatedAt %}{{ client.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ client.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ client.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Birthdate</th>
+                <td>{% if client.birthdate %}{{ client.birthdate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Gender</th>
+                <td>{{ client.gender }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {% if client.coordinates|length %}
+        <h2>Addresses</h2>
+        <ul>
+            {% for coordinate in client.coordinates %}
+                <li>{{ coordinate.address|e }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <ul>
+        <li>
+            <a href="{{ path('client_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}
