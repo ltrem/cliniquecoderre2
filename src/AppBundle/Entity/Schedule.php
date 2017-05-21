@@ -175,7 +175,7 @@ class Schedule
     }
 
     /**
-     * @return \Date
+     * @return \DateTime
      */
     public function getDateTo()
     {
@@ -183,7 +183,7 @@ class Schedule
     }
 
     /**
-     * @param \Date $dateTo
+     * @param \DateTime $dateTo
      */
     public function setDateTo($dateTo)
     {
