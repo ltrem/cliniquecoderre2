@@ -46,6 +46,7 @@ class CalendarEventListener
             }
         }
 
+        // TODO: Make sure the Schedule calendar is working
         // load events using your custom logic here,
         // for instance, retrieving events from a repository
         //

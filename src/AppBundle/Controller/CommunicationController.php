@@ -32,7 +32,7 @@ class CommunicationController extends Controller
     public function newAction(Request $request)
     {
         $client = '';
-        $employe = '';
+        $employee = '';
 
         if ($request->query->get('client'))
         {
@@ -42,9 +42,9 @@ class CommunicationController extends Controller
         }
         if ($request->query->get('employe'))
         {
-            $employe = $request->query->get('employe');
-            $employe = $this->getDoctrine()->getManager()->getRepository('AppBundle:Employe')->find($employe);
-            $email = $employe->getUser()->getUsername();
+            $employee = $request->query->get('employe');
+            $employee = $this->getDoctrine()->getManager()->getRepository('AppBundle:Employe')->find($employee);
+            $email = $employee->getUser()->getUsername();
         }
 
         $user = $this->getUser();
@@ -94,7 +94,7 @@ class CommunicationController extends Controller
             return $this->render('communication/communication_ajax.html.twig', array(
                 'communication' => $communication,
                 'client'    => $client,
-                'employe'   => $employe,
+                'employe'   => $employee,
                 'form' => $form->createView(),
             ));
         }

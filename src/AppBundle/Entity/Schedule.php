@@ -63,7 +63,7 @@ class Schedule
     private $dateTo;
 
     /**
-     * @var Working Day
+     * @var string
      *
      * @ORM\Column(name="working_days", type="array")
      */
