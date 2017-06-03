@@ -432,7 +432,14 @@ class Employe
     /**
      * Get schedules
      *
-     * @return \AppBundle\Entity\Event
+     */
+    public function getSchedules()
+    {
+        return $this->schedules;
+    }
+
+    /**
+     * Get schedules blocks
      */
     public function getScheduleBlocks()
     {

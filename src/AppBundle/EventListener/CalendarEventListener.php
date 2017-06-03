@@ -36,14 +36,8 @@ class CalendarEventListener
 
         $isClient = $request->get('isClient');
         if ($isSchedule = $request->get('isSchedule')) {
-
-            if ($request->get('schedule')) {
-                // Load edited schedule
-                $schedule = $this->entityManager->getRepository('AppBundle:Schedule')->find($request->get('schedule'));
-            } else {
-                // New schedule
-                $isSchedule = false;
-            }
+            // Load edited schedule
+            $schedule = $this->entityManager->getRepository('AppBundle:Schedule')->findOneByEmployee($selectedEmploye);
         }
 
 
@@ -60,8 +54,10 @@ class CalendarEventListener
 
         // Build array with schedule blocks
         if ($isSchedule) {
+
             $scheduleBlock = $this->entityManager->getRepository('AppBundle:ScheduleBlock')->findScheduleBlocks($schedule);
 
+            dump($scheduleBlock);
             foreach ($scheduleBlock as $block) {
                 $blockEvent = new EventEntity("Plage horaire", new \DateTime($block->getDateFrom()->format("Y-m-d H:i:s")), new \DateTime($block->getDateTo()->format("Y-m-d H:i:s")));
 
