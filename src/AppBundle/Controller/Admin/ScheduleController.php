@@ -24,8 +24,8 @@ class ScheduleController extends Controller
     /**
      * New schedule.
      *
-     * @Route("/new/{employe}", name="admin_schedule_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new/{employe}", options={"expose"=true}, name="admin_schedule_new")
+     * @Method("POST")
      */
     public function scheduleNewAction(Request $request, Employe $employe)
     {
@@ -77,7 +77,7 @@ class ScheduleController extends Controller
     /**
      * Displays a form to edit an existing schedule entity.
      *
-     * @Route("/{id}", name="admin_schedule_edit")
+     * @Route("/{id}", options={"expose"=true}, name="admin_schedule_edit")
      * @Method({"GET", "POST"})
      */
     public function scheduleEditAction(Request $request, Schedule $schedule)
@@ -170,5 +170,43 @@ class ScheduleController extends Controller
             'schedules' => $result,
             'employe' => $employe
         ));
+    }
+
+
+    /**
+     * Deletes a schedule block entity.
+     *
+     * @Route("/block/{id}", options={"expose"=true}, name="admin_schedule_block_delete")
+     * @Method("DELETE")
+     */
+    public function deleteScheduleBlockAction(Request $request, ScheduleBlock $scheduleBlock)
+    {
+        $form = $this->createScheduleBlockDeleteForm($scheduleBlock);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($scheduleBlock);
+            $em->flush($scheduleBlock);
+            return new Response(json_encode(array('status'=>'success')));
+        }
+
+        return new Response(json_encode(array('status'=>'nothing')));
+    }
+
+    /**
+     * Creates a form to delete a scheduleBlock entity.
+     *
+     * @param ScheduleBlock $scheduleBlock The schedule block
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createScheduleBlockDeleteForm(ScheduleBlock $scheduleBlock)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('admin_schedule_block_delete', array('id' => $scheduleBlock->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
+            ;
     }
 }

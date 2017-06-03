@@ -4,10 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Schedule;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,7 +16,11 @@ class ScheduleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
+            ->add('name', TextType::class, array(
+                'attr' => array(
+                    'id' => 'schedule_name',
+                ),
+            ))
             /*
             ->add('dateFrom', DateTimeType::class, array(
                 'attr' => array(
@@ -65,14 +66,5 @@ class ScheduleType extends AbstractType
             'data_class' => Schedule::class
         ));
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'appbundle_schedule';
-    }
-
 
 }

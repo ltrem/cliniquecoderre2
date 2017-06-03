@@ -1,7 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
-use AppBundle\Entity\Schedule;
+use AppBundle\Entity\Employe;
 
 /**
  * ScheduleRepository
@@ -11,4 +11,14 @@ use AppBundle\Entity\Schedule;
  */
 class ScheduleRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findOneByEmployee(Employe $employe)
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s')
+            ->where('s.employe = :employe')
+            ->setParameter('employe', $employe)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

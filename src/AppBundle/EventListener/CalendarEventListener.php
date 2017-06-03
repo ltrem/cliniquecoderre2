@@ -46,7 +46,12 @@ class CalendarEventListener
             }
         }
 
+
         // TODO: Make sure the Schedule calendar is working
+        // One employee will have One Schedule.
+        // One Schedule will have unlimited amount of blocks
+        // - Maybe blocks can have type (availability, non-availability, vacation, etc)
+
         // load events using your custom logic here,
         // for instance, retrieving events from a repository
         //

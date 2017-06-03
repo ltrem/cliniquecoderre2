@@ -5,13 +5,13 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Communication;
 use AppBundle\Entity\Employe;
-use AppBundle\Entity\Event;
 use AppBundle\Entity\Contact;
 use AppBundle\Entity\Coordinate;
 use AppBundle\Entity\Schedule;
 use AppBundle\Entity\User;
 use AppBundle\Form\EmployeProfileForm;
 use AppBundle\Form\EmployeType;
+use AppBundle\Form\ScheduleType;
 use AppBundle\Form\SearchEmployeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -130,7 +130,7 @@ class EmployeController extends Controller
             $communication = new Communication();
             $communication->setType('email');
             $communication->setDateSent(new \DateTime('now'));
-            $communication->setTitle('Création de profil employé sur Cliniquecoderre.com');
+            $communication->setTitle('Crï¿½ation de profil employï¿½ sur Cliniquecoderre.com');
             $communication->setContent($password_reset_template);
             $communication->setEmail($user->getUsername());
 
@@ -188,23 +188,13 @@ class EmployeController extends Controller
 
         // Filter query
         {
-            $queryBuilder = $em->getRepository('AppBundle:Schedule')->createQueryBuilder('s');
-            $schedule_query = $queryBuilder->getQuery();
-            dump($schedule_query);
+            $schedule = $em->getRepository('AppBundle:Schedule')->findOneByEmployee($employe);
+            if ($schedule == null) {
+                $schedule = new Schedule();
+            }
+            $schedule->setEmploye($employe);
+            $schedule_form = $this->createForm(ScheduleType::class, $schedule);
         }
-
-        /**
-         * @var $paginator \Knp\Component\Pager\Paginator
-         */
-        $paginator = $this->get('knp_paginator');
-        $schedule_result = $paginator->paginate(
-            $schedule_query,
-            $request->query->getInt('page', 1),
-            $request->query->getInt('limit', 15),
-            array(
-                'wrap-queries' => true
-            )
-        );
 
         $editForm = $this->createForm(EmployeType::class, $employe);
         $editForm->handleRequest($request);
@@ -219,7 +209,8 @@ class EmployeController extends Controller
             'employe' => $employe,
             'client'  => '',
             'upcomingEvents' => $upcomingEvents,
-            'schedules' => $schedule_result,
+            'schedule' => $schedule,
+            'schedule_form' => $schedule_form->createView(),
             'form' => $editForm->createView(),
         ));
     }

@@ -284,62 +284,7 @@
 
                         <div class="col-xs-12">
 
-                            {# CLIENTS TABLE #}
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>{{ knp_pagination_sortable(schedules, 'id', 's.id') }}</th>
-                                    <th>{{ knp_pagination_sortable(schedules, 'admin.profile.schedule.table.name'|trans, 's.name') }}</th>
-                                    <th>{{ knp_pagination_sortable(schedules, 'admin.profile.schedule.table.dateFrom'|trans, 's.dateFrom') }}</th>
-                                    <th>{{ knp_pagination_sortable(schedules, 'admin.profile.schedule.table.dateTo'|trans, 's.dateTo') }}</th>
-                                    <th>Jour de semaine disponible</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                {%  if schedules|length %}
-                                    {% for key, schedule in schedules %}
-                                        <tr>
-                                            <td><a href="{{ path('admin_schedule_edit', { 'id': schedule.id }) }}">{{ schedule.id }}</a></td>
-                                            <td>
-                                                {{ schedule.name }}
-                                            </td>
-                                            <td>
-                                                {{ schedule.dateFrom|date('Y-m-d') }}
-                                            </td>
-                                            <td>
-                                                {{ schedule.dateTo|date('Y-m-d') }}
-                                            </td>
-                                            <td>
-                                                <ul>
-                                                    {% for day in schedule.workingDays %}
-                                                        <li>
-                                                            {{ ('references.weekday.' ~ day)|trans }}
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </td>
-                                            <td>
-                                                <a data-toggle="modal" href="{{ path('admin_schedule_edit', { 'id': schedule.id }) }}" data-schedule="{{ schedule.id }}" data-target="#myModal" class="btn btn-xs btn-info open_schedule_edit">Modifier</a>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                {% else %}
-                                    <tr class="danger">
-                                        <td colspan="6">
-                                            {{ 'admin.client.table.noResult'|trans }}
-                                        </td>
-                                    </tr>
-                                {% endif %}
-                                </tbody>
-                            </table>
-
-                            {# display navigation #}
-                            <div class="navigation text-center">
-                                {{ knp_pagination_render(schedules) }}
-                            </div>
-
+                            <div id="calendar-schedule"></div>
 
                         </div>
 
@@ -351,6 +296,14 @@
 
         {% do form.picture.setRendered %}
     {{ form_end(form) }}
+
+    {# HIDDEN SCHEDULE FORMN #}
+    {{ form_start(schedule_form, {'method': 'post', 'action': path('admin_schedule_edit', { 'id': schedule.id }), 'attr': {'id': 'schedule_form'}}) }}
+
+        {{ form_widget(schedule_form) }}
+        <div class="schedule-blocks hidden"></div>
+
+    {{ form_end(schedule_form) }}
 
 {% endblock %}
 
@@ -385,9 +338,47 @@
 
     {# <script type="text/javascript" src="{{ asset('bundles/adesignscalendar/js/calendar-settings-admin.js') }}"></script> #}
 
+    <script type="text/javascript" src="{{ asset('js/fullCalendarScheduler.js') }}"></script>
+
+    {# TODO: Tester les fonctions deleteScheduleBlock et addScheduleBlock #}
     <script>
+
         $( document ).ready(function() {
 
+            function deleteScheduleBlock(id)
+            {
+                console.log(id);
+
+                $.post(Routing.generate('admin_schedule_block_delete'), { id: id }, function(response){
+                    //your callback here
+                    //location.reload();
+                    console.log('updated');
+                },'JSON');
+            }
+
+            function addScheduleBlocks()
+            {
+                // Clear schedule-blocks input
+                $('.schedule-blocks').html('');
+
+                // Append as many input as there are schedule block selected
+                $('#calendar-schedule').fullCalendarScheduler('clientEvents').forEach(function(entry) {
+
+                    console.log({start: entry.start.format(), end: entry.end.format()});
+                    $('.schedule-blocks').append($('<input />').attr('name', 'start[]').val(entry.start.format('YYYY-MM-DD HH:mm')));
+                    $('.schedule-blocks').append($('<input />').attr('name', 'end[]').val(entry.end.format('YYYY-MM-DD HH:mm')));
+                });
+
+                // Serialize form and submit it over $.post
+                var formSerialize = $('#schedule_form').serializeArray();
+                console.log(formSerialize);
+
+                $.post($('#schedule_form').attr('action'), formSerialize, function(response){
+                    //your callback here
+                    //location.reload();
+                    console.log('updated');
+                },'JSON');
+            }
             // Render Schedule Calendar
             //$('#myModal').on('shown.bs.modal', function () {
             //    $("#calendar-schedule").fullCalendarScheduler('render');
@@ -411,6 +402,7 @@
             var m = date.getMonth();
             var y = date.getFullYear();
 
+            // Admin Appointment Calendar
             $('#calendar-holder').fullCalendar({
                 lang: 'en',
                 hiddenDays: [0, 6],
@@ -484,6 +476,107 @@
                 },
             });
 
+            // Admin Schedule Calendar
+            let calendar = $('#calendar-schedule');
+
+            calendar.fullCalendarScheduler({
+                allDaySlot: false,
+                defaultView: 'agendaWeek',
+                minTime: "08:00:00",
+                maxTime: "20:00:00",
+                slotLabelFormat:"HH:mm a",
+                lang: 'fr',
+                height: "auto",
+                nowIndicator: true,
+                selectable: true,
+                selectHelper: false,
+                selectOverlap: false,
+                eventOverlap: false,
+                editable: true,
+                expandThrough: false, // <------- false enables horizontal range selection
+                displayEventTime: true,
+                eventConstraint: {
+                    start: '08:00:00',
+                    end: '23:00:00'
+                },
+                eventClick: function(event, jsEvent) {
+                    calendar.fullCalendar('removeEvents', event._id);
+
+                    console.log(event);
+
+                    // TODO: Maybe create a specific URL to delete clicked Blocks
+                    // Submit form every time an action is taken
+                    deleteScheduleBlock(event);
+
+                    $("#event_schedule").submit();
+                },
+                select: function(start, end) {
+                    var eventData = {
+                        start: start,
+                        end: end
+                    };
+
+                    calendar.fullCalendarScheduler('renderEvent', eventData, true);
+                    calendar.fullCalendarScheduler('unselect');
+
+                    // Submit form every time an action is taken
+                    addScheduleBlocks();
+
+                },
+                eventSources: [
+                    {
+                        events: function(start, end, timezone, callback) {
+                            $.ajax({
+                                url: Routing.generate('fullcalendar_loader'),
+                                type: 'POST',
+                                dataType: 'JSON',
+                                data: {
+                                    // our hypothetical feed requires UNIX timestamps
+                                    start: start.unix(),
+                                    end: end.unix(),
+                                    isSchedule: true,
+                                    employe: {{ employe.id }}
+
+                                },
+                                success: function(data) {
+
+                                    var events = [];
+                                    $.each(data, function(index) {
+                                        events.push({
+                                            id: data[index].id,
+                                            allDay: false,
+                                            backgroundColor: data[index].backgroundColor,
+                                            borderColor: data[index].borderColor,
+                                            className: data[index].className,
+                                            end: data[index].end,
+                                            start: data[index].start,
+                                            textColor: data[index].textColor,
+                                            title: data[index].title,
+                                        });
+                                    });
+
+
+                                    $('.loading').hide();
+
+                                    callback(events);
+                                }
+                            });
+                        }
+                    }
+                ],
+                /*
+                 viewRender: function(currentView){
+                 if (currentView.start.format('YYYY') == currentView.end.format('YYYY')) {
+                 $('#schedule_name').val(currentView.start.format('Do MMM') + ' au ' + currentView.end.format('Do MMM YYYY'));
+                 } else {
+                 $('#schedule_name').val(currentView.start.format('Do MMM YYYY') + ' au ' + currentView.end.format('Do MMM YYYY'));
+                 }
+                 },
+                 */
+                eventAfterAllRender: function() {
+                    $('#schedule_name').val($('#calendar-schedule h2').html());
+                }
+            });
         });
     </script>
 {% endblock %}

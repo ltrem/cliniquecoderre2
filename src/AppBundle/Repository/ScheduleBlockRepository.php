@@ -31,4 +31,17 @@ class ScheduleBlockRepository extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findAllBetweenDate(\DateTime $start, \DateTime $end)
+    {
+        return $this->createQueryBuilder('sb')
+            ->select('sb')
+            ->where('sb.dateFrom >= :dateFrom')
+            ->andWhere('sb.dateTo <= :dateTo')
+            ->setParameter('dateFrom', $start)
+            ->setParameter('dateTo', $end)
+            ->orderBy('sb.dateFrom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

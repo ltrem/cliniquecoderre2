@@ -33,10 +33,11 @@
 
     $("#event_new, #event_schedule").submit(function(e){
 
+        // Clear schedule-blocks input
         $(this).find('.schedule-blocks').html('');
 
         e.preventDefault();
-        $(this).find(':submit').button('loading');
+        //$(this).find(':submit').button('loading');
 
         // Append as many input as there are schedule block selected
         $('#calendar-schedule').fullCalendarScheduler('clientEvents').forEach(function(entry) {
@@ -51,7 +52,8 @@
 
         $.post($(this).attr('action'), formSerialize, function(response){
             //your callback here
-            location.reload();
+            //location.reload();
+            console.log('updated');
         },'JSON');
     });
 
@@ -62,9 +64,6 @@
         calendar.fullCalendarScheduler({
             allDaySlot: false,
             defaultView: 'agendaWeek',
-            eventClick: function(event, jsEvent) {
-                calendar.fullCalendar('removeEvents', event._id);
-            },
             minTime: "08:00:00",
             maxTime: "20:00:00",
             slotLabelFormat:"HH:mm a",
@@ -82,6 +81,13 @@
                 start: '08:00:00',
                 end: '23:00:00'
             },
+            eventClick: function(event, jsEvent) {
+                calendar.fullCalendar('removeEvents', event._id);
+
+                {# TODO: Maybe create a specific URL to delete clicked Blocks (DONE IN employe/edit.html.twig #}
+                // Submit form every time an action is taken
+                $("#event_schedule").submit();
+            },
             select: function(start, end) {
                 var eventData = {
                     start: start,
@@ -90,6 +96,9 @@
 
                 calendar.fullCalendarScheduler('renderEvent', eventData, true);
                 calendar.fullCalendarScheduler('unselect');
+
+                // Submit form every time an action is taken
+                $("#event_schedule").submit();
             },
             eventSources: [
                 {
@@ -134,6 +143,18 @@
                     }
                 }
             ],
+            /*
+            viewRender: function(currentView){
+                if (currentView.start.format('YYYY') == currentView.end.format('YYYY')) {
+                    $('#schedule_name').val(currentView.start.format('Do MMM') + ' au ' + currentView.end.format('Do MMM YYYY'));
+                } else {
+                    $('#schedule_name').val(currentView.start.format('Do MMM YYYY') + ' au ' + currentView.end.format('Do MMM YYYY'));
+                }
+            },
+            */
+            eventAfterAllRender: function() {
+                $('#schedule_name').val($('#calendar-schedule h2').html());
+            }
         });
 
     });

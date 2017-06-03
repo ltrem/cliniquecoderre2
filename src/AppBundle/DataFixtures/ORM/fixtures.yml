@@ -33,6 +33,14 @@ AppBundle\Entity\Employe:
         gender: Femme
         user: "@user_2"
 
+AppBundle\Entity\Schedule:
+    schedule_1:
+      name: Horaire 1
+      employe: "@employe_1"
+    schedule_2:
+      name: Horaire 2
+      employe: "@employe_2"
+
 AppBundle\Entity\Client:
     client_{3}:
         firstname: Firstname <current()>
