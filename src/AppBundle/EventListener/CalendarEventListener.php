@@ -66,7 +66,7 @@ class CalendarEventListener
                 $blockEvent->setBgColor('green'); //set the background color of the event's label
                 $blockEvent->setFgColor('#FFFFFF'); //set the foreground color of the event's label
                 #$blockEvent->setUrl('http://www.google.com'); // url to send user to when event label is clicked
-                $blockEvent->setCssClass(''); // a custom class you may want to apply to event labels
+                $blockEvent->setCssClass('schedule_block_' . $block->getId()); // a custom class you may want to apply to event labels
 
                 $calendarEvent->addEvent($blockEvent);
             }

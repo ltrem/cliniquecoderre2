@@ -297,13 +297,12 @@
         {% do form.picture.setRendered %}
     {{ form_end(form) }}
 
-    {# HIDDEN SCHEDULE FORMN #}
+    {# HIDDEN SCHEDULE FORM #}
     {{ form_start(schedule_form, {'method': 'post', 'action': path('admin_schedule_edit', { 'id': schedule.id }), 'attr': {'id': 'schedule_form'}}) }}
-
         {{ form_widget(schedule_form) }}
         <div class="schedule-blocks hidden"></div>
-
     {{ form_end(schedule_form) }}
+
 
 {% endblock %}
 
@@ -345,15 +344,18 @@
 
         $( document ).ready(function() {
 
-            function deleteScheduleBlock(id)
+            function deleteScheduleBlock(scheduleBlock)
             {
-                console.log(id);
+                var schedule_block_id = parseInt(scheduleBlock.className[0].replace('schedule_block_', ''));
 
-                $.post(Routing.generate('admin_schedule_block_delete'), { id: id }, function(response){
-                    //your callback here
-                    //location.reload();
-                    console.log('updated');
-                },'JSON');
+                $.ajax({
+                    dataType: "json",
+                    url: Routing.generate('admin_schedule_block_delete') + '/' + schedule_block_id,
+                    type: 'DELETE',
+                    success: function(result) {
+                        console.log('updated');
+                    }
+                });
             }
 
             function addScheduleBlocks()
@@ -501,8 +503,6 @@
                 },
                 eventClick: function(event, jsEvent) {
                     calendar.fullCalendar('removeEvents', event._id);
-
-                    console.log(event);
 
                     // TODO: Maybe create a specific URL to delete clicked Blocks
                     // Submit form every time an action is taken

@@ -173,6 +173,7 @@ class ScheduleController extends Controller
     }
 
 
+    // TODO: Get this to work from the AJAX call
     /**
      * Deletes a schedule block entity.
      *
@@ -181,6 +182,7 @@ class ScheduleController extends Controller
      */
     public function deleteScheduleBlockAction(Request $request, ScheduleBlock $scheduleBlock)
     {
+
         $form = $this->createScheduleBlockDeleteForm($scheduleBlock);
         $form->handleRequest($request);
 
