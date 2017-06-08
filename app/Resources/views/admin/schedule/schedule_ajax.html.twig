@@ -61,7 +61,7 @@
 
         var test;
 
-        let calendar = $('#calendar-schedule');
+        var calendar = $('#calendar-schedule');
 
         calendar.fullCalendarScheduler({
             allDaySlot: false,
@@ -86,7 +86,7 @@
             eventClick: function(event, jsEvent) {
                 calendar.fullCalendar('removeEvents', event._id);
 
-                {# TODO: Maybe create a specific URL to delete clicked Blocks (DONE IN employe/edit.html.twig #}
+                {# TODO: Maybe create a specific URL to delete clicked Blocks (REFERENCE DONE IN employe/edit.html.twig #}
                 // Submit form every time an action is taken
                 $("#event_schedule").submit();
             },

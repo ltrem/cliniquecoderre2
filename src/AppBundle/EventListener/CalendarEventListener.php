@@ -46,18 +46,11 @@ class CalendarEventListener
         // One Schedule will have unlimited amount of blocks
         // - Maybe blocks can have type (availability, non-availability, vacation, etc)
 
-        // load events using your custom logic here,
-        // for instance, retrieving events from a repository
-        //
-        // Create EventEntity instances and populate it's properties with data
-        // from your own entities/database values.
-
         // Build array with schedule blocks
         if ($isSchedule) {
 
             $scheduleBlock = $this->entityManager->getRepository('AppBundle:ScheduleBlock')->findScheduleBlocks($schedule);
 
-            dump($scheduleBlock);
             foreach ($scheduleBlock as $block) {
                 $blockEvent = new EventEntity("Plage horaire", new \DateTime($block->getDateFrom()->format("Y-m-d H:i:s")), new \DateTime($block->getDateTo()->format("Y-m-d H:i:s")));
 
@@ -109,7 +102,7 @@ class CalendarEventListener
                 $startTime = new \DateTime($blockEvent->getStartDatetime()->format("Y-m-d H:i:s"));
                 $endTime = new \DateTime($blockEvent->getEndDateTime()->format("Y-m-d H:i:s"));
 
-                $companyEvent = $this->entityManager->getRepository('AppBundle:Event')->findOneByEmployeBetweenDate($selected_employe, $startTime, $endTime);
+                $companyEvent = $this->entityManager->getRepository('AppBundle:Event')->findOneByEmployeBetweenDate($selectedEmploye, $startTime, $endTime);
 
                 if (is_object($companyEvent) && $companyEvent instanceof Event) {
                     $blockEvent->setTitle(utf8_encode('R�serv�'));
@@ -241,6 +234,7 @@ class CalendarEventListener
                     $blockEvent->setFgColor('#FFFFFF'); //set the foreground color of the event's label
                     #$blockEvent->setUrl('http://www.google.com'); // url to send user to when event label is clicked
                     $blockEvent->setCssClass($eventClass); // a custom class you may want to apply to event labels
+                    $blockEvent->addField('rendering', 'background');
 
                     //finally, add the event to the CalendarEvent for displaying on the calendar
                     $calendarEvent->addEvent($blockEvent);
@@ -248,7 +242,7 @@ class CalendarEventListener
             }
         }
 
-        /*
+        /* basic and simple example
         foreach ($blockEvents as $blockEvent) {
             unset($companyEvent);
             unset($startTime);

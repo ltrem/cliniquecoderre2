@@ -103,7 +103,7 @@ class ScheduleController extends Controller
                     // Delete all block from the Schedule so we can recreate them
                     {
                         foreach ($schedule->getBlocks() as $key => $block) {
-                            $em->remove($block);
+                            //$em->remove($block);
                         }
                         $this->getDoctrine()->getManager()->flush();
                     }
@@ -125,13 +125,16 @@ class ScheduleController extends Controller
                         $scheduleBlock->setSchedule($schedule);
 
                         $em->persist($scheduleBlock);
+                        $em->flush();
+
+                        $newScheduleBlock[] = $scheduleBlock->getId();
                     }
 
                     // Insert in database;
-                    $this->getDoctrine()->getManager()->flush();
+
                 }
 
-                return new Response(json_encode(array('status'=>'success')));
+                return new Response(json_encode(array('status'=> 'success', 'data' => $newScheduleBlock)));
                 //return $this->redirect($request->headers->get('referer'));
             }
 
@@ -172,8 +175,6 @@ class ScheduleController extends Controller
         ));
     }
 
-
-    // TODO: Get this to work from the AJAX call
     /**
      * Deletes a schedule block entity.
      *
@@ -182,18 +183,18 @@ class ScheduleController extends Controller
      */
     public function deleteScheduleBlockAction(Request $request, ScheduleBlock $scheduleBlock)
     {
+        // TODO: Get deleteScheduleBlockAction to work with AJAX and form validation
+        //$form = $this->createScheduleBlockDeleteForm($scheduleBlock);
+        //$form->handleRequest($request);
 
-        $form = $this->createScheduleBlockDeleteForm($scheduleBlock);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        //if ($form->isSubmitted() && $form->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
             $em->remove($scheduleBlock);
             $em->flush($scheduleBlock);
             return new Response(json_encode(array('status'=>'success')));
         }
 
-        return new Response(json_encode(array('status'=>'nothing')));
     }
 
     /**
