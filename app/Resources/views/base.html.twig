@@ -120,8 +120,8 @@
                 .on('changeDate', function(ev){
                     starttime = moment(ev.date).startOf('hour').format('YYYY-MM-DD HH:mm');
                     endtime = moment(ev.date).add(1, 'hour').format('YYYY-MM-DD HH:mm');
-                    $('.client_event #event_endTime').val(endtime);
-                    $('.client_event #event_startTime').val(starttime);
+                    $('#event_endTime').val(endtime);
+                    $('#event_startTime').val(starttime);
                 });
 
 

@@ -16,12 +16,12 @@ class ScheduleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            /*
             ->add('name', TextType::class, array(
                 'attr' => array(
                     'id' => 'schedule_name',
                 ),
             ))
-            /*
             ->add('dateFrom', DateTimeType::class, array(
                 'attr' => array(
                     'class'=>'schedule_datepicker',

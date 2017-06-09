@@ -1,20 +1,62 @@
 
+TODO: CONFIGURATION - v1.0 cliniquecoderre.com
+    1. php.ini
+        date.timezone=America/Montreal
 
-À FAIRE
+    CMDER INIT:
+        php bin/console doctrine:database:drop
+        php bin/console doctrine:schema:update --force
+        php bin/console doctrine:fixtures:load
+        y
+        php bin/console server:run
+
+    CMDER USEFUL:
+        php bin/console server:run
+        php bin/console clear:cache
+
+        // EXECUTE CRON JOB - JMose Bundle (configured to send "Event reminder" and "Availability notification")
+        php bin/console schedule:execute
+
+
+
+TODO: Recu d'assurance pour rendez-vous (création, modification, impression, envoi courriel)
+	DONE - KnpSnappyBundle - PDF GENERATOR
+	- Ajouter la notion des reçus
+    	- Créer rapport de reçu
+
+
+TODO: Permettre au employé de créer un horaire
+        done - Permettre la modification d'un horaire
+        - Gérer l'affichage des plages horaires et des disponibilités
+            - Horaire employé
+            - Rendez-vous employé
+            - Client nouveau rendez-vous
+
+
+TODO: Test AppointmentManager notification system's
+    TO TEST
+    POSSIBLY DONE? - Ajouter un option de notification pour rendez-vous d'urgence
+    -----------------------------------------------------------------------------------------------------
+        - Faire la liste des clients avec demande d'urgence
+            - Trier par date de création/demande d'urgence
+        - Générer un token et envoyer un courriel avec token
+            - Si la personne accepte
+                - Créer un rendez-vous
+            - Si la personne ne donne pas de nouvelle
+                - Après 30 minutes, envoyer une notification à la 2e personne de la liste
+                - Après 30 minutes, envoyer une notification à la 3e personne de la liste
+                - Etc
+            - Si la personne ne veux pas, envoyer une notification à la 2e personne de la liste
+                - Après 30 minutes, envoyer une notification à la 3e personne de la liste
+                - Etc
+
+
+
+TODO: Other todo's...
 -----------------------------------------------------------------------------------------------------
 
 - Dans admin client et profil client
 	- Vérifier la confirmation de rendez-vous.
-
-- Dans Employé
-	DONE - Ajouter les boutons de créations de Communications, Rendez-vous, Configuration horaire
-
-- Ajouter la notion des reçus
-	- Créer rapport de reçu
-	DONE - KnpSnappyBundle - PDF GENERATOR
-
-IN PROGRESS - À la Cancellation d'un rendez-vous:
-	- Envoyer une notification à tous les clients qui son en attente d'un rendez-vous urgent
 
 
 Vérifier pourquoi l'heure du rendez-vous ne s'arrondie pas (18:04, 12:35)
@@ -28,36 +70,9 @@ Permettre de trier des clients avec leur "prochaine date de rendez-vous!"
 Ajuster la command d'envoi de courriel de rappel
 	- Programmer la commande sur un CRON : php bin/console scheduler:execute
 
-Permettre au employé de créer un horaire
-	- Regarder dans admin/base
-        {# <script type="text/javascript" src="{{ asset('bundles/adesignscalendar/js/fullcalendar/jquery.fullcalendar.min.js') }}"></script> #}
-
-    - Permettre la modification d'un horaire
-    - Gérer l'affichage des plages horaires et des disponibilités
-    	- Horaire employé
-    	- Rendez-vous employé
-    	- Client nouveau rendez-vous
-
-
 Mettre le site sur l'environnement de production
 
 
-
-TO TEST
-POSSIBLY DONE? - Ajouter un option de notification pour rendez-vous d'urgence
------------------------------------------------------------------------------------------------------
-	- Faire la liste des clients avec demande d'urgence
-		- Trier par date de création/demande d'urgence
-	- Générer un token et envoyer un courriel avec token
-		- Si la personne accepte
-			- Créer un rendez-vous
-		- Si la personne ne donne pas de nouvelle
-			- Après 30 minutes, envoyer une notification à la 2e personne de la liste
-			- Après 30 minutes, envoyer une notification à la 3e personne de la liste
-			- Etc
-		- Si la personne ne veux pas, envoyer une notification à la 2e personne de la liste
-			- Après 30 minutes, envoyer une notification à la 3e personne de la liste
-			- Etc
 
 
 DONE DEAL
@@ -102,3 +117,5 @@ DONE - Afficher uniquement une adresse
 DONE - Permettre la création d'évènement et les afficher dans "Mes rendez-vous"
 	DONE - Permettre de filtrer les évènements à venir
 
+DONE - IN PROGRESS - À la Cancellation d'un rendez-vous:
+	DONE - Envoyer une notification à tous les clients qui son en attente d'un rendez-vous urgent

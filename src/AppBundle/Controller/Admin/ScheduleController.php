@@ -125,12 +125,12 @@ class ScheduleController extends Controller
                         $scheduleBlock->setSchedule($schedule);
 
                         $em->persist($scheduleBlock);
+                        // Insert in database;
                         $em->flush();
 
                         $newScheduleBlock[] = $scheduleBlock->getId();
                     }
 
-                    // Insert in database;
 
                 }
 

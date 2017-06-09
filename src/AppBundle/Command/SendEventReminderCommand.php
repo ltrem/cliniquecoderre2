@@ -27,7 +27,7 @@ class SendEventReminderCommand extends ContainerAwareCommand
 
             // the full command description shown when running the command with
             // the "--help" option
-            ->setHelp("Cette commande vous permet d'envoyer un rappel à tous les clients ayant un rendez-vous prochainement...")
+            ->setHelp("Cette commande vous permet d'envoyer un rappel ï¿½ tous les clients ayant un rendez-vous prochainement...")
         ;
 
     }
@@ -46,7 +46,7 @@ class SendEventReminderCommand extends ContainerAwareCommand
 
         // Get upcoming Events
         $em = $this->getContainer()->get('doctrine')->getManager();
-        $events1days = $em->getRepository('AppBundle:Event')->findXDaysUpcomingEvents(1);
+        $events1days = $em->getRepository('AppBundle:Event')->findXDaysUpcomingEvents(7);
         // $events7days = $em->getRepository('AppBundle:Event')->findXDaysUpcomingEvents(7);
 
         $arrEvents['1'] = $events1days;
@@ -86,33 +86,8 @@ class SendEventReminderCommand extends ContainerAwareCommand
                 $reminder->setCommunication($communication);
                 $reminder->setEvent($event);
 
-                // Communication sent
-                // Send sms
-                $message = \Swift_Message::newInstance()
-                    ->setFrom('info@cliniquecoderre.com')
-                    ->setTo($communication->getPhone())
-                    ->setSubject(
-                        $communication->getTitle()
-                    )
-                    ->setBody(
-                        $communication->getContent()
-                    )
-                ;
-                //$this->getContainer()->get('mailer')->send($message);
-
-                // Send email
-                $message2 = \Swift_Message::newInstance()
-                    ->setFrom('info@cliniquecoderre.com')
-                    ->setTo($communication->getEmail())
-                    ->setSubject(
-                        $communication->getTitle()
-                    )
-                    ->setBody(
-                        $communication->getContent()
-                    )
-                ;
-                //$this->getContainer()->get('mailer')->send($message2);
-
+                // Send communication
+                $this->getContainer()->get('app.communication_mailer')->sendCommunication($communication);
 
                 // Persist
                 $em->persist($reminder);

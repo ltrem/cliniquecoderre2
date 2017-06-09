@@ -51,21 +51,21 @@ class Schedule
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_from", type="datetime")
+     * @ORM\Column(name="date_from", type="datetime", nullable=true)
      */
     private $dateFrom;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_to", type="datetime")
+     * @ORM\Column(name="date_to", type="datetime", nullable=true)
      */
     private $dateTo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="working_days", type="array")
+     * @ORM\Column(name="working_days", type="array", nullable=true)
      */
     private $workingDays;
 

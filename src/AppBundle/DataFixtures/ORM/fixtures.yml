@@ -100,6 +100,15 @@ JMose\CommandSchedulerBundle\Entity\ScheduledCommand:
         priority: 1
         disabled: false
         locked: false
+    command_2:
+        name: Event reminder
+        command: app:send-event-reminder
+        arguments: --number_of_day_before=1
+        cronExpression: "0 07 * * 1-5" #TODO: Add a system variable here (At %$07:00$% on every day-of-week from Monday through Friday, send a reminder for upcoming client appointment)
+        executeImmediately: true
+        priority: 1
+        disabled: false
+        locked: false
 
 AppBundle\Entity\Coordinate:
     coordinate_1:

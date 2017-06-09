@@ -13,6 +13,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+
+// TODO: Add new appointment availability validation mechanism
+
 /**
  * Admin Appointment Controller
  *
@@ -123,6 +126,7 @@ class AppointmentController extends Controller
             $event->setEndTime($endTime->modify("+1 hour"));
         }
 
+
         // Verify if it's an Ajax call
         if($request->isXmlHttpRequest()) {
 
@@ -135,6 +139,8 @@ class AppointmentController extends Controller
                     'flash_message' => $this->get('translator')->trans('admin.event.edit.success')
                 ));
 
+
+                //return $this->redirectToRoute('admin_event');
                 return new Response(json_encode(array('status'=> $flash_message)));
             }
 

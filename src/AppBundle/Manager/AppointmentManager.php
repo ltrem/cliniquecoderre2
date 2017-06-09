@@ -55,8 +55,9 @@ class AppointmentManager {
             ));
             $communication->setContent($communication_template);
 
-            // Assign communication to client
+            // Assign communication to client and event cancellation
             $client->addCommunication($communication);
+            $appointment->getCancellation()->setCommunication($communication);
 
             // Add communication to database
             $this->em->persist($communication);

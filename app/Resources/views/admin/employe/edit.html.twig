@@ -44,7 +44,6 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
 
-
                     <div role="tabpanel" class="tab-pane active" id="events">
                         <div class="col-xs-12">
                             <div class="page-header">
@@ -276,9 +275,11 @@
                     </div>
 
                     <div role="tabpanel"  class="tab-pane " id="configurations">
+
                         <div class="page-header">
                             <h3>
-                                Plages horaires <a data-toggle="modal" href="{{ path('admin_schedule_new', { 'employe': employe.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Créer un horaire</a>
+                                Disponibilité
+                                {# <a data-toggle="modal" href="{{ path('admin_schedule_new', { 'employe': employe.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Créer un horaire</a> #}
                             </h3>
                         </div>
 
@@ -328,7 +329,6 @@
             {{ form_widget(form) }}
         {% endspaceless %}
     {% endblock %}
-
     {% block _employe_contacts_entry_label %}
     {% endblock %}
 
@@ -343,6 +343,13 @@
     <script>
 
         $( document ).ready(function() {
+
+            // Load calendar on tab change
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                $('#calendar-schedule').fullCalendarScheduler('render');
+                $('#calendar-holder').fullCalendar('render');
+            });
+            $('#myTab a:first').tab('show');
 
             // Calendar Scheduler action
             function deleteScheduleBlock(scheduleBlockId)
