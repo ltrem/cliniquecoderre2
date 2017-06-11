@@ -44,6 +44,9 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
 
+                    <!-- Loading overlay -->
+                    <div class="loading">Loading&#8230;</div>
+
                     <div role="tabpanel" class="tab-pane active" id="events">
                         <div class="col-xs-12">
                             <div class="page-header">
@@ -285,7 +288,6 @@
 
                         <div class="col-xs-12">
 
-                            <div class="loading">Loading&#8230;</div>
                             <div id="calendar-schedule"></div>
 
                         </div>
@@ -344,10 +346,13 @@
 
         $( document ).ready(function() {
 
-            // Load calendar on tab change
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                $('#calendar-schedule').fullCalendarScheduler('render');
+            // Reload calendar depending on tab opened
+            $('a[data-toggle="tab"][aria-controls="events"]').on('shown.bs.tab', function (e) {
+                $('#calendar-holder').fullCalendar('refetchEvents');
                 $('#calendar-holder').fullCalendar('render');
+            });
+            $('a[data-toggle="tab"][aria-controls="configurations"]').on('shown.bs.tab', function (e) {
+                $('#calendar-schedule').fullCalendarScheduler('render');
             });
             $('#myTab a:first').tab('show');
 
@@ -379,7 +384,7 @@
                 $('#calendar-schedule').fullCalendarScheduler('clientEvents').forEach(function(entry) {
 
                     // Is the entry a new schedule block
-                    if (entry.id == 'new') {
+                    if (entry.id === 'new') {
                         $('.schedule-blocks').append($('<input />').attr('class', 'new').attr('name', 'start[]').val(entry.start.format('YYYY-MM-DD HH:mm')));
                         $('.schedule-blocks').append($('<input />').attr('class', 'new').attr('name', 'end[]').val(entry.end.format('YYYY-MM-DD HH:mm')));
                         newScheduleBlock.push(entry);
@@ -407,9 +412,9 @@
 
             // Admin Appointment Calendar
             $('#calendar-holder').fullCalendar({
-                lang: 'en',
-                hiddenDays: [0, 6],
-                height: 650,
+                locale: 'fr',
+                //hiddenDays: [0, 6],
+                height: "auto",
                 allDaySlot: false,
                 header: {
                     left: 'prev, next',
@@ -417,12 +422,17 @@
                     right: 'month, agendaWeek, agendaDay'
                 },
                 slotMinutes: 15,
-                minTime: '06:00:00', // a start time (10am in this example)
-                maxTime: '19:00:00', // an end time (6pm in this example)
+                minTime: "08:00:00",
+                maxTime: "20:00:00",
+                slotLabelFormat:"HH:mm a",
                 defaultView: 'agendaWeek',
                 eventSources: [
                     {
                         events: function(start, end, timezone, callback) {
+
+                            // Show loading
+                            $('.loading').show();
+
                             $.ajax({
                                 url: Routing.generate('fullcalendar_loader'),
                                 type: 'POST',
@@ -432,7 +442,7 @@
                                     start: start.unix(),
                                     end: end.unix(),
                                     employe: {{ employe.id }},
-                                    isEmploye: true,
+                                    isEmploye: true
                                 },
                                 success: function(data) {
 
@@ -443,13 +453,12 @@
                                             backgroundColor: data[index].backgroundColor,
                                             borderColor: data[index].borderColor,
                                             className: data[index].className,
-                                            end: data[index].end,
                                             start: data[index].start,
+                                            end: data[index].end,
                                             textColor: data[index].textColor,
-                                            title: data[index].title,
+                                            title: data[index].title
                                         });
                                     });
-
 
                                     $('.loading').hide();
 
@@ -544,9 +553,6 @@
 
                     // Submit form every time an action is taken
                     addScheduleBlocks();
-                    //$.when(addScheduleBlocks()).then(function(data, textStatus, jqXHR){
-                    //    console.log(data, textStatus, jqXHR);
-                    //})
 
                 },
                 eventSources: [

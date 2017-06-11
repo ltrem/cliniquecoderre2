@@ -30,6 +30,9 @@ class EmployeType extends AbstractType
             ->add('lastname', TextType::class, array(
                 'label' => 'employe.lastname'
             ))
+            ->add('tag', TextType::class, array(
+                'label' => 'employe.tag'
+            ))
             ->add('birthdate', DateTimeType::class, array(
                 'attr' => array(
                     'class'=>'birthdate_datepicker'

@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 
+use AppBundle\Entity\Employe;
 use AppBundle\Entity\Schedule;
 use Doctrine\ORM\EntityRepository;
 
@@ -18,18 +19,23 @@ class ScheduleBlockRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findOneBetweenDate(\DateTime $dateFrom, \DateTime $dateTo)
+    public function findAvailabilityBetweenDate(\DateTime $dateFrom, \DateTime $dateTo, Schedule $schedule = null)
     {
-        return $this->createQueryBuilder('sb')
+        $query = $this->createQueryBuilder('sb')
             ->select('sb')
             ->where('sb.dateFrom >= :dateFrom')
             ->andWhere('sb.dateTo <= :dateTo')
             ->setParameter('dateFrom', $dateFrom)
             ->setParameter('dateTo', $dateTo)
-            ->orderBy('sb.dateFrom', 'ASC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
+            ->orderBy('sb.dateFrom', 'ASC');
+
+        if ($schedule instanceof Schedule) {
+            $query
+                ->andWhere('sb.schedule = :schedule')
+                ->setParameter('schedule', $schedule);
+        }
+
+        return $query->getQuery()->getResult();
     }
 
     public function findAllBetweenDate(\DateTime $start, \DateTime $end)

@@ -19,7 +19,7 @@ services:
 
     app.calendar_listener:
         class: AppBundle\EventListener\CalendarEventListener
-        arguments: ['@doctrine.orm.entity_manager', '@libphonenumber.phone_number_util']
+        arguments: ['@doctrine.orm.entity_manager', '@libphonenumber.phone_number_util', '@translator']
         tags:
             - { name: kernel.event_listener, event: calendar.load_events, method: loadEvents }
 

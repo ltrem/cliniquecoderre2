@@ -17,6 +17,8 @@ TODO: CONFIGURATION - v1.0 cliniquecoderre.com
         // EXECUTE CRON JOB - JMose Bundle (configured to send "Event reminder" and "Availability notification")
         php bin/console schedule:execute
 
+    WEBSITE CONFIG:
+        1. Add image to every employe
 
 
 TODO: Recu d'assurance pour rendez-vous (création, modification, impression, envoi courriel)
@@ -28,9 +30,17 @@ TODO: Recu d'assurance pour rendez-vous (création, modification, impression, env
 TODO: Permettre au employé de créer un horaire
         done - Permettre la modification d'un horaire
         - Gérer l'affichage des plages horaires et des disponibilités
-            - Horaire employé
-            - Rendez-vous employé
-            - Client nouveau rendez-vous
+            Done - Horaire employé
+            Done - Rendez-vous employé
+            Done - Client nouveau rendez-vous
+
+TODO: Revoir le système de Modal (popup)
+    Un coup ouvert, le contenu reste là et les prochains popup ne s'initialise pas avec le bon contenu
+    Piste:
+
+    1. Changer la façon de faire et TOUJOURS faire un relad de la page après le submit du popup
+    2. Recharger le contenu du popup chaque fois qu'il est ouvert
+    3. Faire un modal (popup) pour chacunes des actions possible
 
 
 TODO: Test AppointmentManager notification system's

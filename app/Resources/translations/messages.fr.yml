@@ -28,11 +28,14 @@ general:
         email: "Courriel"
 
 event:
+    status:
+        free: 'Disponible'
+        reserved: 'Réservé'
     message:
         create:
             success: 'Vous avez un nouveau rendez-vous de scédulé!'
     new: 'Prendre un RENDEZ-VOUS!'
-    selectEmpty: 'Une de ces dates vous convient-elle?'
+    selectEmpty: 'Sélectionnez une disponibilité qui vous conviens'
     selectProfessional: 'Avec qui voulez-vous prendre un rendez-vous?'
     selectReason: 'Quel est la raison de votre rendez-vous?'
     create: 'Réserver mon rendez-vous'
@@ -103,6 +106,7 @@ admin:
             notFree: 'Impossible de sélectionner une case déjà réservé!'
         filter:
             client: 'Client'
+            emergency: 'Filtrer les urgences'
         table:
             note: 'Note client'
             noResult: 'Aucun résultat'
@@ -185,6 +189,7 @@ client:
 employe:
     firstname: 'Prénom'
     lastname: 'Nom'
+    tag: 'Tag système'
     address: 'Adresse complète'
     city: 'Ville'
     province: 'Province'

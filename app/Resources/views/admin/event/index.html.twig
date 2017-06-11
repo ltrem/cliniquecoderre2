@@ -22,6 +22,14 @@
                 </div>
             </div>
 
+            <div class="col-sm-6">
+                <div class="form-group">
+                    {{ form_label(search_event_form.search_emergency, 'admin.event.filter.emergency', { 'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_errors(search_event_form.search_emergency) }}
+                    {{ form_widget(search_event_form.search_emergency) }}
+                </div>
+            </div>
+
             <div class="col-sm-12">
                 <button type="submit" class="btn btn-info btn-md">
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>

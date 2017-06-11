@@ -62,6 +62,13 @@ class Employe
     private $lastname;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="tag", type="string", nullable=true)
+     */
+    private $tag;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="birthdate", type="datetime", nullable=false)
@@ -243,6 +250,28 @@ class Employe
 
     public function getFullname() {
         return $this->firstname . ' ' . $this->lastname;
+    }
+
+    /**
+     * Set tag
+     *
+     * @param string $tag
+     *
+     * @return Employe
+     */
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    /**
+     * @param string $tag
+     *
+     * @return Employe
+     */
+    public function setTag($tag)
+    {
+        $this->tag = $tag;
     }
 
     /**

@@ -9,20 +9,27 @@ use AppBundle\Entity\Event;
 use AppBundle\Repository\EventRepository;
 use Doctrine\ORM\EntityManager;
 use libphonenumber\PhoneNumberUtil;
+use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class CalendarEventListener
 {
     private $entityManager;
-    private $phoneNumberUtil;
+    private $phoneUtil;
+    private $translator;
 
-    public function __construct(EntityManager $entityManager, PhoneNumberUtil $phoneNumberUtil)
+    public function __construct(EntityManager $entityManager, PhoneNumberUtil $phoneNumberUtil, TranslatorInterface $translator)
     {
         $this->entityManager = $entityManager;
         $this->phoneUtil = $phoneNumberUtil;
+        $this->translator = $translator;
     }
 
     public function loadEvents(CalendarEvent $calendarEvent)
     {
+
+        // Assign variable
+        $blockEvents = [];
 
         // The original request so you can get filters from the calendar
         // Use the filter in your query for example
@@ -42,9 +49,9 @@ class CalendarEventListener
 
 
         // TODO: Make sure the Schedule calendar is working
-        // One employee will have One Schedule.
-        // One Schedule will have unlimited amount of blocks
-        // - Maybe blocks can have type (availability, non-availability, vacation, etc)
+            // One employee will have One Schedule.
+            // One Schedule will have unlimited amount of blocks
+            // TODO: Add schedule block type system (availability, non-availability, vacation, etc)
 
         // Build array with schedule blocks
         if ($isSchedule) {
@@ -68,28 +75,65 @@ class CalendarEventListener
         // Build array with empty schedule slots
         if ($isClient) {
 
+            // Start and End DateTime of calendar view
             $startDate = $calendarEvent->getStartDatetime();
             $endDate = $calendarEvent->getEndDatetime();
 
-            $interval = $startDate->diff($endDate->modify('+1 days'));
-            $dayRange = $interval->format('%a');
 
-            $blockPerDays = 12;
+            // Get employe schedule
+            $schedule = $this->entityManager->getRepository('AppBundle:Schedule')->findOneByEmployee($selectedEmploye);
 
-            $dayStartTime = new \DateTime($startDate->format("Y-m-d H:i:s"));
-            $dayStartTime->setTime(06, 00, 00);
+            // Find if time is available from schedule
+            $scheduleAvailability = $this->entityManager->getRepository('AppBundle:ScheduleBlock')->findAvailabilityBetweenDate(
+                $startDate,
+                $endDate,
+                $schedule
+            );
 
-            for($i = 0; $i < $dayRange; $i++) {
+            foreach($scheduleAvailability as $scheduleBlock) {
 
-                $eventStart = new \DateTime($dayStartTime->format("Y-m-d H:i:s"));
-                $eventEnd = new \DateTime($dayStartTime->format("Y-m-d H:i:s"));
+                // Block time length
+                $blockTime = $scheduleBlock->getDateFrom()->diff($scheduleBlock->getDateTo());
+                $blockLength['hour'] = $blockTime->format('%h');
+                $blockLength['min'] = $blockTime->format('%i');
 
-                for($y = 0; $y <= $blockPerDays; $y++) {
-                    $blockEvents[] = new EventEntity("Libre " . $i . $y, new \DateTime($eventStart->format("Y-m-d H:i:s")), new \DateTime($eventEnd->modify('+1 hour')->format("Y-m-d H:i:s")));
-                    $eventStart->modify('+1 hour');
+                $blockStartTime = $scheduleBlock->getDateFrom();
+
+                $eventStatusFree = $this->translator->trans('event.status.free');
+
+                // If schedule block start or end at something " :30 " and is less than hour
+                // ($scheduleBlock->getDateFrom()->format('i') == 30 || $scheduleBlock->getDateTo()->format('i') == 30) &&
+                if ( $blockLength['hour'] < 1) {
+                    // Create block of 30 minutes
+                    $block = new EventEntity(
+                        $eventStatusFree,
+                        new \DateTime($scheduleBlock->getDateFrom()->format("Y-m-d H:i:s")),
+                        new \DateTime($scheduleBlock->getDateTo()->format("Y-m-d H:i:s"))
+                    );
+                    $blockEvents[] = $block;
+                } else {
+
+                    while($blockLength['hour']) {
+                        // Create block of 1 hour
+                        $block = new EventEntity(
+                            $eventStatusFree,
+                            new \DateTime($blockStartTime->format("Y-m-d H:i:s")),
+                            new \DateTime($blockStartTime->modify('+1 hour')->format("Y-m-d H:i:s"))
+                        );
+                        $blockEvents[] = $block;
+                        $blockLength['hour']--;
+                    }
+
+                    if ($blockLength['min'] > 0) {
+                        // Create block of 30 minutes
+                        $block = new EventEntity(
+                            $eventStatusFree,
+                            new \DateTime($blockStartTime->format("Y-m-d H:i:s")),
+                            new \DateTime($blockStartTime->modify('+30 minutes')->format("Y-m-d H:i:s"))
+                        );
+                        $blockEvents[] = $block;
+                    }
                 }
-
-                $dayStartTime->modify('+1 days');
             }
 
             foreach ($blockEvents as $blockEvent) {
@@ -102,16 +146,11 @@ class CalendarEventListener
                 $startTime = new \DateTime($blockEvent->getStartDatetime()->format("Y-m-d H:i:s"));
                 $endTime = new \DateTime($blockEvent->getEndDateTime()->format("Y-m-d H:i:s"));
 
-                $companyEvent = $this->entityManager->getRepository('AppBundle:Event')->findOneByEmployeBetweenDate($selectedEmploye, $startTime, $endTime);
+                $event = $this->entityManager->getRepository('AppBundle:Event')->findOneByEmployeBetweenDate($selectedEmploye, $startTime, $endTime);
 
-                if (is_object($companyEvent) && $companyEvent instanceof Event) {
-                    $blockEvent->setTitle(utf8_encode('R�serv�'));
-
-                    if ($companyEvent->getEmploye()->getId() == 2) {
-                        $eventClass = 'unavailable julee-unavailable';
-                    } else {
-                        $eventClass = 'unavailable simon-unavailable';
-                    }
+                if (is_object($event) && $event instanceof Event || $endDate < new \DateTime('now')) {
+                    $blockEvent->setTitle($this->translator->trans('event.status.reserved'));
+                    $eventClass = "unavailable";
                 }
 
                 //optional calendar event settings
@@ -129,13 +168,78 @@ class CalendarEventListener
         // Build array with empty schedule slots
         if ($isEmploye) {
 
+            // Calendar view start and end time
             $startDate = $calendarEvent->getStartDatetime();
             $endDate = $calendarEvent->getEndDatetime();
 
+
+            // Get employe schedule
+            $schedule = $this->entityManager->getRepository('AppBundle:Schedule')->findOneByEmployee($selectedEmploye);
+
+            // Find if time is available from schedule
+            $scheduleAvailability = $this->entityManager->getRepository('AppBundle:ScheduleBlock')->findAvailabilityBetweenDate(
+                $startDate,
+                $endDate,
+                $schedule
+            );
+
+
+            foreach($scheduleAvailability as $scheduleBlock) {
+
+                // Block time length
+                $blockTime = $scheduleBlock->getDateFrom()->diff($scheduleBlock->getDateTo());
+                $blockLength['hour'] = $blockTime->format('%h');
+                $blockLength['min'] = $blockTime->format('%i');
+
+                $blockStartTime = $scheduleBlock->getDateFrom();
+
+                // If schedule block start or end at something " :30 " and is less than hour
+                // ($scheduleBlock->getDateFrom()->format('i') == 30 || $scheduleBlock->getDateTo()->format('i') == 30) &&
+                if ( $blockLength['hour'] < 1) {
+                    // Create block of 30 minutes
+                    $block = new EventEntity(
+                        $this->translator->trans('event.status.free'),
+                        new \DateTime($scheduleBlock->getDateFrom()->format("Y-m-d H:i:s")),
+                        new \DateTime($scheduleBlock->getDateTo()->format("Y-m-d H:i:s"))
+                    );
+                    $blockEvents[] = $block;
+                } else {
+
+                    while($blockLength['hour']) {
+
+                        // Create block of 1 hour
+                        $block = new EventEntity(
+                            $this->translator->trans('event.status.free'),
+                            new \DateTime($blockStartTime->format("Y-m-d H:i:s")),
+                            new \DateTime($blockStartTime->modify('+1 hour')->format("Y-m-d H:i:s"))
+                        );
+                        $blockEvents[] = $block;
+                        $blockLength['hour']--;
+                    }
+
+                    if ($blockLength['min'] > 0) {
+                        // Create block of 30 minutes
+                        $block = new EventEntity(
+                            $this->translator->trans('event.status.free'),
+                            new \DateTime($blockStartTime->format("Y-m-d H:i:s")),
+                            new \DateTime($blockStartTime->modify('+30 minutes')->format("Y-m-d H:i:s"))
+                        );
+                        $blockEvents[] = $block;
+                    }
+                }
+            }
+
+
+
+
+/*
             $interval = $startDate->diff($endDate->modify('+1 days'));
             $dayRange = $interval->format('%a');
+            dump($dayRange);
 
+            // Number of availability per day
             $blockPerDays = 12;
+
 
             $dayStartTime = new \DateTime($startDate->format("Y-m-d H:i:s"));
             $dayStartTime->setTime(06, 00, 00);
@@ -144,14 +248,34 @@ class CalendarEventListener
 
                 $eventStart = new \DateTime($dayStartTime->format("Y-m-d H:i:s"));
                 $eventEnd = new \DateTime($dayStartTime->format("Y-m-d H:i:s"));
+                $eventEnd->modify('+1 hour');
 
                 for($y = 0; $y <= $blockPerDays; $y++) {
-                    $blockEvents[] = new EventEntity("Libre " . $i . $y, new \DateTime($eventStart->format("Y-m-d H:i:s")), new \DateTime($eventEnd->modify('+1 hour')->format("Y-m-d H:i:s")));
+
+                    // Find if time is available for employe
+                    $availabilityExist = $this->entityManager->getRepository('AppBundle:ScheduleBlock')->findAvailabilityBetweenDate(
+                        $eventStart,
+                        $eventEnd,
+                        null
+                    );
+
+                    if ($availabilityExist) {
+                        $blockEvents[] = new EventEntity(
+                            "Libre " . $i . $y,
+                            new \DateTime($eventStart->format("Y-m-d H:i:s")),
+                            new \DateTime($eventEnd->format("Y-m-d H:i:s"))
+                        );
+                    }
+
                     $eventStart->modify('+1 hour');
+                    $eventEnd->modify('+1 hour');
                 }
 
                 $dayStartTime->modify('+1 days');
             }
+*/
+
+
 
             foreach ($blockEvents as $blockEvent) {
                 $alreadyAdded = false;
@@ -228,6 +352,7 @@ class CalendarEventListener
                 }
 
                 if (!$alreadyAdded) {
+
                     //optional calendar event settings
                     $blockEvent->setAllDay(false); // default is false, set to true if this is an all day event
                     $blockEvent->setBgColor($eventClass); //set the background color of the event's label

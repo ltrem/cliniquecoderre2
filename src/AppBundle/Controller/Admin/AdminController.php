@@ -32,6 +32,7 @@ class AdminController extends Controller
         return $this->render('admin/homepage.html.twig');
     }
 
+    // TODO: Fix admin profile
     /**
      * List the profile.
      *

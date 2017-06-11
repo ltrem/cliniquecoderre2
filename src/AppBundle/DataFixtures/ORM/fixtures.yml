@@ -23,12 +23,14 @@ AppBundle\Entity\Employe:
     employe_1:
         firstname: Simon
         lastname: Coderre
+        tag: simon
         birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
         gender: Homme
         user: "@user_1"
     employe_2:
         firstname: Ju-Lee
         lastname: Boissonneau
+        tag: julee
         birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
         gender: Femme
         user: "@user_2"

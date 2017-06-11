@@ -36,7 +36,7 @@ class EventType extends AbstractType
                 'label_format' => 'event.form.startTime',
                 'attr' => array(
                     'id' => 'event_startTime',
-                    //'class'=>'event_datetimepicker',
+                    'class'=>'hidden',
                 ),
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd hh:mm',

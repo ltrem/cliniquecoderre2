@@ -56,7 +56,7 @@ class AppointmentController extends Controller
                     ->andWhere('contacts.phoneCell LIKE :filter_phoneCell')
                     ->setParameter('filter_phoneCell', '%' .$filter['search_phone'] . '%');
             }
-            if ($filter['is_emergency']) {
+            if ($filter['search_emergency']) {
                 $queryBuilder
                     ->andWhere('e.emergency = 1');
             }

@@ -115,134 +115,131 @@
                 }
             });
 
-                var date = new Date();
-                var d = date.getDate();
-                var m = date.getMonth();
-                var y = date.getFullYear();
-
-                $('#calendar-holder').fullCalendar({
-                    lang: 'en',
-                    weekends: false,
-                    height: "auto",
-                    allDaySlot: false,
-                    header: {
-                        left: 'prev, next',
-                        center: 'title',
-                        right: 'agendaWeek, agendaDay'
+            $('#calendar-holder').fullCalendar({
+                lang: 'en',
+                weekends: false,
+                height: "auto",
+                allDaySlot: false,
+                header: {
+                    left: 'prev, next',
+                    center: 'title',
+                    right: 'agendaWeek, agendaDay'
+                },
+                slotMinutes: 15,
+                slotLabelFormat:"HH:mm a",
+                firstHour: 8,
+                defaultDate: moment().add(1, 'day'),
+                /*columnFormat: 'ddd',
+                views: {
+                    basic: {
+                        // options apply to basicWeek and basicDay views
                     },
-                    slotMinutes: 15,
-                    slotLabelFormat:"HH:mm a",
-                    firstHour: 8,
-                    /*columnFormat: 'ddd',
-                    views: {
-                        basic: {
-                            // options apply to basicWeek and basicDay views
-                        },
-                        agenda: {
-                            // options apply to agendaWeek and agendaDay views
-                        },
-                        week: {
-                            // options apply to basicWeek and agendaWeek views
-                        },
-                        day: {
-                            // options apply to basicDay and agendaDay views
-                            titleFormat: 'dddd M/D'
-                        }
-                    },*/
-                    minTime: '08:00:00', // a start time (8am in this example)
-                    maxTime: '20:00:00', // an end time (20pm in this example)
-                    defaultView: 'agendaDay',
-                    eventSources: [
-                        {
-                            events: function(start, end, timezone, callback) {
-                                $.ajax({
-                                    url: Routing.generate('fullcalendar_loader'),
-                                    type: 'POST',
-                                    dataType: 'JSON',
-                                    data: {
-                                        // our hypothetical feed requires UNIX timestamps
-                                        start: start.unix(),
-                                        end: end.unix(),
-                                        employe: ($('.employe-selector.alert-success').data('employeId') ? $('.employe-selector.alert-success').data('employeId') : 1) ,
-                                        isClient: true
-                                    },
-                                    success: function(data) {
+                    agenda: {
+                        // options apply to agendaWeek and agendaDay views
+                    },
+                    week: {
+                        // options apply to basicWeek and agendaWeek views
+                    },
+                    day: {
+                        // options apply to basicDay and agendaDay views
+                        titleFormat: 'dddd M/D'
+                    }
+                },*/
+                minTime: '08:00:00', // a start time (8am in this example)
+                maxTime: '20:00:00', // an end time (20pm in this example)
+                defaultView: 'agendaWeek',
+                eventSources: [
+                    {
+                        events: function(start, end, timezone, callback) {
 
-                                        var events = [];
-                                        $.each(data, function(index) {
-                                            events.push({
-                                                allDay: false,
-                                                backgroundColor: data[index].backgroundColor,
-                                                borderColor: data[index].borderColor,
-                                                className: data[index].className,
-                                                end: data[index].end,
-                                                start: data[index].start,
-                                                textColor: data[index].textColor,
-                                                title: data[index].title,
-                                            });
+                            // Show loading
+                            $('.loading').show();
+
+                            $.ajax({
+                                url: Routing.generate('fullcalendar_loader'),
+                                type: 'POST',
+                                dataType: 'JSON',
+                                data: {
+                                    // our hypothetical feed requires UNIX timestamps
+                                    start: start.unix(),
+                                    end: end.unix(),
+                                    employe: ($('.employe-selector.alert-success').data('employeId') ? $('.employe-selector.alert-success').data('employeId') : 1) ,
+                                    isClient: true
+                                },
+                                success: function(data) {
+
+                                    var events = [];
+                                    $.each(data, function(index) {
+                                        events.push({
+                                            allDay: false,
+                                            backgroundColor: data[index].backgroundColor,
+                                            borderColor: data[index].borderColor,
+                                            className: data[index].className,
+                                            end: data[index].end,
+                                            start: data[index].start,
+                                            textColor: data[index].textColor,
+                                            title: data[index].title,
                                         });
+                                    });
 
 
-                                        $('.loading').hide();
+                                    $('.loading').hide();
 
-                                        callback(events);
-                                    }
-                                });
-                            }
-                        }
-                    ],
-                    eventClick: function(calEvent, jsEvent, view) {
-
-                        // alert('Event: ' + calEvent.title);
-                        //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-                        // alert('View: ' + view.name);
-
-                        $('.myEvent').each(function() {
-                            $(this).removeClass('myEvent');
-                        });
-
-                        // change the border color just for fun
-                        if (!$(this).hasClass('unavailable')) {
-
-                            // Update Starttime in the form
-                            starttime = moment(calEvent.start).format('YYYY-MM-DD HH:mm');
-                            $('#event_startTime').val(starttime);
-
-                            $(this).addClass('myEvent');
-                        } else {
-                            alert('{{ 'event.error.notFree'|trans }}');
-                            $('#event_startTime').val('');
-                        }
-                    },
-                    viewRender: function(currentView){
-                        console.log(currentView);
-
-                        var minDate = moment().add(1, 'day').format('YYYY-MM-DD'),
-                                maxDate = moment().add(2, 'months').format('YYYY-MM-DD');
-
-                        // Past
-                        if (minDate >= currentView.start.format('YYYY-MM-DD') && minDate <= currentView.end.format('YYYY-MM-DD')) {
-                            $(".fc-prev-button").prop('disabled', true);
-                            $(".fc-prev-button").addClass('fc-state-disabled');
-                            $(".fc-prev-button").css("visibility", "hidden");
-                        }
-                        else {
-                            $(".fc-prev-button").removeClass('fc-state-disabled');
-                            $(".fc-prev-button").prop('disabled', false);
-                            $(".fc-prev-button").css("visibility", "visible");
-                        }
-                        // Future
-                        if (maxDate >= currentView.start.format('YYYY-MM-DD') && maxDate <= currentView.end.format('YYYY-MM-DD')) {
-                            $(".fc-next-button").prop('disabled', true);
-                            $(".fc-next-button").addClass('fc-state-disabled');
-                            $(".fc-next-button").css("visibility", "hidden");
-                        } else {
-                            $(".fc-next-button").removeClass('fc-state-disabled');
-                            $(".fc-next-button").prop('disabled', false);
-                            $(".fc-next-button").css("visibility", "visible");
+                                    callback(events);
+                                }
+                            });
                         }
                     }
-                });
+                ],
+                eventClick: function(calEvent, jsEvent, view) {
+
+                    $('.myEvent').each(function() {
+                        $(this).removeClass('myEvent');
+                    });
+
+                    // change the border color just for fun
+                    if (!$(this).hasClass('unavailable')) {
+
+                        // Update Starttime in the form
+                        starttime = moment(calEvent.start).format('YYYY-MM-DD HH:mm');
+                        $('#event_startTime').val(starttime);
+
+                        $(this).addClass('myEvent');
+                    } else {
+                        alert('{{ 'event.error.notFree'|trans }}');
+                        $('#event_startTime').val('');
+                    }
+                },
+                viewRender: function(currentView){
+                    console.log(currentView);
+
+                    var minDate = moment().add(1, 'day').format('YYYY-MM-DD'),
+                        // TODO: Configuration of "how far a client can take an appoinement
+                        maxDate = moment().add(2, 'months').format('YYYY-MM-DD');
+
+                    // Past
+                    if (minDate >= currentView.start.format('YYYY-MM-DD')) {
+                        $(".fc-prev-button").prop('disabled', true);
+                        $(".fc-prev-button").addClass('fc-state-disabled');
+                        $(".fc-prev-button").css("visibility", "hidden");
+                    }
+                    else {
+                        $(".fc-prev-button").removeClass('fc-state-disabled');
+                        $(".fc-prev-button").prop('disabled', false);
+                        $(".fc-prev-button").css("visibility", "visible");
+                    }
+                    // Future
+                    if (maxDate >= currentView.start.format('YYYY-MM-DD') && maxDate <= currentView.end.format('YYYY-MM-DD')) {
+                        $(".fc-next-button").prop('disabled', true);
+                        $(".fc-next-button").addClass('fc-state-disabled');
+                        $(".fc-next-button").css("visibility", "hidden");
+                    } else {
+                        $(".fc-next-button").removeClass('fc-state-disabled');
+                        $(".fc-next-button").prop('disabled', false);
+                        $(".fc-next-button").css("visibility", "visible");
+                    }
+                }
+            });
 
         });
     </script>
