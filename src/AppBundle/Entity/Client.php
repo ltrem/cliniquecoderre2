@@ -97,6 +97,11 @@ class Client
     private $events;
 
     /**
+     * @ORM\OneToMany(targetEntity="Receipt", mappedBy="client")
+     */
+    private $receipts;
+
+    /**
      * @ORM\OneToOne(targetEntity="Image", cascade={"persist"})
      * @ORM\JoinColumn(name="picture_id", referencedColumnName="id", onDelete="SET NULL")
      */
@@ -106,6 +111,7 @@ class Client
         $this->contacts = new ArrayCollection();
         $this->coordinates = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->receipts = new ArrayCollection();
         $this->communications = new ArrayCollection();
     }
 
@@ -377,6 +383,30 @@ class Client
     public function addEvent(Event $event)
     {
         $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Get receipts
+     *
+     * @return \AppBundle\Entity\Receipt
+     */
+    public function getReceipts()
+    {
+        return $this->receipts;
+    }
+
+    /**
+     * Add event
+     *
+     * @param \AppBundle\Entity\Receipt $receipt
+     *
+     * @return Event
+     */
+    public function addReceipt(Receipt $receipt)
+    {
+        $this->receipts[] = $receipt;
 
         return $this;
     }

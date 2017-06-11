@@ -32,52 +32,22 @@ class AdminController extends Controller
         return $this->render('admin/homepage.html.twig');
     }
 
-    // TODO: Fix admin profile
     /**
-     * List the profile.
+     * Redirect to connected user assigned employe
      *
      * @Route("/profile", name="admin_profile")
      */
     public function profileAction(Request $request)
     {
-        $schedule = new Schedule();
-
-        $schedule_form = $this->createForm(ScheduleType::class, $schedule, array(
-            'action' => $this->generateUrl('admin_schedule_new'),
-        ));
 
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof User) {
             throw new AccessDeniedException('This user does not have access to this sections.');
         }
 
-        $em = $this->getDoctrine()->getManager();
+        // redirect to the employe page of the logged used
+        return $this->redirectToRoute('admin_employe_edit', array('id' => $user->getEmploye()->getId()));
 
-        // Filter query
-        {
-            $queryBuilder = $em->getRepository('AppBundle:Schedule')->createQueryBuilder('s');
-            $query = $queryBuilder->getQuery();
-        }
-
-        /**
-         * @var $paginator \Knp\Component\Pager\Paginator
-         */
-        $paginator = $this->get('knp_paginator');
-        $result = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            $request->query->getInt('limit', 15),
-            array(
-                'wrap-queries' => true
-            )
-
-        );
-
-        return $this->render('admin/user/profile.html.twig', array(
-            'user' => $user,
-            'schedule_form' => $schedule_form->createView(),
-            'schedules' => $result,
-        ));
     }
 
 }

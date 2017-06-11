@@ -2,6 +2,8 @@
 TODO: CONFIGURATION - v1.0 cliniquecoderre.com
     1. php.ini
         date.timezone=America/Montreal
+    2. install wkhtmltopdf on the server/computer
+        - https://wkhtmltopdf.org/downloads.html
 
     CMDER INIT:
         php bin/console doctrine:database:drop

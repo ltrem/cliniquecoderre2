@@ -1,6 +1,7 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block body %}
+
     {{ form_start(form, {'method': 'post', 'action': path('admin_event_new'), 'attr': {'class': 'fos_user_registration_register'}}) }}
 
         <div class="row">

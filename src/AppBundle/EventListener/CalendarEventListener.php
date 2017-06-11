@@ -49,8 +49,8 @@ class CalendarEventListener
 
 
         // TODO: Make sure the Schedule calendar is working
-            // One employee will have One Schedule.
-            // One Schedule will have unlimited amount of blocks
+            // DONE - One employee will have One Schedule.
+            // DONE - One Schedule will have unlimited amount of blocks
             // TODO: Add schedule block type system (availability, non-availability, vacation, etc)
 
         // Build array with schedule blocks

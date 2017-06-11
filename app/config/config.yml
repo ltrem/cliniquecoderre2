@@ -90,6 +90,14 @@ vich_uploader:
     db_driver: orm # or mongodb or propel or phpcr
 
     mappings:
+        receipt:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /receipts_pdf
+            upload_destination: '%kernel.root_dir%/../web/receipts_pdf'
+
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
         image:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /images

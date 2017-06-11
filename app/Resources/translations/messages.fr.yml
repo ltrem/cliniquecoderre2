@@ -58,6 +58,10 @@ event:
     cancellation:
         title: 'Annuler mon rendez-vous'
         submit: 'Je confirme vouloir annuler mon rendez-vous!'
+    receipt:
+        title: 'Nouveau reçus'
+        date: 'Date du reçus d''assurance'
+        submit: 'Enregistrer le reçus'
 registration:
     title: 'Enregistrement'
     new:

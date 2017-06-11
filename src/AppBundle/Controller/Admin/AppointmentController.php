@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\Client;
 use AppBundle\Entity\Employe;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\Receipt;
 use AppBundle\Form\AdminAppointmentType;
 use AppBundle\Form\EventType;
 use AppBundle\Form\SearchEventType;

@@ -22,6 +22,12 @@
     <input class="btn btn-lg btn-primary btn-block" type="submit" id="_submit" name="_submit" value="{{ 'admin.event.edit.submit'|trans }}" />
 
     {{ form_end(form) }}
+
+
+    <h3>Reçus d'assurance <a data-toggle="modal" href="{{ path('admin_receipt_new', { 'id': event.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Créer un reçus d'assurance</a></h3>
+
+
+
 {% endblock %}
 
 {# https://symfony.com/doc/current/form/form_customization.html#how-to-customize-a-collection-prototype #}

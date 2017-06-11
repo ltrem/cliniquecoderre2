@@ -91,12 +91,18 @@ class Event
     private $cancellation;
 
     /**
+     * @ORM\OneToMany(targetEntity="Receipt", mappedBy="event")
+     */
+    private $receipts;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppointmentAvailabilityNotification", mappedBy="eventToReplace")
      */
     private $appointmentAvailabilityNotifications;
 
     public function __construct() {
         $this->eventReminders = new ArrayCollection();
+        $this->receipts = new ArrayCollection();
         $this->appointmentAvailabilityNotifications = new ArrayCollection();
     }
 
@@ -352,6 +358,42 @@ class Event
     public function getCancellation()
     {
         return $this->cancellation;
+    }
+
+    /**
+     * Get receipts
+     *
+     * @return \AppBundle\Entity\Receipt
+     */
+    public function getReceipts()
+    {
+        return $this->receipts;
+    }
+
+    /**
+     * Add receipt
+     *
+     * @param \AppBundle\Entity\Receipt $receipt
+     *
+     * @return Client
+     */
+    public function addReceipt(\AppBundle\Entity\Receipt $receipt)
+    {
+        $receipt->setEvent($this);
+        $this->receipts[] = $receipt;
+
+        return $this;
+    }
+
+    /**
+     * Remove receipt
+     *
+     * @param \AppBundle\Entity\Receipt $receipt
+     */
+    public function removeReceipt(\AppBundle\Entity\EventReminder $receipt)
+    {
+        $this->receipts->removeElement($receipt);
+        $receipt->setEvent(null);
     }
 
     /**
