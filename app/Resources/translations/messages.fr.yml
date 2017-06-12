@@ -77,6 +77,10 @@ registration:
     password:
         first: 'Mot de passe'
         second: 'Confirmation du mot de passe'
+    emailConfirmation:
+        subject: 'Création de profil sur Cliniquecoderre.com'
+        message: 'Veuillez confirmer votre inscription sur le site de rendez-vous de Cliniquecoderre.com'
+        button: 'Cliquez ici pour terminer votre inscription!'
 
 communication:
     message:
@@ -183,7 +187,7 @@ client:
     phoneCellCarrier: 'Fournisseur cellulaire'
     phoneHome: 'Téléphone maison'
     phoneWork: 'Téléphone travail'
-    birthdate: 'Année de naissance'
+    birthdate: 'Date de naissance'
     picture: 'Photo'
     email:
         new:
@@ -223,4 +227,5 @@ resetting:
     form:
         title: 'Entrez votre courriel et votre nouveau mot de passe!'
     email:
-        message: 'Veuillez confirmer votre inscription %confirmationUrl%'
+        message: 'Vous avez fait une demande de réinitialization de mot de passe. Ignorer ce message si ce n''est pas le cas.'
+        button: 'Cliquez ici pour modifier votre mot de passe!'

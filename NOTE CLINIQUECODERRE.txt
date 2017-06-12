@@ -23,6 +23,10 @@ TODO: CONFIGURATION - v1.0 cliniquecoderre.com
         1. Add image to every employe
 
 
+TODO: Faire le tour des courriels / messages
+    - Voir tout les courriels et SMS envoyés par le système, les traduires et les testers.
+
+
 TODO: Recu d'assurance pour rendez-vous (création, modification, impression, envoi courriel)
 	DONE - KnpSnappyBundle - PDF GENERATOR
 	- Ajouter la notion des reçus
@@ -38,6 +42,7 @@ TODO: Permettre au employé de créer un horaire
             DONE - Horaire employé
             DONE - Rendez-vous employé
             DONE - Client nouveau rendez-vous
+
 
 TODO: Revoir le système de Modal (popup)
     Un coup ouvert, le contenu reste là et les prochains popup ne s'initialise pas avec le bon contenu

@@ -8,6 +8,7 @@ use AppBundle\Entity\Client;
 use AppBundle\Entity\Contact;
 use AppBundle\Entity\Coordinate;
 use AppBundle\Entity\User;
+use AppBundle\Event\ClientCreatedEvent;
 use AppBundle\Form\ClientType;
 use AppBundle\Form\SearchClientType;
 use AppBundle\Form\UserProfileForm;
@@ -126,7 +127,6 @@ class ClientController extends Controller
             $client = $user->getClient();
             $client->setUser($user);
 
-
             // Generate Token
             $token = rtrim(strtr(base64_encode(openssl_random_pseudo_bytes(32)), '+/', '-_'), '=');
 
@@ -136,41 +136,17 @@ class ClientController extends Controller
             $user->setResetPasswordToken($token);
             $user->setResetPasswordDate(new \DateTime());
 
-            $password_reset_template= $this->renderView('user/password_reset.html.twig', array(
-                'confirmationUrl' =>  $token
-            ));
-
-            // Send email to new Client
-            // Create Communication
-            $communication = new Communication();
-            $communication->setType('email');
-            $communication->setDateSent(new \DateTime('now'));
-            $communication->setTitle('Création de profil sur Cliniquecoderre.com');
-            $communication->setContent($password_reset_template);
-            $communication->setEmail($user->getUsername());
-
-            $client->addCommunication($communication);
-
-            // Communication sent
-            // Send email
-            $message = \Swift_Message::newInstance()
-                ->setFrom('info@cliniquecoderre.com')
-                ->setTo($communication->getEmail())
-                ->setSubject(
-                    $communication->getTitle()
-                )
-                ->setBody(
-                    $communication->getContent(),
-                    'text/html'
-                )
-            ;
-            $this->get('mailer')->send($message);
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
+            $em->getConnection()->beginTransaction();
             $em->flush();
 
+            // Send a notice to every client that are waiting for an appointment
+            $this->get('event_dispatcher')->dispatch(ClientCreatedEvent::NAME, new ClientCreatedEvent($user));
+
             $this->addFlash('notice', 'Welcome '.$user->getEmail());
+
+            $em->getConnection()->commit();
 
             return $this->redirectToRoute('admin_client_edit', array('id' => $client->getId()));
 

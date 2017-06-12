@@ -175,7 +175,6 @@ class AppointmentController extends Controller
         if ($startTime) {
             // Round to nearest lowest hour
             $startTime = new \DateTime($startTime->format("Y-m-d H:00:00"));
-            dump($startTime);
             $event->setStartTime($startTime);
 
             // Add 1 hour to endTime

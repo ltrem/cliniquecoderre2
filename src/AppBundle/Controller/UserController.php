@@ -218,7 +218,7 @@ class UserController extends Controller
                         $communication = new Communication();
                         $communication->setType('email');
                         $communication->setDateSent(new \DateTime('now'));
-                        $communication->setTitle('Création de profil sur Cliniquecoderre.com');
+                        $communication->setTitle('Crï¿½ation de profil sur Cliniquecoderre.com');
                         $communication->setContent($password_reset_template);
                         $communication->setEmail($user->getUsername());
 
@@ -255,6 +255,7 @@ class UserController extends Controller
         ]);
     }
 
+    // TODO: VÃ©rifier pour ne pas permettre de changer de courriel au RESET de password
     /**
      * @Route("/profile/reset/{token}", name="user_reset_password")
      */
