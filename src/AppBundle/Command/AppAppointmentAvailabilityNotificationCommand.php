@@ -123,7 +123,7 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
 
                 $em->remove($scheduledCommand);
                 // This seems to cause problem... working now?
-                //$em->flush();
+                $em->flush();
 
             }
 
