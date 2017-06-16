@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f96f6b8e-947c-4930-80fe-4ede40267f90" name="Default" comment="- Ajout de modèle de message pour la confirmation de création de compte.&#10;- Création d'un Event, Subscriber et Manager pour la création de client.">
+    <list default="true" id="f96f6b8e-947c-4930-80fe-4ede40267f90" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Command/AppAppointmentAvailabilityNotificationCommand.php" afterPath="$PROJECT_DIR$/src/AppBundle/Command/AppAppointmentAvailabilityNotificationCommand.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Repository/EventRepository.php" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/EventRepository.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/config/config.yml" afterPath="$PROJECT_DIR$/app/config/config.yml" />
     </list>
     <ignored path="cliniquecoderre2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -52,16 +51,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="NOTE CLINIQUECODERRE.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/NOTE CLINIQUECODERRE.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" column="44" lean-forward="true" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="44" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="SendEventReminderCommand.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Command/SendEventReminderCommand.php">
           <provider selected="true" editor-type-id="text-editor">
@@ -84,7 +73,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AppAppointmentAvailabilityNotificationCommand.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AppAppointmentAvailabilityNotificationCommand.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Command/AppAppointmentAvailabilityNotificationCommand.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="331">
@@ -92,6 +81,16 @@
               <folding>
                 <element signature="e#37#94#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.yml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/config/config.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="598">
+              <caret line="120" column="29" lean-forward="false" selection-start-line="120" selection-start-column="29" selection-end-line="120" selection-end-column="29" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -241,7 +240,6 @@
         <option value="$PROJECT_DIR$/app/Resources/views/admin/event/new.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Form/ReceiptType.php" />
         <option value="$PROJECT_DIR$/app/Resources/views/event/receipt/receipt_ajax.html.html.twig" />
-        <option value="$PROJECT_DIR$/app/config/config.yml" />
         <option value="$PROJECT_DIR$/src/AppBundle/Entity/Event.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Entity/Receipt.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/Admin/ReceiptController.php" />
@@ -266,6 +264,7 @@
         <option value="$PROJECT_DIR$/src/AppBundle/Command/SendEventReminderCommand.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Repository/EventRepository.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Command/AppAppointmentAvailabilityNotificationCommand.php" />
+        <option value="$PROJECT_DIR$/app/config/config.yml" />
       </list>
     </option>
   </component>
@@ -1098,7 +1097,7 @@
       <workItem from="1496969356803" duration="37770000" />
       <workItem from="1497227245682" duration="6490000" />
       <workItem from="1497318603125" duration="723000" />
-      <workItem from="1497575724149" duration="6190000" />
+      <workItem from="1497575724149" duration="6327000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit from Tower">
       <created>1495396420572</created>
@@ -1233,11 +1232,18 @@
       <option name="project" value="LOCAL" />
       <updated>1497584827437</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="- Test 5">
+      <created>1497585300271</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1497585300271</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="111770000" />
+    <option name="totallyTimeSpent" value="111907000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -1357,12 +1363,13 @@
     <MESSAGE value="Plusieurs test ici et la...&#10;Ajout de &quot;Configuration et installation&quot; dans les TODO's (note cliniquecoderre.txt)" />
     <MESSAGE value="-Créer la gestion des horaires VS les plages disponibles pour client et pour employé&#10;-Ajusté des todo&#10;-Différent test" />
     <MESSAGE value="- Ajout des reçus&#10;- Génération de PDF des reçus&#10;- Association des reçus avec les clients et les Appointments&#10;- Admin profile -&gt; Redirect vers la page de l'employé connecté" />
-    <MESSAGE value="- Ajout de modèle de message pour la confirmation de création de compte.&#10;- Création d'un Event, Subscriber et Manager pour la création de client." />
     <MESSAGE value="- Test en prod" />
     <MESSAGE value="- Test prod 2" />
     <MESSAGE value="- Test 3" />
     <MESSAGE value="- Test 4" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Test 4" />
+    <MESSAGE value="- Ajout de modèle de message pour la confirmation de création de compte.&#10;- Création d'un Event, Subscriber et Manager pour la création de client." />
+    <MESSAGE value="- Test 5" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Test 5" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1412,13 +1419,6 @@
         <state relative-caret-position="60">
           <caret line="4" column="32" lean-forward="false" selection-start-line="4" selection-start-column="32" selection-end-line="6" selection-end-column="51" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/config/config.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="564">
-          <caret line="118" column="22" lean-forward="false" selection-start-line="118" selection-start-column="21" selection-end-line="118" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -1784,6 +1784,14 @@
           <folding>
             <element signature="e#37#94#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/config/config.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="598">
+          <caret line="120" column="29" lean-forward="false" selection-start-line="120" selection-start-column="29" selection-end-line="120" selection-end-column="29" />
+          <folding />
         </state>
       </provider>
     </entry>
