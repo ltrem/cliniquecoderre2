@@ -53,8 +53,7 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
         // FIX THIS
         // FIX THIS
 
-
-        dump($eligibleEmergency);
+        $output->writeln($eligibleEmergency->getClient()->getLastname());
 
         // If eligibleEmergency is not null, and eventFreed is not expired, proceed with notification
         if ($eligibleEmergency !== null && $eventFreed->getEndTime() >= new \DateTime('now')) {
@@ -135,7 +134,7 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
             // FIX THIS
         }
 
-        //$output->writeln('Command result.');
+        $output->writeln('Command result.');
     }
 
 }
