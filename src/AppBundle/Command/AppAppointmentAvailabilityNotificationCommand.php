@@ -53,7 +53,8 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
         // FIX THIS
         // FIX THIS
 
-        $output->writeln($eligibleEmergency->getClient()->getLastname());
+
+        dump($eligibleEmergency);
 
         // If eligibleEmergency is not null, and eventFreed is not expired, proceed with notification
         if ($eligibleEmergency !== null && $eventFreed->getEndTime() >= new \DateTime('now')) {
@@ -114,9 +115,6 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
 
         } else {
 
-            // Set answer to last notification NO
-            $lastNotificationSent = $em->getRepository('AppBundle:AppointmentAvailabilityNotification')->findLastAppointmentNotificationSent($eventFreed);
-
             // If no eligible client, remove CRON
             $scheduledCommand = $em->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')->find($schedule_command_id);
 
@@ -134,7 +132,7 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
             // FIX THIS
         }
 
-        $output->writeln('Command result.');
+        //$output->writeln('Command result.');
     }
 
 }
