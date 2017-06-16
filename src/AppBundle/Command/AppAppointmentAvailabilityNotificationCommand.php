@@ -45,16 +45,13 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
             // - Upcoming event scheduled
             // - Not Cancelled
             // - Without Notification for this event
-            $eligibleEmergency = $em->getRepository('AppBundle:Event')->findUpcomingEmergency($event_id);
+            $eligibleEmergency = $em->getRepository('AppBundle:Event')->findUpcomingEmergency();
 
         // FIX THIS
         // FIX THIS
         // FIX THIS
         // FIX THIS
         // FIX THIS
-
-
-        dump($eligibleEmergency);
 
         // If eligibleEmergency is not null, and eventFreed is not expired, proceed with notification
         if ($eligibleEmergency !== null && $eventFreed->getEndTime() >= new \DateTime('now')) {
@@ -121,7 +118,6 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
             if ($scheduledCommand !== null) {
 
                 $em->remove($scheduledCommand);
-                // This seems to cause problem... working now?
                 $em->flush();
 
             }

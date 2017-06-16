@@ -124,7 +124,7 @@ class EventRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findUpcomingEmergency(string $event_id)
+    public function findUpcomingEmergency()
     {
         // Get Upcoming Event that have Emergency checked
         $now = new \DateTime('now');
