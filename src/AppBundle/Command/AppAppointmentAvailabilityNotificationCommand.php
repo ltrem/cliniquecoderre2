@@ -118,7 +118,6 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
             if ($scheduledCommand !== null) {
 
                 $em->remove($scheduledCommand);
-                $em->flush();
 
             }
 
