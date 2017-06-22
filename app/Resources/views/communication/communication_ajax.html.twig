@@ -30,9 +30,12 @@
         $.post($(this).attr('action'), formSerialize, function(response){
 
             //your callback here
-            $('.main-container').prepend(response.status);
-            $('#myModal').modal("toggle");
+            window.location.reload();
 
+            /*
+                $('.main-container').prepend(response.status);
+                $('#myModal').modal("toggle");
+            */
         },'JSON');
     });
 </script>

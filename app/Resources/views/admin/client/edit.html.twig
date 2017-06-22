@@ -167,7 +167,10 @@
                     <div role="tabpanel" class="tab-pane" id="events">
                         <div class="col-xs-12">
                             <div class="page-header">
-                                <h3>Rendez-vous à venir <a data-toggle="modal" href="{{ path('admin_event_new', { 'client': client.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Créer un rendez-vous</a></h3>
+                                <h3>
+                                    Rendez-vous à venir
+                                    <a data-toggle="modal" href="{{ path('admin_event_new', { 'client': client.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Créer un rendez-vous</a>
+                                </h3>
                             </div>
 
                             <table class="table table-striped">
@@ -308,7 +311,7 @@
                             <h3>
                                 {{ 'admin.client.communications.title'|trans }}
                                 <a data-toggle="modal" href="{{ path('communication_new', { 'client': client.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Envoyer une communication</a>
-                            <h3>
+                            </h3>
                         </div>
                         <table class="table table-striped">
                             <thead>

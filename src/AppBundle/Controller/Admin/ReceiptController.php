@@ -44,7 +44,22 @@ class ReceiptController extends Controller
                 // Generate Receipt in PDF format in a temporary files (KnpSnappy will delete it)
                 $tmp_file = base64_encode(random_bytes(10));
                 $filename = '/tmp/'. $tmp_file . '.pdf';
-                $this->get('knp_snappy.pdf')->generate('http://www.google.fr', $filename);
+                $this->get('knp_snappy.pdf')->generate('http://www.google.fr', $filename, array(
+                    'orientation' => 'landscape',
+                    'enable-javascript' => true,
+                    'javascript-delay' => 1000,
+                    'no-stop-slow-scripts' => true,
+                    'no-background' => false,
+                    'lowquality' => false,
+                    'page-height' => 600,
+                    'page-width'  => 1000,
+                    'encoding' => 'utf-8',
+                    'images' => true,
+                    'cookie' => array(),
+                    'dpi' => 300,
+                    'enable-external-links' => true,
+                    'enable-internal-links' => true
+                ));
 
                 // Create new uploaded file and assign it to receipt
                 $newFile = new UploadedFile($filename, $filename, null, filesize($filename), false, true);

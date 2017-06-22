@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Client;
 use AppBundle\Entity\Communication;
+use AppBundle\Entity\Employe;
 use AppBundle\Entity\User;
 use AppBundle\Form\CommunicationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -73,6 +74,11 @@ class CommunicationController extends Controller
                 // Add the communication to the Client
                 if ($client instanceof Client) {
                     $client->addCommunication($communication);
+                }
+
+                // Add the communication to the Employe
+                if ($employee instanceof Employe) {
+                    $employee->addCommunication($communication);
                 }
 
                 // Send Communication

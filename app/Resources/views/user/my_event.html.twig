@@ -1,173 +1,163 @@
 
 <div role="tabpanel" class="tab-pane active" id="my_events">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h3 class="" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Rendez-vous à venir <span class="badge pull-right">{{ upcomingEvents|length }}</span>
+                </h3>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Date et heure du rendez-vous</th>
+                            {#<th>Actions</th>#}
+                        </tr>
+                        </thead>
+                        <tbody>
 
-    <div class="col-sm-12">
-        <div class="well">
-            <div class="row">
+                        {% if eventOffered|length %}
+                            <tr>
+                                <td>{{ eventOffered.name }}</td>
+                                <td>{{ eventOffered.startTime|date('Y-m-d H:i:s') }}</td>
+                                <td>
+                                    <a data-toggle="modal" href="{{ path('appointment_notification_answer', { 'token': notifToken, 'answer': 1 }) }}" data-target="#myModal" class="btn btn-xs btn-success">Accepter ce rendez-vous!</a>
+                                </td>
+                                <td></td>
+                            </tr>
+                        {% endif %}
 
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h3 class="" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Rendez-vous à venir <span class="badge pull-right">{{ upcomingEvents|length }}</span>
-                            </h3>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                            <div class="panel-body">
-                                <table class="table table-striped">
-                                    <thead>
+                        {% if upcomingEvents|length %}
+                            {% for event in upcomingEvents %}
+
+                                {% if event.cancellation|length %}
+                                    <tr class="cancelled danger hide">
+                                {% else %}
                                     <tr>
-                                        <th>Nom</th>
-                                        <th>Date et heure du rendez-vous</th>
-                                        {#<th>Actions</th>#}
-                                    </tr>
-                                    </thead>
-                                    <tbody>
+                                {% endif %}
 
-                                    {% if eventOffered|length %}
-                                        <tr>
-                                            <td>{{ eventOffered.name }}</td>
-                                            <td>{{ eventOffered.startTime|date('Y-m-d H:i:s') }}</td>
-                                            <td>
-                                                <a data-toggle="modal" href="{{ path('appointment_notification_answer', { 'token': notifToken, 'answer': 1 }) }}" data-target="#myModal" class="btn btn-xs btn-success">Accepter ce rendez-vous!</a>
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                    {% endif %}
+                                {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
+                                <td>{{ event.name }}</td>
+                                <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
+                                <td>
+                                    {# <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-xs btn-success">View</a> #}
+                                    {# <a href="{{ path('event_edit', { 'id': event.id }) }}" class="btn btn-xs btn-default">Edit</a> #}
 
-                                    {% if upcomingEvents|length %}
-                                        {% for event in upcomingEvents %}
-
-                                            {% if event.cancellation|length %}
-                                                <tr class="cancelled danger hide">
-                                            {% else %}
-                                                <tr>
-                                            {% endif %}
-
-                                            {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
-                                            <td>{{ event.name }}</td>
-                                            <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
-                                            <td>
-                                                {# <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-xs btn-success">View</a> #}
-                                                {# <a href="{{ path('event_edit', { 'id': event.id }) }}" class="btn btn-xs btn-default">Edit</a> #}
-
-                                                {% if event.cancellation|length  %}
-                                                    <a data-toggle="modal" class="btn btn-xs btn-info">Rendez-vous annuler</a>
-                                                {% else %}
-                                                    <a data-toggle="modal" href="{{ path('event_cancel', { 'id': event.id }) }}" data-target="#myModal" class="btn btn-xs btn-danger">Annuler mon rendez-vous</a>
-                                                {% endif %}
-
-                                            </td>
-                                            </tr>
-                                            {% if event.cancellation|length  %}
-                                                <tr class="danger cancelled hide">
-                                                    <td style="padding-left: 15px; font-size: 10px;" colspan="3">
-                                                        Annulé: J'avais mal au ventre
-                                                    </td>
-                                                </tr>
-                                            {% endif %}
-                                        {% endfor %}
+                                    {% if event.cancellation|length  %}
+                                        <a data-toggle="modal" class="btn btn-xs btn-info">Rendez-vous annuler</a>
                                     {% else %}
-                                        <tr>
-                                            <td colspan="3">
-                                                Aucun rendez-vous à venir
-                                            </td>
-                                        </tr>
+                                        <a data-toggle="modal" href="{{ path('event_cancel', { 'id': event.id }) }}" data-target="#myModal" class="btn btn-xs btn-danger">Annuler mon rendez-vous</a>
                                     {% endif %}
 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                <span class="glyphicon glyphicon-folder-open btn-xs" aria-hidden="true"></span>  Historique des rendez-vous <span class="badge pull-right">{{ pastEvents|length }}</span>
-                            </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                            <div class="panel-body">
-
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Nom</th>
-                                        <th>Date et heure du rendez-vous</th>
-                                        {#<th>Actions</th>#}
+                                </td>
+                                </tr>
+                                {% if event.cancellation|length  %}
+                                    <tr class="danger cancelled hide">
+                                        <td style="padding-left: 15px; font-size: 10px;" colspan="3">
+                                            Annulé: J'avais mal au ventre
+                                        </td>
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% if pastEvents|length %}
-                                        {% for event in pastEvents %}
-                                            <tr>
-                                                {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
-                                                <td>{{ event.name }}</td>
-                                                <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
-                                                <td>
-                                                    {# <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-xs btn-success">View</a> #}
-                                                    {# <a href="{{ path('event_edit', { 'id': event.id }) }}" class="btn btn-xs btn-default">Edit</a> #}
-                                                    <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-xs btn-info">Note sur le rendez-vous</a>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% else %}
-                                        <tr>
-                                            <td colspan="3">
-                                                Vous n'avez jamais eu de rendez-vous.
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingThree">
-                            <h4 class="panel-title collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                <span class="glyphicon glyphicon-ban-circle btn-xs" aria-hidden="true"></span>  Annulations <span class="badge pull-right">{{ cancelledUpcomingEvents|length }}</span>
-                            </h4>
-                        </div>
-                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                            <div class="panel-body">
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">
+                                    Aucun rendez-vous à venir
+                                </td>
+                            </tr>
+                        {% endif %}
 
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Nom</th>
-                                        <th>Date et heure du rendez-vous</th>
-                                        <th>Raison</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% if cancelledUpcomingEvents|length %}
-                                        {% for event in cancelledUpcomingEvents %}
-                                            <tr class="danger">
-                                                {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
-                                                <td>{{ event.name }}</td>
-                                                <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
-                                                <td>
-                                                    {{ event.cancellation.reason }}
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% else %}
-                                        <tr>
-                                            <td colspan="3">
-                                                Vous n'avez jamais cancellé de rendez-vous!
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <span class="glyphicon glyphicon-folder-open btn-xs" aria-hidden="true"></span>  Historique des rendez-vous <span class="badge pull-right">{{ pastEvents|length }}</span>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
 
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Date et heure du rendez-vous</th>
+                            {#<th>Actions</th>#}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if pastEvents|length %}
+                            {% for event in pastEvents %}
+                                <tr>
+                                    {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
+                                    <td>{{ event.name }}</td>
+                                    <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
+                                    <td>
+                                        {# <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-xs btn-success">View</a> #}
+                                        {# <a href="{{ path('event_edit', { 'id': event.id }) }}" class="btn btn-xs btn-default">Edit</a> #}
+                                        <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-xs btn-info">Note sur le rendez-vous</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">
+                                    Vous n'avez jamais eu de rendez-vous.
+                                </td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingThree">
+                <h4 class="panel-title collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <span class="glyphicon glyphicon-ban-circle btn-xs" aria-hidden="true"></span>  Annulations <span class="badge pull-right">{{ cancelledUpcomingEvents|length }}</span>
+                </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Date et heure du rendez-vous</th>
+                            <th>Raison</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if cancelledUpcomingEvents|length %}
+                            {% for event in cancelledUpcomingEvents %}
+                                <tr class="danger">
+                                    {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
+                                    <td>{{ event.name }}</td>
+                                    <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
+                                    <td>
+                                        {{ event.cancellation.reason }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">
+                                    Vous n'avez jamais cancellé de rendez-vous!
+                                </td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-
 </div>

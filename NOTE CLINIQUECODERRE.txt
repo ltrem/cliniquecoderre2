@@ -70,7 +70,8 @@ TODO: Test AppointmentManager notification system's
                 - Après 30 minutes, envoyer une notification à la 3e personne de la liste
                 - Etc
 
-
+TODO: Prod
+    - Tester la génération de PDF
 
 TODO: Other todo's...
 -----------------------------------------------------------------------------------------------------

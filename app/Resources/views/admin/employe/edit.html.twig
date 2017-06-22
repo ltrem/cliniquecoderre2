@@ -35,7 +35,7 @@
                         <ul class="nav nav-pills pull-left" role="tablist" style="margin-bottom: 15px;">
                             <li role="presentation" class="active"><a href="#events" aria-controls="events" role="tab" data-toggle="tab">Rendez-vous</a></li>
                             <li role="presentation"><a href="#info" aria-controls="employe" role="tab" data-toggle="tab">Informations générales</a></li>
-                            <li role="presentation"><a href="#communications" aria-controls="communcations" role="tab" data-toggle="tab">Communications</a></li>
+                            <li role="presentation"><a href="#communications" aria-controls="communcations" role="tab" data-toggle="tab">Communications <span class="badge">{{ employe.communications|length }}</span></a></li>
                             <li role="presentation"><a href="#configurations" aria-controls="configurations" role="tab" data-toggle="tab">Configurations de l'horaire</a></li>
                         </ul>
                     </div>
@@ -258,7 +258,7 @@
                             </thead>
                             <tbody>
                             {% if employe.communications|length %}
-                                {% for communication in client.communications %}
+                                {% for communication in employe.communications %}
                                     <tr>
                                         <td>{{ communication.dateSent|date('Y-m-d H:i:s') }}</td>
                                         <td>{{ communication.title }}</td>
