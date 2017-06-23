@@ -2,38 +2,35 @@
 
 {% block body %}
 
-    <div id="steps_affix" class="" data-spy="affix" data-offset-top="100" style="background-color: white; width: 100%; top: 72px; z-index:1; padding-top: 10px;">
-        <div class="stepwizard-row setup-panel">
-            <ul class="nav navbar-nav ">
-                <li>
-                    <div class="stepwizard-step">
-                        <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
-                        <p>Étape 1</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="stepwizard-step">
-                        <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
-                        <p>Étape 2</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="stepwizard-step">
-                        <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
-                        <p>Étape 3</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-
     {{ form_start(form) }}
 
         <div class="page-header">
-            <h3>
-                {{ 'event.new'|trans }}
-            </h3>
+
+            <div id="steps_affix" class="" data-spy="affix" data-offset-top="100" style="background-color: white; width: 100%; top: 72px; z-index:1; padding-top: 10px;">
+                <div class="stepwizard-row setup-panel">
+                    <ul class="nav navbar-nav ">
+                        <li>
+                            <div class="stepwizard-step">
+                                <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+                                <p>Étape 1</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="stepwizard-step">
+                                <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                                <p>Étape 2</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="stepwizard-step">
+                                <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                                <p>Étape 3</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
 
         <div class="container">

@@ -85,7 +85,7 @@ class CalendarEventListener
 
             // Find if time is available from schedule
             $scheduleAvailability = $this->entityManager->getRepository('AppBundle:ScheduleBlock')->findAvailabilityBetweenDate(
-                $startDate,
+                new \DateTime('now'),
                 $endDate,
                 $schedule
             );
