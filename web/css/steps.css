@@ -17,7 +17,7 @@ body {
     filter: alpha(opacity=100) !important;
 }
 .stepwizard-row:before {
-    top: 14px;
+    top: 25px;
     bottom: 0;
     position: absolute;
     content: " ";

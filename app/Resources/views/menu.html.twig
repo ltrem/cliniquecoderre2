@@ -3,14 +3,10 @@
 <!-- Collect the nav links, forms, and other content for toggling -->
 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	<ul class="nav navbar-nav navbar-right">
-		<li class="hidden">
-			<a href="#page-top"></a>
-		</li>
-		<li>
-
+		<li class="{% if app.request.attributes.get('_route') == 'event_new' %}active{% endif %}">
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-				<a class="btn btn-success btn-sm pull-right" href="{{ path('event_new') }}">
-					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				<a href="{{ path('event_new') }}">
+					{# <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> #}
                     {{ 'event.new'|trans }}
 				</a>
 			{% else %}
@@ -18,17 +14,9 @@
                     {{ 'event.new'|trans }}
 				</a>
 			{% endif %}
-
-
 		</li>
-		<li class="dropdown">
-
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-				<li><a href="{{ path('user_profile') }}">Mon compte</a></li>
-            {% else %}
-				<a href="{{ path('security_login') }}">Mon compte</a>
-            {% endif %}
-
+		<li class="{% if app.request.attributes.get('_route') == 'user_profile' %}active{% endif %}">
+			<a href="{{ path('user_profile') }}">Mon compte</a>
 		</li>
 	</ul>
 </div>
