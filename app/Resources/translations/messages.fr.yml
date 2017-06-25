@@ -35,10 +35,10 @@ event:
         create:
             success: 'Vous avez un nouveau rendez-vous de scédulé!'
     new: 'Prendre un RENDEZ-VOUS!'
-    selectEmpty: 'Sélectionnez une disponibilité qui vous conviens'
+    selectEmpty: 'Sélectionnez une disponibilité qui vous convient'
     selectProfessional: 'Avec qui voulez-vous prendre un rendez-vous?'
-    selectReason: 'Quel est la raison de votre rendez-vous?'
-    create: 'Réserver mon rendez-vous'
+    selectReason: 'Quelle est la raison de votre rendez-vous?'
+    create: 'Réserver mon rendez-vous à '
     form:
         name: 'Nom'
         startTime: 'Date et heure du rendez-vous'

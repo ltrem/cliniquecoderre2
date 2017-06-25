@@ -1,6 +1,4 @@
-body {
-    margin-top:40px;
-}
+
 .stepwizard-step p {
     margin-top: 10px;
 }
@@ -39,4 +37,12 @@ body {
     font-size: 12px;
     line-height: 1.428571429;
     border-radius: 15px;
+}
+
+.new-appointment-steps.affix {
+    width: 100%;
+    position: fixed;
+    top: 51px;
+    z-index: 1;
+    background-color: white;
 }

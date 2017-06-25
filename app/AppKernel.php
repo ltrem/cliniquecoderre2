@@ -28,6 +28,8 @@ class AppKernel extends Kernel
             new ADesigns\CalendarBundle\ADesignsCalendarBundle(),
 
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
+
+            new Vresh\TwilioBundle\VreshTwilioBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -2,6 +2,7 @@
 TODO: CONFIGURATION - v1.0 cliniquecoderre.com
     1. php.ini
         date.timezone=America/Montreal
+        extension=php_intl.dll
     2. install wkhtmltopdf on the server/computer
         - https://wkhtmltopdf.org/downloads.html
 

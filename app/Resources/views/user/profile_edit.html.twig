@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ form_start(form, {'method': 'post', 'action': path('user_profile_edit'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+    {{ form_start(form, {'method': 'post', 'action': path('user_profile_edit'), 'attr': {'id': 'form_profile', 'class': 'fos_user_registration_register'}}) }}
 
     <div class="row">
         <div class="col-lg-10 col-lg-offset-1 col-xs-12">
@@ -113,57 +113,49 @@
             </div>
 
             <div class="col-xs-12">
-
                 <h3>{{ 'registration.yourprofile'|trans({}, 'messages') }}</h3>
-
-                <div class="col-sm-12">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                {{ form_label(form.email.first, 'registration.email.first', { 'label_attr': {'class': 'control-label'}}) }}
-                                {{ form_errors(form.email.first) }}
-                                {{ form_widget(form.email.first, { 'attr': {'class': 'form-control'} }) }}
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                {{ form_label(form.email.second, 'registration.email.second', { 'label_attr': {'class': 'control-label'}}) }}
-                                {{ form_errors(form.email.second) }}
-                                {{ form_widget(form.email.second, { 'attr': {'class': 'form-control'} }) }}
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="col-sm-12">
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                {{ form_label(form.plainPassword.first, 'registration.password.first', { 'label_attr': {'class': 'control-label'}}) }}
-                                {{ form_widget(form.plainPassword.first, { 'attr': {'class': 'form-control'} }) }}
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                {{ form_label(form.plainPassword.second, 'registration.password.second', { 'label_attr': {'class': 'control-label'}}) }}
-                                {{ form_widget(form.plainPassword.second, { 'attr': {'class': 'form-control'} }) }}
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12">
-                            {{ form_errors(form.plainPassword.first) }}
-                            {{ form_errors(form.plainPassword.second) }}
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
-        {{ form_rest(form) }}
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_label(form.email.first, 'registration.email.first', { 'label_attr': {'class': 'control-label'}}) }}
+                            {{ form_errors(form.email.first) }}
+                            {{ form_widget(form.email.first, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_label(form.email.second, 'registration.email.second', { 'label_attr': {'class': 'control-label'}}) }}
+                            {{ form_errors(form.email.second) }}
+                            {{ form_widget(form.email.second, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_label(form.plainPassword.first, 'registration.password.first', { 'label_attr': {'class': 'control-label'}}) }}
+                            {{ form_widget(form.plainPassword.first, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_label(form.plainPassword.second, 'registration.password.second', { 'label_attr': {'class': 'control-label'}}) }}
+                            {{ form_widget(form.plainPassword.second, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        {{ form_errors(form.plainPassword.first) }}
+                        {{ form_errors(form.plainPassword.second) }}
+                    </div>
+                </div>
+            </div>
+
+            {{ form_rest(form) }}
+
             <div class="col-xs-12">
                 <div class="row">
                     <div class="col-xs-4">
@@ -214,7 +206,32 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+
         $( document ).ready(function() {
+
+            // jQuery Validate
+            $('#form_profile').validate({
+                lang: 'fr',
+                highlight: function(element) {
+                    $(element).closest('.form-group').addClass('has-error');
+                },
+                unhighlight: function(element) {
+                    $(element).closest('.form-group').removeClass('has-error');
+                },
+                errorElement: 'span',
+                errorClass: 'help-block',
+                errorPlacement: function(error, element) {
+                    if(element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    } else {
+                        error.insertBefore(element);
+                    }
+                }
+            });
+
+
+
+
             $('.isPrimary').parent().hide();
         });
     </script>

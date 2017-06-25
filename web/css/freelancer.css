@@ -4,6 +4,7 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 body {
+    margin-top: 120px;
     font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     overflow-x: hidden;
 }
@@ -171,6 +172,18 @@ header .intro-text .skills {
     }
     .navbar-custom.affix .navbar-brand {
         font-size: 1.5em;
+    }
+
+    .navbar-steps {
+        padding: 25px 0;
+        -webkit-transition: padding 0.3s;
+        -moz-transition: padding 0.3s;
+        transition: padding 0.3s;
+        top: 100px;
+    }
+    .navbar-steps.affix {
+        top: 70px;
+        padding: 10px;
     }
 }
 section {

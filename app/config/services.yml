@@ -8,6 +8,11 @@ services:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
     app.security.login_form_authenticator:
         class: AppBundle\Security\LoginFormAuthenticator
         autowire: true
@@ -25,7 +30,7 @@ services:
 
     app.communication_mailer:
         class: AppBundle\Service\CommunicationMailerService
-        arguments: ['@mailer']
+        arguments: ['@mailer', '@twilio.api']
 
     app.appointment_subscriber:
         class: AppBundle\Subscriber\AppointmentSubscriber

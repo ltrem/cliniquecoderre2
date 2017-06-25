@@ -144,3 +144,14 @@ jmose_command_scheduler:
 
     # Doctrine manager
     doctrine_manager: default
+
+#Twilio
+vresh_twilio:
+    #(Required) Your Account SID from www.twilio.com/user/account
+    sid: 'AC01989260c8982df0eece8a5bdf1c8036'
+    #(Required) Your Auth Token from www.twilio.com/user/account
+    authToken: '46f952b9259621bb1a9ec2a264ffba3c'
+    #(Optional, default: '2010-04-01') Twilio API version
+    version: '2010-04-01'
+    #(Optional, default: 1) Number of times to retry failed requests
+    retryAttempts: 3

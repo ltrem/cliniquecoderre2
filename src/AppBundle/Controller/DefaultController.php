@@ -16,8 +16,6 @@ class DefaultController extends Controller
 
         if ($this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin_dashboard');
-        } else if ($this->isGranted('ROLE_CLIENT')) {
-            return $this->redirectToRoute('user_profile');
         }
 
         return $this->render('homepage.html.twig');

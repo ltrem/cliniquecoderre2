@@ -1,112 +1,119 @@
 {% extends 'base.html.twig' %}
 
+{% block header %}
+{% endblock %}
+
 {% block body %}
 
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'id': 'form_new_appointment'}}) }}
 
-        <div class="page-header">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-fixed-top navbar-steps" data-spy="affix" data-offset-top="25">
+            <div class="container">
+                <ul class="nav navbar-nav">
+                    <li class="steps-scroll nav-item">
+                        <a href="#step-1">Étape 1</a>
+                    </li>
+                    <li class="steps-scroll nav-item">
+                        <a href="#step-2">Étape 2</a>
+                    </li>
+                    <li class="steps-scroll nav-item">
+                        <a href="#step-3">Étape 3</a>
+                    </li>
+                    <li class="steps-scroll nav-item">
+                        <a href="#step-confirm">Confirmation</a>
+                    </li>
+                </ul>
+            </div><!-- /.container-fluid -->
+        </nav>
 
-            <div id="steps_affix" class="" data-spy="affix" data-offset-top="100" style="background-color: white; width: 100%; top: 72px; z-index:1; padding-top: 10px;">
-                <div class="stepwizard-row setup-panel">
-                    <ul class="nav navbar-nav ">
-                        <li>
-                            <div class="stepwizard-step">
-                                <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
-                                <p>Étape 1</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="stepwizard-step">
-                                <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
-                                <p>Étape 2</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="stepwizard-step">
-                                <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
-                                <p>Étape 3</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="container">
+        <div class="container" style="padding-top: 105px;">
             <div class="row">
-                <div class="col-sm-12 col-lg-6">
+                <div class="col-sm-12 steps-col" id="step-1">
 
-                    <label>{{ 'event.selectProfessional'|trans }}</label>
-                    <div class="row">
-
+                    <h4>Étape 1 : {{ 'event.selectProfessional'|trans }}</h4>
+                    <div class="row form-group">
                         {% if employes|length %}
                             {% for employe in employes %}
-                                <div class="col-xs-6">
+                                <div class="col-sm-3 col-xs-6">
                                     <div class="thumbnail employe-selector" data-employe-id="{{ employe.id }}">
                                         {% if employe.picture|length %}
-                                            <img src="{{ vich_uploader_asset(employe.picture, 'imageFile') }}" alt="Photo de l'employer" class="img-thumbnail" />
+                                            <img src="{{ vich_uploader_asset(employe.picture, 'imageFile') }}" alt="Photo de l'employer" class="img-thumbnail img-fluid" />
                                             <div class="caption">
-                                                <h3>
+                                                <h5>
                                                     {{ employe.firstname}} {{ employe.lastname }}
                                                     <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
-                                                </h3>
-                                                {# <button type="button" class="btn btn-primary" data-employe-id="{{ employe.id }}">{{ employe.firstname}} {{ employe.lastname }}</button> #}
+                                                </h5>
+                                            </div>
+                                        {% else %}
+                                            <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
+                                            <div class="caption">
+                                                <h5>
+                                                    {{ employe.firstname}} {{ employe.lastname }}
+                                                    <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
+                                                </h5>
                                             </div>
                                         {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}
                         {% endif %}
-                        <div class="hidden">
+                        <div style="display: none;">
                             {{ form_label(form.employe) }}
                             {{ form_errors(form.employe) }}
                             {{ form_widget(form.employe) }}
                         </div>
                     </div>
 
-                    <div class="row" style="padding-top: 10px">
-                        <div class="col-sm-12">
+                </div>
 
-                            <div class="client_event">
-                                {{ form_label(form.name) }}
+                <div class="col-sm-12 steps-col" id="step-2">
+
+                    <h4>Étape 2 : {{ form_label(form.name) }}</h4>
+
+                    <div class="row">
+                        <div class="col-sm-8 col-xs-12">
+
+                            <div class="client_event form-group">
                                 {{ form_errors(form.name) }}
                                 {{ form_widget(form.name) }}
                             </div>
 
                         </div>
-
-                        <div class="col-sm-12" style="padding-top: 20px;">
-                            <input class="btn btn-lg btn-success" type="submit" id="_submit" name="_submit" value="{{ 'event.create'|trans }}" />
-                        </div>
-
                     </div>
 
                 </div>
 
-                <div class="col-sm-12 col-lg-6">
+                <div class="col-sm-12 steps-col" id="step-3">
 
-                    <label>{{ 'event.selectEmpty'|trans }}</label>
+                    <h4>Étape 3 : <label class="control-label">{{ 'event.selectEmpty'|trans }}</label></h4>
+
                     {{ form_errors(form.startTime) }}
                     {{ form_widget(form.startTime) }}
 
+                    <div class="well form-group" style="position:relative">
+                        <div class="loading">Loading&#8230;</div>
+                        <div id="calendar-new-appointment"></div>
+                    </div>
+                </div>
 
-
-                    <div class="col-sm-12">
+                <div class="col-sm-12">
+                    <div style="padding: 20px 0px;">
                         {{ form_label(form.emergency) }}
                         {{ form_widget(form.emergency) }}
                     </div>
-
-
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="well" style="position:relative">
-                                <div class="loading">Loading&#8230;</div>
-                                {% include 'ADesignsCalendarBundle::calendar.html.twig' %}
-                            </div>
-                        </div>
-                    </div>
                 </div>
+
+
+                <div class="col-sm-12 steps-col" id="step-confirm">
+
+                    <h4>Confirmer</h4>
+
+                    <p>
+                        <input class="new-appointment-datetime-fullname btn btn-lg" type="submit" id="_submit" name="_submit" value="{{ 'event.create'|trans }}" />
+                    </p>
+                </div>
+
             </div>
         </div>
 
@@ -122,6 +129,60 @@
     <script>
         $( document ).ready(function() {
 
+            // jQuery Validate
+            $('#form_new_appointment').validate({
+                rules: {
+                    "event[startTime]": {
+                        required: true
+                    }
+                },
+                messages: {
+                    "event[startTime]": {
+                        required: "Vous devez absolument choisir une plage disponible."
+                    }
+                },
+                ignore: [],
+                lang: 'fr',
+                highlight: function(element) {
+
+                    // Add error class on Step
+                    $('a[href=#' + $(element).closest('.steps-col').attr('id') + ']').parent().addClass('has-error');
+
+                    // If no date selected remove btn-success on submit
+                    if ($('#event_startTime').val() == '') {
+                        $('.new-appointment-datetime-fullname').removeClass('btn-success');
+                    }
+
+                    $(element).closest('.steps-col').addClass('has-error');
+                },
+                unhighlight: function(element) {
+
+                    // Remove error class on Step
+                    $('a[href=#' + $(element).closest('.steps-col').attr('id') + ']').parent().removeClass('has-error');
+
+                    // If date selected add btn-success on submit
+                    if ($('#event_startTime').val() !== '') {
+                        $('.new-appointment-datetime-fullname').addClass('btn-success');
+                    }
+
+                    $(element).closest('.steps-col').removeClass('has-error');
+                },
+                errorElement: 'span',
+                errorClass: 'help-block',
+                errorPlacement: function(error, element) {
+                    error.insertAfter($(element).closest('.steps-col').find('h4'));
+                },
+                focusInvalid: false,
+                invalidHandler: function(form, validator) {
+                    if (!validator.numberOfInvalids())
+                        return;
+
+                    $('html, body').animate({
+                        scrollTop: $(validator.errorList[0].element.closest('.steps-col')).offset().top - 150
+                    }, 1000);
+                }
+            });
+
             $(document).on('click', '.employe-selector', function() {
 
                 // Show loading
@@ -135,13 +196,14 @@
                     $(this).addClass('alert-success');
 
                     // Reload event
-                    $.when( $('#calendar-holder').fullCalendar( 'refetchEvents' )).then(function(){
+                    $.when( $('#calendar-new-appointment').fullCalendar( 'refetchEvents' )).then(function(){
                         $('.loading').hide();
                     })
                 }
             });
+            $( ".employe-selector:first" ).trigger( "click" );
 
-            $('#calendar-holder').fullCalendar({
+            $('#calendar-new-appointment').fullCalendar({
                 lang: 'en',
                 weekends: false,
                 height: "auto",
@@ -230,10 +292,16 @@
                         starttime = moment(calEvent.start).format('YYYY-MM-DD HH:mm');
                         $('#event_startTime').val(starttime);
 
+                        $('.new-appointment-datetime-fullname').addClass('btn-success').val("{{ 'event.create'|trans }}" + moment($('#event_startTime').val()).format('HH:mm A - dddd D MMMM'));
+
                         $(this).addClass('myEvent');
+
+                        $('#form_new_appointment').valid();
+
                     } else {
                         alert('{{ 'event.error.notFree'|trans }}');
                         $('#event_startTime').val('');
+                        $('.new-appointment-datetime-fullname').removeClass('btn-success').val("{{ 'event.create'|trans }}");
                     }
                 },
                 viewRender: function(currentView){
@@ -267,6 +335,11 @@
                 }
             });
 
+            // Highlight the top nav as scrolling occurs
+            $('body').scrollspy({
+                target: '.navbar-steps',
+                offset: 151
+            });
         });
     </script>
 {% endblock %}

@@ -1,17 +1,44 @@
+/* Mobile CSS */
+@media only screen and (max-width: 768px) {
+    body {
+        margin-top: 30px;
+    }
+    .page-header h1 {
+        font-size: 16px !important;
+    }
+}
+
 .employe-selector {
     cursor: pointer;
 }
-.employe-selector:not(.alert-success) .glyphicon {
+.employe-selector:not(.alert-success) .glyphicon-ok {
     display: none;
+}
+.employe-selector .glyphicon-user {
+    font-size: 50px;
+}
+
+.steps-scroll.has-error a {
+    color: #a94442 !important;
+}
+.steps-col {
+    padding-bottom: 20px;
+}
+
+#calendar-new-appointment .fc-event {
+    margin: 1px;
+}
+#calendar-new-appointment .fc-title {
+    font-size: 16px;
 }
 
 /* Absolute Center Spinner */
 .loading {
     position: fixed;
-    z-index: 999;
+    z-index: 9999;
     height: 2em;
     width: 2em;
-    overflow: show;
+    overflow: auto;
     margin: auto;
     top: 0;
     left: 0;

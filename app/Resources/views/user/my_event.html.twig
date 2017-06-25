@@ -1,5 +1,5 @@
 
-<div role="tabpanel" class="tab-pane active" id="my_events">
+<div role="tabpanel" class="tab-pane active" id="rendezvous">
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingOne">
@@ -12,8 +12,8 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>Nom</th>
                             <th>Date et heure du rendez-vous</th>
+                            <th>Raison</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -21,8 +21,12 @@
 
                         {% if eventOffered|length %}
                             <tr>
+                                <td>
+                                    {{ eventOffered.startTime|date('H:i A') }}
+                                    -
+                                    {{ eventOffered.startTime|localizeddate('full', 'none', app.request.locale) }}
+                                </td>
                                 <td>{{ eventOffered.name }}</td>
-                                <td>{{ eventOffered.startTime|date('Y-m-d H:i:s') }}</td>
                                 <td>
                                     <a data-toggle="modal" href="{{ path('appointment_notification_answer', { 'token': notifToken, 'answer': 1 }) }}" data-target="#myModal" class="btn btn-xs btn-success">Accepter ce rendez-vous!</a>
                                 </td>
@@ -39,19 +43,18 @@
                                     <tr>
                                 {% endif %}
 
-                                {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
-                                <td>{{ event.name }}</td>
-                                <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
                                 <td>
-                                    {# <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-xs btn-success">View</a> #}
-                                    {# <a href="{{ path('event_edit', { 'id': event.id }) }}" class="btn btn-xs btn-default">Edit</a> #}
-
+                                    {{ event.startTime|date('H:i A') }}
+                                    -
+                                    {{ event.startTime|localizeddate('full', 'none', app.request.locale) }}
+                                </td>
+                                <td>{{ event.name }}</td>
+                                <td>
                                     {% if event.cancellation|length  %}
                                         <a data-toggle="modal" class="btn btn-xs btn-info">Rendez-vous annuler</a>
                                     {% else %}
-                                        <a data-toggle="modal" href="{{ path('event_cancel', { 'id': event.id }) }}" data-target="#myModal" class="btn btn-xs btn-danger">Annuler mon rendez-vous</a>
+                                        <a data-toggle="modal" href="{{ path('event_cancel', { 'id': event.id }) }}" data-target="#myModal" class="btn btn-xs btn-danger pull-right">Annuler mon rendez-vous</a>
                                     {% endif %}
-
                                 </td>
                                 </tr>
                                 {% if event.cancellation|length  %}
@@ -87,9 +90,9 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>Nom</th>
                             <th>Date et heure du rendez-vous</th>
-                            {#<th>Actions</th>#}
+                            <th>Raison</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -97,12 +100,16 @@
                             {% for event in pastEvents %}
                                 <tr>
                                     {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
+                                    <td>
+                                        {{ event.startTime|date('H:i A') }}
+                                        -
+                                        {{ event.startTime|localizeddate('full', 'none', app.request.locale) }}
+                                    </td>
                                     <td>{{ event.name }}</td>
-                                    <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
                                     <td>
                                         {# <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-xs btn-success">View</a> #}
                                         {# <a href="{{ path('event_edit', { 'id': event.id }) }}" class="btn btn-xs btn-default">Edit</a> #}
-                                        <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-xs btn-info">Note sur le rendez-vous</a>
+                                        <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-xs btn-info pull-right">Note sur le rendez-vous</a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -130,9 +137,9 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>Nom</th>
                             <th>Date et heure du rendez-vous</th>
-                            <th>Raison</th>
+                            <th>Rendez-vous</th>
+                            <th>Annulation</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -140,8 +147,12 @@
                             {% for event in cancelledUpcomingEvents %}
                                 <tr class="danger">
                                     {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
+                                    <td>
+                                        {{ event.startTime|date('H:i A') }}
+                                        -
+                                        {{ event.startTime|localizeddate('full', 'none', app.request.locale) }}
+                                    </td>
                                     <td>{{ event.name }}</td>
-                                    <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
                                     <td>
                                         {{ event.cancellation.reason }}
                                     </td>

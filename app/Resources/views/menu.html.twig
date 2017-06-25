@@ -4,16 +4,10 @@
 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	<ul class="nav navbar-nav navbar-right">
 		<li class="{% if app.request.attributes.get('_route') == 'event_new' %}active{% endif %}">
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-				<a href="{{ path('event_new') }}">
-					{# <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> #}
-                    {{ 'event.new'|trans }}
-				</a>
-			{% else %}
-				<a href="{{ path('security_login') }}">
-                    {{ 'event.new'|trans }}
-				</a>
-			{% endif %}
+			<a href="{{ path('event_new') }}">
+				{# <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> #}
+				{{ 'event.new'|trans }}
+			</a>
 		</li>
 		<li class="{% if app.request.attributes.get('_route') == 'user_profile' %}active{% endif %}">
 			<a href="{{ path('user_profile') }}">Mon compte</a>
