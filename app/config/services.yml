@@ -39,7 +39,7 @@ services:
             - { name: kernel.event_subscriber }
     app.appointment_manager:
         class: AppBundle\Manager\AppointmentManager
-        arguments: ['@doctrine.orm.entity_manager', '@templating', '@session', '@app.communication_mailer', '@libphonenumber.phone_number_util']
+        arguments: ['@doctrine.orm.entity_manager', '@templating', '@session', '@app.communication_mailer', '@libphonenumber.phone_number_util','@translator']
 
     app.schedule_manager:
         class: AppBundle\Manager\ScheduleManager

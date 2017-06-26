@@ -90,6 +90,10 @@ class UserController extends Controller
             throw new AccessDeniedException('This user does not have access to this sections.');
         }
 
+        if($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('admin_dashboard');
+        }
+
         $client = $user->getClient();
         if (!is_object($client) || !$client instanceof Client) {
             throw new AccessDeniedException('This client does not have access to this sections.');

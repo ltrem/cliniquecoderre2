@@ -13,6 +13,7 @@ use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class AppointmentManager {
 
@@ -21,14 +22,16 @@ class AppointmentManager {
     private $session;
     private $communicationMailer;
     private $phoneUtil;
+    private $translator;
 
-    public function __construct(EntityManager $entityManager, EngineInterface $template, Session $session, CommunicationMailerService $communicationMailerService, PhoneNumberUtil $phoneNumberUtil)
+    public function __construct(EntityManager $entityManager, EngineInterface $template, Session $session, CommunicationMailerService $communicationMailerService, PhoneNumberUtil $phoneNumberUtil, TranslatorInterface $translator)
     {
         $this->em = $entityManager;
         $this->template = $template;
         $this->session = $session;
         $this->communicationMailer = $communicationMailerService;
         $this->phoneUtil = $phoneNumberUtil;
+        $this->translator = $translator;
     }
 
     public function notifyClient(User $user, Event $appointment)
@@ -119,7 +122,12 @@ class AppointmentManager {
             $this->em->flush();
 
             // Add flash message
-            $this->session->getFlashBag()->add('notice', 'Vous avez confirmez votre nouveau rendez-vous qui ce tiendra le : '.$appointmentAvailabilityNotification->getEventFreed()->getStartTime()->format('d/m/Y H:i'));
+            $intl = new \IntlDateFormatter(\Locale::getDefault(), \IntlDateFormatter::FULL, \IntlDateFormatter::NONE);
+            $translated_message = $this->translator->trans('event.message.availability.confirmation', array(
+                '%time%' => $appointmentAvailabilityNotification->getEventFreed()->getStartTime()->format('H:ia'),
+                '%date%' => $intl->format($appointmentAvailabilityNotification->getEventFreed()->getStartTime())
+            ));
+            $this->session->getFlashBag()->add('notice', $translated_message);
 
             $this->em->getConnection()->commit();
         }

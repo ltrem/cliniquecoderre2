@@ -1,10 +1,18 @@
 /* Mobile CSS */
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 767px) {
     body {
-        margin-top: 30px;
+        margin-top: 60px;
     }
     .page-header h1 {
         font-size: 16px !important;
+    }
+    .container-steps {
+        padding-top: 155px;
+    }
+}
+@media only screen and (min-width: 768px) {
+    .container-steps {
+        padding-top: 105px;
     }
 }
 
@@ -15,6 +23,8 @@
     display: none;
 }
 .employe-selector .glyphicon-user {
+    padding-left: 15px;
+    padding-top: 15px;
     font-size: 50px;
 }
 

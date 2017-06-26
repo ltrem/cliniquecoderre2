@@ -26,9 +26,9 @@
                                     -
                                     {{ eventOffered.startTime|localizeddate('full', 'none', app.request.locale) }}
                                 </td>
-                                <td>{{ eventOffered.name }}</td>
+                                <td>Plage libéré</td>
                                 <td>
-                                    <a data-toggle="modal" href="{{ path('appointment_notification_answer', { 'token': notifToken, 'answer': 1 }) }}" data-target="#myModal" class="btn btn-xs btn-success">Accepter ce rendez-vous!</a>
+                                    <a data-toggle="modal" href="{{ path('appointment_notification_answer', { 'token': notifToken, 'answer': 1 }) }}" data-target="#myModal" class="btn btn-xs btn-success pull-right">Accepter ce rendez-vous!</a>
                                 </td>
                                 <td></td>
                             </tr>

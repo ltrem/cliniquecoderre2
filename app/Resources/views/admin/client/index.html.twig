@@ -90,6 +90,7 @@
                         #}
                         <td>
                             <a class="btn btn-xs btn-info" href="{{ path('admin_client_edit', { 'id': client.id }) }}">Modifier</a>
+                            <a class="btn btn-xs btn-default" href="{{ path('user_profile', {'_switch_user': client.user.username }) }}">Simuler</a>
                         </td>
                     </tr>
                 {% endfor %}

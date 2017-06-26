@@ -32,6 +32,8 @@ event:
         free: 'Disponible'
         reserved: 'Réservé'
     message:
+        availability:
+            confirmation: 'Vous avez confirmez votre nouveau rendez-vous qui ce tiendra à %time% le %date%.'
         create:
             success: 'Vous avez un nouveau rendez-vous de scédulé!'
     new: 'Prendre un RENDEZ-VOUS!'
@@ -50,11 +52,15 @@ event:
     error:
         notFree: 'Impossible de sélectionner une case déjà réservé!'
     availability:
+        email:
+            title: 'Voulez-vous ce rendez-vous?'
         question: 'Voulez-vous ce rendez-vous?'
         answer:
             yes: 'Oui, je veux ce rendez-vous.'
             no: 'Non, merci'
         submit: 'Accepter ce rendez-vous!'
+        warning: 'Vous avez un temps limités pour accepter ce rendez-vous.'
+        uncertain: 'Je ne sais pas...'
     cancellation:
         title: 'Annuler mon rendez-vous'
         submit: 'Je confirme vouloir annuler mon rendez-vous!'

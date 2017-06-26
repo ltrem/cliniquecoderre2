@@ -67,6 +67,7 @@
         <tbody>
         {%  if events|length %}
             {% for event in events %}
+
                 <tr>
                     <td><a href="{{ path('admin_event_edit', { 'id': event.id }) }}">{{ event.id }}</a></td>
                     <td>

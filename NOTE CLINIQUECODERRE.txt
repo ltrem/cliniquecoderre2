@@ -24,8 +24,13 @@ TODO: CONFIGURATION - v1.0 cliniquecoderre.com
         1. Add image to every employe
 
 
+TODO: Prod
+    - Tester la génération de PDF
+
 TODO: Faire le tour des courriels / messages
     - Voir tout les courriels et SMS envoyés par le système, les traduires et les testers.
+    - Implanter la logique d'utiliser un seul folder pour les mails (mail/***.twig) et utiliser les templates comme indiqué ici:
+        -http://alexandre-salome.fr/blog/Generate-Mails-With-Twig
 
 
 TODO: Recu d'assurance pour rendez-vous (création, modification, impression, envoi courriel)
@@ -35,24 +40,6 @@ TODO: Recu d'assurance pour rendez-vous (création, modification, impression, env
 	    - Modification / visualisation des reçus
 	    - Envoi des reçus par courriel
     	- Créer rapport de reçus
-
-
-TODO: Permettre au employé de créer un horaire
-        DONE - Permettre la modification d'un horaire
-        - Gérer l'affichage des plages horaires et des disponibilités
-            DONE - Horaire employé
-            DONE - Rendez-vous employé
-            DONE - Client nouveau rendez-vous
-
-
-TODO: Revoir le système de Modal (popup)
-    Un coup ouvert, le contenu reste là et les prochains popup ne s'initialise pas avec le bon contenu
-    Piste:
-
-    1. Changer la façon de faire et TOUJOURS faire un relad de la page après le submit du popup
-    2. Recharger le contenu du popup chaque fois qu'il est ouvert
-    3. Faire un modal (popup) pour chacunes des actions possible
-
 
 TODO: Test AppointmentManager notification system's
     TO TEST
@@ -71,8 +58,6 @@ TODO: Test AppointmentManager notification system's
                 - Après 30 minutes, envoyer une notification à la 3e personne de la liste
                 - Etc
 
-TODO: Prod
-    - Tester la génération de PDF
 
 TODO: Other todo's...
 -----------------------------------------------------------------------------------------------------
@@ -99,6 +84,22 @@ Mettre le site sur l'environnement de production
 
 DONE DEAL
 -----------------------------------------------------------------------------------------------------
+
+DONETODO: Permettre au employé de créer un horaire
+        DONE - Permettre la modification d'un horaire
+        DONE - Gérer l'affichage des plages horaires et des disponibilités
+            DONE - Horaire employé
+            DONE - Rendez-vous employé
+            DONE - Client nouveau rendez-vous
+DONETODO: Revoir le système de Modal (popup)
+    Un coup ouvert, le contenu reste là et les prochains popup ne s'initialise pas avec le bon contenu
+    Piste:
+
+    1. Changer la façon de faire et TOUJOURS faire un relad de la page après le submit du popup
+    2. Recharger le contenu du popup chaque fois qu'il est ouvert
+    3. Faire un modal (popup) pour chacunes des actions possible
+
+
 
 DONE - Réintégrer un calendrier / une facon de sélectionner les dates/heures du rendez-vous
 	DONE - Bloquer la sélection d'une plage horaire déjà Réservé

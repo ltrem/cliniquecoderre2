@@ -12,7 +12,13 @@
             <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
 
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <li class="pull-right"><a href="{{ path('security_logout') }}">Se déconnecter</a></li>
+
+                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                    <li class="pull-right"><a href="{{ path('admin_client', {'_switch_user': '_exit' }) }}">Se déconnecter</a></li>
+                {% else %}
+                    <li class="pull-right"><a href="{{ path('security_logout') }}">Se déconnecter</a></li>
+                {% endif %}
+
             {% endif %}
 
         </ul>

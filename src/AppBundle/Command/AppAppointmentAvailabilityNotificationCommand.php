@@ -34,24 +34,11 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
 
         $eventFreed = $em->getRepository('AppBundle:Event')->find($event_id);
 
-        // IT MIGHT BE FIXED, BUT TO BE TESTED PROFUSELY !
-        // FIX THIS
-        // FIX THIS
-        // FIX THIS
-        // FIX THIS
-        // FIX THIS
-
-            // Find if client are on emergency list, meaning:
-            // - Upcoming event scheduled
-            // - Not Cancelled
-            // - Without Notification for this event
-            $eligibleEmergency = $em->getRepository('AppBundle:Event')->findUpcomingEmergency();
-
-        // FIX THIS
-        // FIX THIS
-        // FIX THIS
-        // FIX THIS
-        // FIX THIS
+        // Find if client are on emergency list, meaning:
+        // - Upcoming event scheduled
+        // - Not Cancelled
+        // - Without Notification for this event
+        $eligibleEmergency = $em->getRepository('AppBundle:Event')->findUpcomingEmergency();
 
         // If eligibleEmergency is not null, and eventFreed is not expired, proceed with notification
         if ($eligibleEmergency !== null && $eventFreed->getEndTime() >= new \DateTime('now')) {
@@ -78,11 +65,10 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
             $communication->setEmail($user->getEmail());
             $communication->setPhone($phone_to_email);
             $communication->setDateSent(new \DateTime('now'));
-            $communication->setTitle('Voulez-vous le rendez-vous?');
-            $communication->setContent('Your call!');
+            $communication->setTitle($this->getContainer()->get('translator')->trans('event.availability.email.title'));
             $communication->setType('sms,email');
 
-            $notification_template= $this->getContainer()->get('templating')->render('event/appointment_notification_ajax.html.twig', array(
+            $notification_template= $this->getContainer()->get('templating')->render('event/email_appointment_notification.html.twig', array(
                 'availabilityNotificationYesUrl' => $this->getContainer()->get('router')->generate('appointment_notification_answer', array('token' => $token, 'answer' => 1), UrlGeneratorInterface::ABSOLUTE_URL),
                 'availabilityNotificationNoUrl' =>  $this->getContainer()->get('router')->generate('appointment_notification_answer', array('token' => $token, 'answer' => 0), UrlGeneratorInterface::ABSOLUTE_URL)
             ));
@@ -116,15 +102,8 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
             $scheduledCommand = $em->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')->find($schedule_command_id);
 
             if ($scheduledCommand !== null) {
-
                 $em->remove($scheduledCommand);
-
             }
-
-
-            // FIX THIS
-            // FIX THIS
-            // FIX THIS
         }
 
         //$output->writeln('Command result.');

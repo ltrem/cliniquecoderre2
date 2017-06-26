@@ -272,10 +272,10 @@ class EventController extends Controller
      */
     public function availabilityNotificationAnswerAction(Request $request, string $token, $answer)
     {
+        $em = $this->getDoctrine()->getManager();
 
         $availabilityNotification = '';
         if ($token) {
-            $em = $this->getDoctrine()->getManager();
             $availabilityNotification = $em->getRepository('AppBundle:AppointmentAvailabilityNotification')->findAppointmentAvailabilityFromToken($token);
         }
 
@@ -288,17 +288,45 @@ class EventController extends Controller
         ));
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
 
-            $em->getConnection()->beginTransaction();
-            $em->flush();
+        // Verify if it's an Ajax call
+        if($request->isXmlHttpRequest()) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em->getConnection()->beginTransaction();
+                $em->flush();
 
-            // Send a notice to every client that are waiting for an appointment
-            $this->get('event_dispatcher')->dispatch(AppointmentAvailabilityNotificationEvent::NAME, new AppointmentAvailabilityNotificationEvent($availabilityNotification));
+                // Send a notice to every client that are waiting for an appointment
+                $this->get('event_dispatcher')->dispatch(
+                    AppointmentAvailabilityNotificationEvent::NAME,
+                    new AppointmentAvailabilityNotificationEvent($availabilityNotification)
+                );
 
-            $em->getConnection()->commit();
+                $em->getConnection()->commit();
 
-            return $this->redirectToRoute('user_profile');
+                return new Response(json_encode(array('status'=>'success')));
+            }
+
+            return $this->render('event/ajax_appointment_notification_answer.html.twig', array(
+                'availabilityNotification' => $availabilityNotification,
+                'form' => $form->createView(),
+            ));
+
+        } else {
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $em->getConnection()->beginTransaction();
+                $em->flush();
+
+                // Send a notice to every client that are waiting for an appointment
+                $this->get('event_dispatcher')->dispatch(
+                    AppointmentAvailabilityNotificationEvent::NAME,
+                    new AppointmentAvailabilityNotificationEvent($availabilityNotification)
+                );
+
+                $em->getConnection()->commit();
+
+                return $this->redirectToRoute('user_profile');
+            }
         }
 
         return $this->render('event/appointment_notification_answer.html.twig', [
