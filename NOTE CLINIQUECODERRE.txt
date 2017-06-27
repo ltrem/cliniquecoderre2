@@ -62,8 +62,9 @@ TODO: Test AppointmentManager notification system's
 TODO: Other todo's...
 -----------------------------------------------------------------------------------------------------
 
-- Dans admin client et profil client
-	- Vérifier la confirmation de rendez-vous.
+- Vérifier la confirmation de rendez-vous
+    DONE - Dans profil client
+    - Dans admin client
 
 
 Vérifier pourquoi l'heure du rendez-vous ne s'arrondie pas (18:04, 12:35)
@@ -74,16 +75,15 @@ Ajout des Soft Delete
 
 Permettre de trier des clients avec leur "prochaine date de rendez-vous!"
 
-Ajuster la command d'envoi de courriel de rappel
-	- Programmer la commande sur un CRON : php bin/console scheduler:execute
-
-Mettre le site sur l'environnement de production
-
 
 
 
 DONE DEAL
 -----------------------------------------------------------------------------------------------------
+
+DONETODO: Mettre le site sur l'environnement de production
+DONETODO: Ajuster la command d'envoi de courriel de rappel
+	- Programmer la commande sur un CRON : php bin/console scheduler:execute
 
 DONETODO: Permettre au employé de créer un horaire
         DONE - Permettre la modification d'un horaire

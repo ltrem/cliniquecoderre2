@@ -134,7 +134,7 @@ class ClientController extends Controller
             $user = $form->getData();
             $user->setPlainPassword(random_bytes(10));
             $user->setResetPasswordToken($token);
-            $user->setResetPasswordDate(new \DateTime());
+            $user->setResetPasswordDate(null);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

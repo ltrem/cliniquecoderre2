@@ -104,7 +104,6 @@ class AppointmentManager {
 
     public function swapClientAppointmentAvailabilityAnswer(AppointmentAvailabilityNotification $appointmentAvailabilityNotification, Client $from_this_client, Client $to_this_client)
     {
-
         $eventExist = $this->em->getRepository('AppBundle:Event')->findOneBetweenDate($appointmentAvailabilityNotification->getEventFreed()->getStartTime(), $appointmentAvailabilityNotification->getEventFreed()->getEndTime());
 
         if ($eventExist === null) {

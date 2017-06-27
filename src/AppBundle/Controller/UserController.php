@@ -222,29 +222,20 @@ class UserController extends Controller
                         $communication = new Communication();
                         $communication->setType('email');
                         $communication->setDateSent(new \DateTime('now'));
-                        $communication->setTitle('Cr�ation de profil sur Cliniquecoderre.com');
+                        $communication->setTitle($this->get('translator')->trans('registration.emailConfirmation.subject'));
                         $communication->setContent($password_reset_template);
                         $communication->setEmail($user->getUsername());
 
                         $client->addCommunication($communication);
 
-                        // Communication sent
-                        // Send email
-                        $message = \Swift_Message::newInstance()
-                            ->setFrom('info@cliniquecoderre.com')
-                            ->setTo($communication->getEmail())
-                            ->setSubject(
-                                $communication->getTitle()
-                            )
-                            ->setBody(
-                                $communication->getContent(),
-                                'text/html'
-                            )
-                        ;
-                        $this->get('mailer')->send($message);
+                        // Send notification to user
+                        $this->get('app.communication_mailer')->sendCommunication($communication);
 
                         $em->flush();
 
+                        $this->addFlash('notice', $this->get('translator')->trans('registration.flash.password.reset'));
+
+                        return $this->redirectToRoute('homepage');
                     }
                 } else {
                     $this->addFlash('notice', 'Avez-vous bien inscrit votre courriel? : '. $email);
@@ -265,8 +256,6 @@ class UserController extends Controller
      */
     public function resetPasswordAction(Request $request, $token = null)
     {
-        $date = new \DateTime('now');
-
         $user = '';
         if ($token) {
             $em = $this->getDoctrine()->getManager();

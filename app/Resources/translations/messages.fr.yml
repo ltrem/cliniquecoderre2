@@ -69,6 +69,9 @@ event:
         date: 'Date du reçus d''assurance'
         submit: 'Enregistrer le reçus'
 registration:
+    flash:
+        password:
+            reset: 'Un courriel de réinitialisation à été envoyé!'
     title: 'Enregistrement'
     new:
         title: 'Entrez vos informations personnel pour vous inscrires'
@@ -87,6 +90,7 @@ registration:
         subject: 'Création de profil sur Cliniquecoderre.com'
         message: 'Veuillez confirmer votre inscription sur le site de rendez-vous de Cliniquecoderre.com'
         button: 'Cliquez ici pour terminer votre inscription!'
+
 
 communication:
     message:
