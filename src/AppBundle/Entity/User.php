@@ -74,6 +74,11 @@ class User implements UserInterface, \Serializable
      */
     private $resetPasswordDate;
 
+
+    public function __toString() {
+        return $this->getUsername();
+    }
+
     // Get Client associated to User
     public function getClient()
     {

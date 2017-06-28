@@ -1,0 +1,28 @@
+{% extends "@EasyAdmin/default/layout.html.twig" %}
+
+{% block body_javascript %}
+    <script>
+        $( document ).ready(function() {
+            $(".birthdate_datepicker").datetimepicker({
+                bootcssVer: 3,
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                minView: 'month',
+                fontAwesome: true,
+                language: 'fr'
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('plugin/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css') }}" />
+{% endblock %}
+
+{% block head_javascript %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('plugin/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugin/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.fr.js') }}"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+{% endblock %}

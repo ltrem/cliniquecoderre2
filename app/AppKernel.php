@@ -21,15 +21,12 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Misd\PhoneNumberBundle\MisdPhoneNumberBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
-
             new JMose\CommandSchedulerBundle\JMoseCommandSchedulerBundle(),
-
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new ADesigns\CalendarBundle\ADesignsCalendarBundle(),
-
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
-
             new Vresh\TwilioBundle\VreshTwilioBundle(),
+            new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

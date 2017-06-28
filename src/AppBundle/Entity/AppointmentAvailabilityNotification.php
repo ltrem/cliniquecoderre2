@@ -75,6 +75,9 @@ class AppointmentAvailabilityNotification
      */
     private $answer;
 
+    public function __toString() {
+        return (string) $this->getId();
+    }
 
     /**
      * Get id

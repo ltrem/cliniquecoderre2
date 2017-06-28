@@ -155,3 +155,26 @@ vresh_twilio:
     version: '2010-04-01'
     #(Optional, default: 1) Number of times to retry failed requests
     retryAttempts: 3
+
+#EasyAdminBundle
+easy_admin:
+    site_name: 'Cliniquecoderre.com'
+    list:
+        actions:
+            - { name: 'show', icon: 'search' }
+            - { name: 'edit', icon: 'pencil' }
+    entities:
+        Client:
+            class: AppBundle\Entity\Client
+            form:
+                fields:
+                    - firstname
+                    - lastname
+                    - { property: 'birthdate', type_options: { widget: 'single_text', format: 'yyyy-MM-dd', attr: {'class': 'birthdate_datepicker '} } }
+                    - gender
+                    - { property: 'coordinates', type: 'AppBundle\Form\CoordinateType' }
+                    - contacts
+                    - user
+                    - events
+        Event:
+            class: AppBundle\Entity\Event

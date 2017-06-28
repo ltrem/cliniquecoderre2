@@ -54,6 +54,10 @@ class EventCancellation
      */
     private $communication;
 
+    public function __toString() {
+        return (string) $this->getId();
+    }
+
     /**
      * Get id
      *

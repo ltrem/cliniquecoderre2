@@ -31,7 +31,8 @@
         "adesigns/calendar-bundle": "^1.1",
         "knplabs/knp-snappy-bundle": "^1.4",
         "twig/extensions": "^1.5",
-        "vresh/twilio-bundle": "^1.0"
+        "vresh/twilio-bundle": "^1.0",
+        "javiereguiluz/easyadmin-bundle": "^1.16"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

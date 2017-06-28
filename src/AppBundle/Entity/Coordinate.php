@@ -85,6 +85,10 @@ class Coordinate
      */
     protected $employe;
 
+    public function __toString() {
+        return (string) $this->getAddress();
+    }
+
     /**
      * Get id
      *

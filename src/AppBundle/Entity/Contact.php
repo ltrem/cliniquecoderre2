@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use libphonenumber\PhoneNumberUtil;
 
 /**
  * Contact
@@ -76,6 +77,14 @@ class Contact
      * @ORM\ManyToOne(targetEntity="Employe", inversedBy="contacts")
      */
     private $employe;
+
+    public function __toString() {
+        return (string) $this->getPhoneCell();
+        /*
+        $phoneUtil = new PhoneNumberUtil();
+        return $phoneUtil->format($this->getPhoneCell(), \libphonenumber\PhoneNumberFormat::E164);
+        */
+    }
 
     /**
      * Get id
