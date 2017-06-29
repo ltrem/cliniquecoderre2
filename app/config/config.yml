@@ -159,6 +159,11 @@ vresh_twilio:
 #EasyAdminBundle
 easy_admin:
     site_name: 'Cliniquecoderre.com'
+    design:
+        assets:
+            css: ['/plugin/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css']
+            js: ['/plugin/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js',
+            '/plugin/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.fr.js', '//:cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js']
     list:
         actions:
             - { name: 'show', icon: 'search' }
