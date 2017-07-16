@@ -2,8 +2,6 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Entity\Communication;
-use AppBundle\Entity\Event;
 use AppBundle\Entity\Client;
 use AppBundle\Entity\Contact;
 use AppBundle\Entity\Coordinate;
@@ -16,7 +14,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Admin controller.

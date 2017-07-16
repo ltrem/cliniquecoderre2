@@ -50,6 +50,12 @@ services:
         arguments: ['@app.client_manager']
         tags:
             - { name: kernel.event_subscriber }
+
+    app.easy_admin_subscriber:
+        class: AppBundle\Subscriber\EasyAdminSubscriber
+        tags:
+            - { name: kernel.event_subscriber }
+
     app.client_manager:
             class: AppBundle\Manager\ClientManager
             arguments: ['@doctrine.orm.entity_manager', '@templating', '@session', '@app.communication_mailer', '@libphonenumber.phone_number_util', '@router','@translator']

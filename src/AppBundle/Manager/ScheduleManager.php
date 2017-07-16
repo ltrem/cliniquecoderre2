@@ -1,6 +1,5 @@
 <?php
-namespace src\AppBundle\Manager;
-
+namespace AppBundle\Manager;
 
 use AppBundle\Entity\Schedule;
 use Doctrine\ORM\EntityManager;

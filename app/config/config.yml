@@ -160,26 +160,48 @@ vresh_twilio:
 easy_admin:
     site_name: 'Cliniquecoderre.com'
     design:
+        form_theme:
+          - horizontal
+          - easy_admin/_form_theme.html.twig
         assets:
             css: ['/plugin/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css']
-            js: ['/plugin/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js',
-            '/plugin/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.fr.js', '//:cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js']
+            js: [ '/plugin/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js', '/plugin/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.fr.js', '//:cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js']
     list:
         actions:
             - { name: 'show', icon: 'search' }
             - { name: 'edit', icon: 'pencil' }
     entities:
         Client:
+            controller: AppBundle\Controller\EasyAdmin\ClientController
             class: AppBundle\Entity\Client
-            form:
+            edit:
                 fields:
+                    - { type: 'group', css_class: 'col-sm-6', label: 'Information général' }
                     - firstname
                     - lastname
                     - { property: 'birthdate', type_options: { widget: 'single_text', format: 'yyyy-MM-dd', attr: {'class': 'birthdate_datepicker '} } }
                     - gender
-                    - { property: 'coordinates', type: 'AppBundle\Form\CoordinateType' }
-                    - contacts
-                    - user
-                    - events
+                    - { type: 'group', label: 'Contact', icon: 'phone',
+                        css_class: 'col-sm-6' }
+                    - { property: 'coordinates', type: collection, type_options: { entry_type: 'AppBundle\Form\CoordinateType', by_reference: false } }
+            new:
+                fields:
+                    - { type: 'group', css_class: 'col-sm-6', label: 'Information général' }
+                    - firstname
+                    - lastname
+                    - { property: 'birthdate', type_options: { widget: 'single_text', format: 'yyyy-MM-dd', attr: {'class': 'birthdate_datepicker '} } }
+                    - gender
+                    - { type: 'group', label: 'Contact', icon: 'phone',
+                        css_class: 'col-sm-6' }
+                    - { property: 'phoneCell', type: text, type_options: { mapped: false } }
+                    - { property: 'phoneCellCarrier', type: entity, type_options: { mapped: false, class: 'AppBundle\Entity\CellCarrier' } }
+                    - { property: 'coordinateAddress', type: text, type_options: { mapped: false } }
+                    - { property: 'coordinateCity', type: text, type_options: { mapped: false } }
+                    - { type: 'group', css_class: 'col-sm-6', label: 'Connexion' }
+                    - { property: 'email', type: text, type_options: { mapped: false } }
         Event:
             class: AppBundle\Entity\Event
+        Employe:
+            class: AppBundle\Entity\Employe
+        User:
+            class: AppBundle\Entity\User

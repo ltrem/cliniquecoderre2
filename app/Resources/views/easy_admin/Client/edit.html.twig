@@ -1,0 +1,22 @@
+{% extends '@EasyAdmin/default/edit.html.twig' %}
+
+{% block main %}
+    {% block entity_form %}
+
+        {{ form(form) }}
+
+    {% endblock entity_form %}
+{% endblock %}
+
+{# https://symfony.com/doc/current/form/form_customization.html#how-to-customize-a-collection-prototype #}
+    {% form_theme form _self %}
+    {% block _client_coordinates_entry_row %}
+        {% spaceless %}
+            {{ form_label(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+        {% endspaceless %}
+    {% endblock %}
+
+    {% block _client_coordinates_entry_label %}
+    {% endblock %}

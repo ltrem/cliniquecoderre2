@@ -79,6 +79,16 @@ class User implements UserInterface, \Serializable
         return $this->getUsername();
     }
 
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
     // Get Client associated to User
     public function getClient()
     {

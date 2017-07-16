@@ -200,9 +200,19 @@
             });
             $( ".employe-selector:first" ).trigger( "click" );
 
+            // Default date to start showing availability
+            var defaultDate = moment().add(1, 'day');
+            var currentTime = moment(new Date());
+            if (currentTime.isAfter(moment('9:00pm', 'h:mma'))) {
+                defaultDate = currentTime.add(1, 'day');
+                if ( currentTime.isSameOrAfter( moment().day(5) ) ) {
+                    defaultDate = moment().day(8);
+                }
+            }
+
             $('#calendar-new-appointment').fullCalendar({
-                lang: 'en',
-                weekends: false,
+                lang: 'fr',
+                weekends: true,
                 height: "auto",
                 allDaySlot: false,
                 header: {
@@ -213,7 +223,7 @@
                 slotMinutes: 15,
                 slotLabelFormat:"HH:mm a",
                 firstHour: 8,
-                defaultDate: moment().add(1, 'day'),
+                defaultDate: defaultDate,
                 /*columnFormat: 'ddd',
                 views: {
                     basic: {
@@ -302,9 +312,8 @@
                     }
                 },
                 viewRender: function(currentView){
-                    console.log(currentView);
 
-                    var minDate = moment().add(1, 'day').format('YYYY-MM-DD'),
+                    var minDate = moment().add(3, 'day').format('YYYY-MM-DD'),
                         // TODO: Configuration of "how far a client can take an appoinement
                         maxDate = moment().add(2, 'months').format('YYYY-MM-DD');
 
