@@ -24,7 +24,7 @@ class ContactType extends AbstractType
             ->add('phoneCell', PhoneNumberType::class, array(
                 'label' => 'client.phoneCell',
                 'default_region' => 'CA',
-                'format' => PhoneNumberFormat::NATIONAL
+                'format' => PhoneNumberFormat::NATIONAL,
             ))
             ->add('phoneCellCarrier', null, array(
                 'label' => 'client.phoneCellCarrier',

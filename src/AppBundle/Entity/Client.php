@@ -466,5 +466,13 @@ class Client
     {
         $this->picture = $picture;
     }
+
+    public function getEmail()
+    {
+        dump($this->user);
+        if ($this->user) {
+            return $this->user->getEmail();
+        }
+    }
 }
 

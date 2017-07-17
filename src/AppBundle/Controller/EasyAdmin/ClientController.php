@@ -6,7 +6,6 @@ use AppBundle\Entity\Contact;
 use AppBundle\Entity\Coordinate;
 use AppBundle\Entity\User;
 use AppBundle\Event\ClientCreatedEvent;
-use AppBundle\Form\UserProfileForm;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 
@@ -16,6 +15,12 @@ class ClientController extends BaseAdminController
     protected function newAction()
     {
         $entity = new Client();
+        $user = new User();
+        $coordinate = new Coordinate();
+        $contact = new Contact();
+        $coordinate->setIsPrimary(true);
+        $entity->addCoordinate($coordinate);
+        $entity->addContact($contact);
 
         $easyadmin = $this->request->attributes->get('easyadmin');
         $easyadmin['item'] = $entity;
@@ -32,18 +37,6 @@ class ClientController extends BaseAdminController
             // Get client from Form data
             $client = $newForm->getData();
 
-            // Create a new user and assign client, coordinate and contact to it
-            $user = new User();
-            $coordinate = new Coordinate();
-            $coordinate->setAddress($newForm->get('coordinateAddress')->getData());
-            $coordinate->setCity($newForm->get('coordinateCity')->getData());
-            $contact = new Contact();
-            $contact->setPhoneCell($this->container->get('libphonenumber.phone_number_util')->parse($newForm->get('phoneCell')->getData(), 'CA'));
-            $contact->setPhoneCellCarrier($newForm->get('phoneCellCarrier')->getData());
-
-            $coordinate->setIsPrimary(true);
-            $client->addCoordinate($coordinate);
-            $client->addContact($contact);
             $user->setClient($client);
 
             $this->dispatch(EasyAdminEvents::PRE_PERSIST, array('entity' => $entity));
@@ -143,21 +136,44 @@ class ClientController extends BaseAdminController
 
         $this->dispatch(EasyAdminEvents::POST_EDIT);
 
+
+        // TODO: Rethink this process... the entity CLient should already have these variable setted up.
+        if ($user = $entity->getUser()) {
+            // Appointment Availability Notification
+            $appointmentAvailabilityNotification = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:AppointmentAvailabilityNotification')->findAppointmentAvailabilityFromClient($user->getClient());
+            $notifToken = '';
+            $eventOffered = '';
+            if (null !== $appointmentAvailabilityNotification) {
+                $notifToken = $appointmentAvailabilityNotification->getToken();
+                $eventOffered = $appointmentAvailabilityNotification->getEventFreed();
+            }
+            // Past events
+            $pastEvents = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Event')->findPastEvents($user->getClient(), 7);
+            // Upcoming events
+            $upcomingEvents = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Event')->findUpcomingEvents($user->getClient());
+            // Upcoming and not cancelled events
+            $cancelledUpcomingEvents = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Event')->findCancelledUpcomingEvents($user->getClient());
+            // Find upcoming 7 next days
+            $events7days = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Event')->findXDaysUpcomingEvents(7);
+        }
+
         return $this->render($this->entity['templates']['edit'], array(
             'form' => $editForm->createView(),
             'entity_fields' => $fields,
             'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
+            'eventOffered' => $eventOffered,
+            'notifToken' => $notifToken,
+            'upcomingEvents' => $upcomingEvents,
+            'cancelledUpcomingEvents' => $cancelledUpcomingEvents,
+            'events7days' => $events7days,
+            'pastEvents' => $pastEvents,
         ));
     }
 
     public function createClientEntityFormBuilder(Client $entity, $view)
     {
         $formBuilder = parent::createEntityFormBuilder($entity, $view);
-
-        $formBuilder->remove('gender');
-        $coordinateForm = $formBuilder->get('coordinates');
-        $coordinateForm->remove('city');
 
         return $formBuilder;
     }

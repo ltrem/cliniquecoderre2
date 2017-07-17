@@ -43,11 +43,8 @@
         $(this).find(':submit').button('loading');
         var formSerialize = $(this).serialize();
         $.post($(this).attr('action'), formSerialize, function(response){
-
             //your callback here
-            $('.main-container').prepend(response.status);
-            $('#myModal').modal("toggle");
-
+            location.reload();
         },'JSON');
     });
 </script>

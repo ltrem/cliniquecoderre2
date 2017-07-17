@@ -1,5 +1,22 @@
 {% extends "@EasyAdmin/default/layout.html.twig" %}
 
+{% block body %}
+    {{ parent() }}
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block head_javascript %}
+    {{ parent() }}
+    {% include 'easy_admin/head_javascript.html.twig' %}
+{% endblock head_javascript %}
+
 {% block body_javascript %}
     <script>
         $( document ).ready(function() {
@@ -11,6 +28,41 @@
                 fontAwesome: true,
                 language: 'fr'
             });
+
+            // Fix to hide the isPrimary checkbox from CoordinateType field
+            $('.isPrimary').closest('.form-group').hide();
+
+            // # (tabs/pills) navigations
+            var hash = window.location.hash;
+            hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+
+            $('.nav-tabs-custom a').click(function (e) {
+                $(this).tab('show');
+                var scrollmem = $('body').scrollTop() || $('html').scrollTop();
+                window.location.hash = this.hash;
+                $('html,body').scrollTop(scrollmem);
+            });
+
+            // Empty modal content every time it is hidden
+            $(document).on('hidden.bs.modal', '.modal', function () {
+                var modalData = $(this).data('bs.modal');
+
+                // Destroy modal if has remote source – don't want to destroy modals with static content.
+                if (modalData && modalData.options.remote) {
+                    // Destroy component. Next time new component is created and loads fresh content
+                    $(this).removeData('bs.modal');
+                    // Also clear loaded content, otherwise it would flash before new one is loaded.
+                    $(this).find(".modal-content").empty();
+                }
+            });
+
+            // Select2
+            $('select[data-select="true"]').select2();
+
+            var url = document.location.toString();
+            if (url.match('#')) {
+                $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+            }
         });
     </script>
 {% endblock %}

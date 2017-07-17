@@ -7,7 +7,7 @@ jmose_command_scheduler:
     prefix:   /admin/dashboard/
 
 easy_admin_bundle:
-    resource: "@EasyAdminBundle/Controller/"
+    resource: "@AppBundle/Controller/EasyAdmin/AdminController.php"
     type:     annotation
     prefix:   /easyadmin
 

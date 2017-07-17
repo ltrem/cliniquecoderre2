@@ -1,0 +1,392 @@
+{% extends "@EasyAdmin/default/layout.html.twig" %}
+
+{% block content_title %}
+    Dashboard
+{% endblock %}
+
+{% block main %}
+        <div class="box box-primary">
+            <div class="box-body no-padding">
+                {% include 'ADesignsCalendarBundle::calendar.html.twig' %}
+            </div>
+        </div>
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Latest Orders</h3>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="table-responsive">
+                <table class="table no-margin">
+                    <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Item</th>
+                        <th>Status</th>
+                        <th>Popularity</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                        <td>Call of Duty IV</td>
+                        <td><span class="label label-success">Shipped</span></td>
+                        <td>
+                            <div class="sparkbar" data-color="#00a65a" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                        <td>Samsung Smart TV</td>
+                        <td><span class="label label-warning">Pending</span></td>
+                        <td>
+                            <div class="sparkbar" data-color="#f39c12" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                        <td>iPhone 6 Plus</td>
+                        <td><span class="label label-danger">Delivered</span></td>
+                        <td>
+                            <div class="sparkbar" data-color="#f56954" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                        <td>Samsung Smart TV</td>
+                        <td><span class="label label-info">Processing</span></td>
+                        <td>
+                            <div class="sparkbar" data-color="#00c0ef" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                        <td>Samsung Smart TV</td>
+                        <td><span class="label label-warning">Pending</span></td>
+                        <td>
+                            <div class="sparkbar" data-color="#f39c12" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                        <td>iPhone 6 Plus</td>
+                        <td><span class="label label-danger">Delivered</span></td>
+                        <td>
+                            <div class="sparkbar" data-color="#f56954" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                        <td>Call of Duty IV</td>
+                        <td><span class="label label-success">Shipped</span></td>
+                        <td>
+                            <div class="sparkbar" data-color="#00a65a" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer clearfix">
+            <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
+            <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+        </div>
+        <!-- /.box-footer -->
+    </div>
+{% endblock %}
+
+{% block head_javascript %}
+    {{ parent() }}
+    {% include 'easy_admin/head_javascript.html.twig' %}
+{% endblock head_javascript %}
+
+{% block body_javascript %}
+    {{ parent() }}
+
+    {# <script type="text/javascript" src="{{ asset('bundles/adesignscalendar/js/calendar-settings-admin.js') }}"></script> #}
+
+    <script type="text/javascript" src="{{ asset('js/fullCalendarScheduler.js') }}"></script>
+
+    <script>
+
+        $( document ).ready(function() {
+
+            // Reload calendar depending on tab opened
+            $('a[data-toggle="tab"][aria-controls="events"]').on('shown.bs.tab', function (e) {
+                $('#calendar-holder').fullCalendar('refetchEvents');
+                $('#calendar-holder').fullCalendar('render');
+            });
+            $('a[data-toggle="tab"][aria-controls="configurations"]').on('shown.bs.tab', function (e) {
+                $('#calendar-schedule').fullCalendarScheduler('render');
+            });
+            $('#myTab a:first').tab('show');
+
+            // Calendar Scheduler action
+            function deleteScheduleBlock(scheduleBlockId)
+            {
+                var schedule_block_id = parseInt(scheduleBlockId);
+
+                var response = false;
+
+                return $.ajax({
+                    dataType: "json",
+                    url: Routing.generate('admin_schedule_block_delete') + '/' + schedule_block_id,
+                    type: 'DELETE',
+                    success: function(result) {
+                        response = true;
+                    }
+                });
+            }
+            function addScheduleBlocks()
+            {
+                // newly created schedule block array
+                var newScheduleBlock = [];
+
+                // Clear schedule-blocks input
+                $('.schedule-blocks').html('');
+
+                // Append as many input as there are schedule block added
+                $('#calendar-schedule').fullCalendarScheduler('clientEvents').forEach(function(entry) {
+
+                    // Is the entry a new schedule block
+                    if (entry.id === 'new') {
+                        $('.schedule-blocks').append($('<input />').attr('class', 'new').attr('name', 'start[]').val(entry.start.format('YYYY-MM-DD HH:mm')));
+                        $('.schedule-blocks').append($('<input />').attr('class', 'new').attr('name', 'end[]').val(entry.end.format('YYYY-MM-DD HH:mm')));
+                        newScheduleBlock.push(entry);
+                        entry.id = 'notnew';
+                    }
+                });
+
+                // Serialize form and submit it over $.post
+                var formSerialize = $('#schedule_form').serializeArray();
+
+                // Submit form with post call
+                return $.post($('#schedule_form').attr('action'), formSerialize, function(response){
+
+                    // Assign schedule block id from response data
+                    response.data.forEach(function(id, index) {
+                        newScheduleBlock[index].id = 'schedule_block_' + id;
+                        newScheduleBlock[index].className[0] = 'schedule_block_' + id;
+                        newScheduleBlock[index].backgroundColor = 'green';
+                    });
+
+                    // Rerender event as green
+
+                },'JSON');
+            }
+
+            // Admin Appointment Calendar
+            $('#calendar-holder').fullCalendar({
+                locale: 'fr',
+                //hiddenDays: [0, 6],
+                height: "auto",
+                allDaySlot: false,
+                header: {
+                    left: 'prev, next',
+                    center: 'title',
+                    right: 'month, agendaWeek, agendaDay'
+                },
+                slotMinutes: 15,
+                minTime: "08:00:00",
+                maxTime: "20:00:00",
+                slotLabelFormat:"HH:mm a",
+                defaultView: 'agendaWeek',
+                eventSources: [
+                    {
+                        events: function(start, end, timezone, callback) {
+
+                            // Show loading
+                            $('.loading').show();
+
+                            $.ajax({
+                                url: Routing.generate('fullcalendar_loader'),
+                                type: 'POST',
+                                dataType: 'JSON',
+                                data: {
+                                    // our hypothetical feed requires UNIX timestamps
+                                    start: start.unix(),
+                                    end: end.unix(),
+                                    employe: {{ employe.id }},
+                                    isEmploye: true
+                                },
+                                success: function(data) {
+
+                                    var events = [];
+                                    $.each(data, function(index) {
+                                        events.push({
+                                            allDay: false,
+                                            backgroundColor: data[index].backgroundColor,
+                                            borderColor: data[index].borderColor,
+                                            className: data[index].className,
+                                            start: data[index].start,
+                                            end: data[index].end,
+                                            textColor: data[index].textColor,
+                                            title: data[index].title
+                                        });
+                                    });
+
+                                    $('.loading').hide();
+
+                                    callback(events);
+                                }
+                            });
+                        }
+                    }
+                ],
+                eventClick: function(calEvent, jsEvent, view) {
+
+                    {# TODO: Open modal to create new event #}
+                    // newEventModal();
+
+                    $('.myEvent').each(function() {
+                        $(this).removeClass('myEvent');
+                    });
+
+                    // change the border color just for fun
+                    if (!$(this).hasClass('unavailable')) {
+
+
+                        {# TODO: Open modal to edit the event #}
+                        // editEventModal();
+
+                        // Update Starttime in the form
+                        starttime = moment(calEvent.start).format('YYYY-MM-DD HH:mm');
+                        $('#event_startTime').val(starttime);
+
+                        $(this).addClass('myEvent');
+                    } else {
+                        alert('{{ 'event.error.notFree'|trans }}');
+                    }
+                },
+            });
+
+            // Admin Schedule Calendar
+            var calendar = $('#calendar-schedule');
+            calendar.fullCalendarScheduler({
+                allDaySlot: false,
+                defaultView: 'agendaWeek',
+                minTime: "08:00:00",
+                maxTime: "20:00:00",
+                slotLabelFormat:"HH:mm a",
+                lang: 'fr',
+                height: "auto",
+                nowIndicator: true,
+                selectable: true,
+                selectHelper: false,
+                selectOverlap: false,
+                eventOverlap: false,
+                editable: false,
+                expandThrough: false, // <------- false enables horizontal range selection
+                displayEventTime: true,
+                eventConstraint: {
+                    start: '08:00:00',
+                    end: '23:00:00'
+                },
+                eventClick: function(event, jsEvent) {
+
+                    var success = false;
+                    var event_id = false;
+
+                    // Submit form every time an action is taken
+                    if (event.id !== undefined && event.id !== 'notnew' || event.className[0] !== undefined) {
+                        if ( event.id !== undefined && event.id.indexOf('schedule_block_') !== -1) {
+                            event_id = event.id.replace('schedule_block_', '');
+                            //success = deleteScheduleBlock(event.id.replace('schedule_block_', ''));
+                        } else if (event.className[0].indexOf('schedule_block_') !== -1) {
+                            event_id = event.className[0].replace('schedule_block_', '');
+                            //success = deleteScheduleBlock(event.className[0].replace('schedule_block_', ''));
+                        }
+                    }
+
+                    if (event_id) {
+
+                        calendar.fullCalendar('removeEvents', event._id);
+                        deleteScheduleBlock(event_id);
+
+                    }
+                },
+                select: function(start, end) {
+                    var eventData = {
+                        start: start,
+                        end: end,
+                        id: 'new',
+                        backgroundColor: 'green'
+                    };
+
+                    calendar.fullCalendarScheduler('renderEvent', eventData, true);
+                    calendar.fullCalendarScheduler('unselect');
+
+                    // Submit form every time an action is taken
+                    addScheduleBlocks();
+
+                },
+                eventSources: [
+                    {
+                        events: function(start, end, timezone, callback) {
+
+                            // Show loading
+                            $('.loading').show();
+
+                            $.ajax({
+                                url: Routing.generate('fullcalendar_loader'),
+                                type: 'POST',
+                                dataType: 'JSON',
+                                data: {
+                                    // our hypothetical feed requires UNIX timestamps
+                                    start: start.unix(),
+                                    end: end.unix(),
+                                    isSchedule: true,
+                                    employe: {{ employe.id }}
+
+                                },
+                                success: function(data) {
+
+                                    var events = [];
+                                    $.each(data, function(index) {
+                                        events.push({
+                                            id: data[index].id,
+                                            allDay: false,
+                                            backgroundColor: data[index].backgroundColor,
+                                            borderColor: data[index].borderColor,
+                                            className: data[index].className,
+                                            end: data[index].end,
+                                            start: data[index].start,
+                                            textColor: data[index].textColor,
+                                            title: data[index].title,
+                                        });
+                                    });
+
+                                    $('.loading').hide();
+
+                                    callback(events);
+                                }
+                            });
+                        }
+                    }
+                ],
+                /*
+                 viewRender: function(currentView){
+                 if (currentView.start.format('YYYY') == currentView.end.format('YYYY')) {
+                 $('#schedule_name').val(currentView.start.format('Do MMM') + ' au ' + currentView.end.format('Do MMM YYYY'));
+                 } else {
+                 $('#schedule_name').val(currentView.start.format('Do MMM YYYY') + ' au ' + currentView.end.format('Do MMM YYYY'));
+                 }
+                 },
+                 */
+                eventAfterAllRender: function() {
+                    $('#schedule_name').val($('#calendar-schedule h2').html());
+                }
+            });
+
+        });
+    </script>
+
+{% endblock %}

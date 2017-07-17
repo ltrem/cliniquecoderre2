@@ -1,22 +1,241 @@
+{% set client = form.vars.data %}
+
 {% extends '@EasyAdmin/default/edit.html.twig' %}
 
-{% block main %}
     {% block entity_form %}
 
-        {{ form(form) }}
+            <div class="nav-tabs-custom">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist" style="margin-bottom: 15px;">
+                    <li role="presentation" class="active"><a href="#info" aria-controls="client" role="tab" data-toggle="tab">Informations générales</a></li>
+                    <li role="presentation"><a href="#events" aria-controls="events" role="tab" data-toggle="tab">Rendez-vous <span class="badge">{{ form.vars.data.events|length }}</span></a></li>
+                    <li role="presentation"><a href="#communications" aria-controls="communcations" role="tab" data-toggle="tab">Communications <span class="badge">{{ form.vars.data.communications|length }}</span></a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+
+                    {# Client #}
+                    <div role="tabpanel" class="tab-pane active" id="info">
+                        {{ form(form) }}
+                    </div>
+
+                    {# Appointments #}
+                    <div role="tabpanel" class="tab-pane" id="events">
+                        <div class="row">
+                            <div class="field-group col-xs-12">
+                                <div class="box box-default">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">
+                                            Rendez-vous à venir
+                                            <a data-toggle="modal" href="{{ path('admin_event_new', { 'client': client.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Créer un rendez-vous</a>
+                                        </h3>
+                                    </div>
+
+                                    <div class="box-body">
+
+                                        <div class="row">
+
+                                            <table class="table table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>Nom</th>
+                                                    <th>Date et heure du rendez-vous</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                {% if eventOffered|length %}
+                                                    <tr>
+                                                        <td>{{ eventOffered.name }}</td>
+                                                        <td>{{ eventOffered.startTime|date('Y-m-d H:i:s') }}</td>
+                                                        <td>
+                                                            <a data-toggle="modal" href="{{ path('appointment_notification_answer', { 'token': notifToken, 'answer': 1 }) }}" data-target="#myModal" class="btn btn-xs btn-success">Accepter ce rendez-vous!</a>
+                                                        </td>
+                                                        <td></td>
+                                                    </tr>
+                                                {% endif %}
+
+                                                {% if upcomingEvents|length %}
+                                                    {% for event in upcomingEvents %}
+
+                                                        {% if event.cancellation|length %}
+                                                            <tr class="cancelled danger hide">
+                                                        {% else %}
+                                                            <tr>
+                                                        {% endif %}
+                                                        {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
+                                                        <td>{{ event.name }}</td>
+                                                        <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
+                                                        <td>
+                                                            {% if event.cancellation|length  %}
+                                                                <a data-toggle="modal" class="btn btn-xs btn-info">Rendez-vous annuler</a>
+                                                            {% else %}
+                                                                <a data-toggle="modal" href="{{ path('event_cancel', { 'id': event.id }) }}" data-target="#myModal" class="btn btn-xs btn-danger">Annuler mon rendez-vous</a>
+                                                            {% endif %}
+                                                        </td>
+                                                        </tr>
+                                                        {% if event.cancellation|length  %}
+                                                            <tr class="danger cancelled hide">
+                                                                <td style="padding-left: 15px; font-size: 10px;" colspan="3">
+                                                                    Annulé: J'avais mal au ventre
+                                                                </td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <tr>
+                                                        <td colspan="3">
+                                                            Aucun rendez-vous à venir
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field-group col-xs-12">
+                                <div class="box box-default">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">
+                                            Rendez-vous passés
+                                        </h3>
+                                    </div>
+
+                                    <div class="box-body">
+
+                                        <div class="row">
+
+                                            <table class="table table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>Nom</th>
+                                                    <th>Date et heure du rendez-vous</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% if pastEvents|length %}
+                                                    {% for event in pastEvents %}
+                                                        <tr>
+                                                            {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
+                                                            <td>{{ event.name }}</td>
+                                                            <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
+                                                            <td>
+                                                                <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-xs btn-info">Note sur le rendez-vous</a>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <tr>
+                                                        <td colspan="3">
+                                                            Vous n'avez jamais eu de rendez-vous.
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="field-group col-xs-12">
+                                <div class="box box-default">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">
+                                            Rendez-vous annulé
+                                        </h3>
+                                    </div>
+
+                                    <div class="box-body">
+
+                                        <div class="row">
+
+                                            <table class="table table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>Nom</th>
+                                                    <th>Date et heure du rendez-vous</th>
+                                                    <th>Raison</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% if cancelledUpcomingEvents|length %}
+                                                    {% for event in cancelledUpcomingEvents %}
+                                                        <tr class="danger">
+                                                            {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
+                                                            <td>{{ event.name }}</td>
+                                                            <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
+                                                            <td>
+                                                                {{ event.cancellation.reason }}
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <tr>
+                                                        <td colspan="3">
+                                                            Vous n'avez jamais cancellé de rendez-vous!
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Communications #}
+                    <div role="tabpanel" class="tab-pane" id="communications">
+
+                        <div class="page-header">
+                            <h3>
+                                {{ 'admin.client.communications.title'|trans }}
+                                <a data-toggle="modal" href="{{ path('communication_new', { 'client': client.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Envoyer une communication</a>
+                            </h3>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Date d'envoi</th>
+                                <th>Envoyé à</th>
+                                <th>Titre</th>
+                                <th>Contenu de la communication</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if client.communications|length %}
+                                {% for communication in client.communications %}
+                                    <tr>
+                                        <td>{{ communication.dateSent|date('Y-m-d H:i:s') }}</td>
+                                        <td>{{ communication.email }}</td>
+                                        <td>{{ communication.title }}</td>
+                                        <td>{{ communication.content }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">
+                                        Aucune communication
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
 
     {% endblock entity_form %}
-{% endblock %}
-
-{# https://symfony.com/doc/current/form/form_customization.html#how-to-customize-a-collection-prototype #}
-    {% form_theme form _self %}
-    {% block _client_coordinates_entry_row %}
-        {% spaceless %}
-            {{ form_label(form) }}
-            {{ form_errors(form) }}
-            {{ form_widget(form) }}
-        {% endspaceless %}
-    {% endblock %}
-
-    {% block _client_coordinates_entry_label %}
-    {% endblock %}

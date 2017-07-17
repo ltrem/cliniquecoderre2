@@ -86,7 +86,7 @@ class Coordinate
     protected $employe;
 
     public function __toString() {
-        return (string) $this->getAddress();
+        return (string) implode([$this->getAddress(), $this->getCity(), $this->getProvince(), $this->getCountry()], ', ');
     }
 
     /**

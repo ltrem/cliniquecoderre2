@@ -80,10 +80,6 @@ class Contact
 
     public function __toString() {
         return (string) $this->getPhoneCell();
-        /*
-        $phoneUtil = new PhoneNumberUtil();
-        return $phoneUtil->format($this->getPhoneCell(), \libphonenumber\PhoneNumberFormat::E164);
-        */
     }
 
     /**

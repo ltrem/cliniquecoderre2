@@ -1,0 +1,4 @@
+/* FIX to hide the Field Label of the collection type */
+.collection_wrapper .field-collection > label:first-child {
+    display: none;
+}

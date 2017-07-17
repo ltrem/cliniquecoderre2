@@ -1,4 +1,22 @@
+{% block _client_coordinates_row %}
+    {{ block('form_widget') }}
+{% endblock %}
+
 {% block _client_coordinates_entry_row %}
+    {% spaceless %}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block _client_coordinates_entry_label %}
+{% endblock %}
+
+{% block _client_contacts_row %}
+    {{ block('form_widget') }}
+{% endblock %}
+
+{% block _client_contacts_entry_row %}
     {% spaceless %}
         {{ form_label(form) }}
         {{ form_errors(form) }}
@@ -6,5 +24,5 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block _client_coordinates_entry_label %}
+{% block _client_contacts_entry_label %}
 {% endblock %}
