@@ -4,56 +4,21 @@ namespace AppBundle\Controller\EasyAdmin;
 use AppBundle\Entity\Client;
 use AppBundle\Entity\Contact;
 use AppBundle\Entity\Coordinate;
+use AppBundle\Entity\Employe;
+use AppBundle\Entity\Event;
+use AppBundle\Entity\Schedule;
 use AppBundle\Entity\User;
 use AppBundle\Event\ClientCreatedEvent;
+use AppBundle\Form\ScheduleType;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 
-class ClientController extends BaseAdminController
+class EventController extends BaseAdminController
 {
-
-    /**
-     * This method overrides the default query builder used to search for this
-     * entity. This allows to make a more complex search joining related entities.
-     */
-    protected function createSearchQueryBuilder($entityClass, $searchQuery, array $searchableFields, $sortField = null, $sortDirection = null, $dqlFilter = null)
-    {
-        /* @var EntityManager */
-        $em = $this->getDoctrine()->getManagerForClass($this->entity['class']);
-        /* @var DoctrineQueryBuilder */
-        $queryBuilder = $em->createQueryBuilder()
-            ->select('entity')
-            ->from($this->entity['class'], 'entity')
-            ->join('entity.contacts', 'contacts')
-            ->join('entity.user', 'user')
-            ->orWhere('LOWER(contacts.phoneCell) LIKE :query')
-            ->orWhere('LOWER(user.email) LIKE :query')
-            ->orWhere('LOWER(entity.firstname) LIKE :query')
-            ->orWhere('LOWER(entity.lastname) LIKE :query')
-            ->orWhere('LOWER(entity.gender) LIKE :query')
-            ->setParameter('query', '%'.strtolower($searchQuery).'%')
-        ;
-
-        if (!empty($dqlFilter)) {
-            $queryBuilder->andWhere($dqlFilter);
-        }
-
-        if (null !== $sortField) {
-            $queryBuilder->orderBy('entity.'.$sortField, $sortDirection ?: 'DESC');
-        }
-
-        return $queryBuilder;
-    }
 
     protected function newAction()
     {
-        $entity = new Client();
-        $user = new User();
-        $coordinate = new Coordinate();
-        $contact = new Contact();
-        $coordinate->setIsPrimary(true);
-        $entity->addCoordinate($coordinate);
-        $entity->addContact($contact);
+        $entity = new Event();
 
         $easyadmin = $this->request->attributes->get('easyadmin');
         $easyadmin['item'] = $entity;
@@ -67,39 +32,31 @@ class ClientController extends BaseAdminController
 
         if ($newForm->isSubmitted() && $newForm->isValid()) {
 
-            // Get client from Form data
-            $client = $newForm->getData();
+            // Get event from Form data
+            $event = $newForm->getData();
 
-            $user->setClient($client);
+            $startTime = $event->getStartTime();
+            if ($startTime) {
+                // Round to nearest lowest hour
+                $startTime = new \DateTime($startTime->format("Y-m-d H:00:00"));
+                $event->setStartTime($startTime);
+
+                // Add 1 hour to endTime
+                $endTime = new \DateTime($startTime->format("Y-m-d H:00:00"));
+                $event->setEndTime($endTime->modify("+1 hour"));
+            }
 
             $this->dispatch(EasyAdminEvents::PRE_PERSIST, array('entity' => $entity));
 
-            // Assign ROLE_CLIENT
-            $roles = array('ROLE_CLIENT');
-            $user->setRoles($roles);
-
-            // Assign User to Client
-            $client = $user->getClient();
-            $client->setUser($user);
-
-            // Generate Token
-            $token = rtrim(strtr(base64_encode(openssl_random_pseudo_bytes(32)), '+/', '-_'), '=');
-
-            // Get User and assign password and token
-            $user->setEmail($newForm->get('email')->getData());
-            $user->setPlainPassword(random_bytes(10));
-            $user->setResetPasswordToken($token);
-            $user->setResetPasswordDate(null);
-
             $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
+            $em->persist($event);
             $em->getConnection()->beginTransaction();
             $em->flush();
 
-            // Send a notice to every client that are waiting for an appointment
-            $this->get('event_dispatcher')->dispatch(ClientCreatedEvent::NAME, new ClientCreatedEvent($user));
+            // Send a notice to the employe to notify of the user creation
+            //$this->get('event_dispatcher')->dispatch(ClientCreatedEvent::NAME, new ClientCreatedEvent($user));
 
-            $this->addFlash('notice', 'Welcome '.$user->getEmail());
+            $this->addFlash('notice', 'Welcome '. $user->getEmail());
 
             $em->getConnection()->commit();
 
@@ -169,42 +126,15 @@ class ClientController extends BaseAdminController
 
         $this->dispatch(EasyAdminEvents::POST_EDIT);
 
-
-        // TODO: Rethink this process... the entity CLient should already have these variable setted up.
-        if ($user = $entity->getUser()) {
-            // Event Availability Notification
-            $appointmentAvailabilityNotification = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:AppointmentAvailabilityNotification')->findAppointmentAvailabilityFromClient($user->getClient());
-            $notifToken = '';
-            $eventOffered = '';
-            if (null !== $appointmentAvailabilityNotification) {
-                $notifToken = $appointmentAvailabilityNotification->getToken();
-                $eventOffered = $appointmentAvailabilityNotification->getEventFreed();
-            }
-            // Past events
-            $pastEvents = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Event')->findPastEvents($user->getClient(), 7);
-            // Upcoming events
-            $upcomingEvents = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Event')->findUpcomingEvents($user->getClient());
-            // Upcoming and not cancelled events
-            $cancelledUpcomingEvents = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Event')->findCancelledUpcomingEvents($user->getClient());
-            // Find upcoming 7 next days
-            $events7days = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Event')->findXDaysUpcomingEvents(7);
-        }
-
         return $this->render($this->entity['templates']['edit'], array(
             'form' => $editForm->createView(),
             'entity_fields' => $fields,
             'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
-            'eventOffered' => $eventOffered,
-            'notifToken' => $notifToken,
-            'upcomingEvents' => $upcomingEvents,
-            'cancelledUpcomingEvents' => $cancelledUpcomingEvents,
-            'events7days' => $events7days,
-            'pastEvents' => $pastEvents,
         ));
     }
 
-    public function createClientEntityFormBuilder(Client $entity, $view)
+    public function createEventEntityFormBuilder(Event $entity, $view)
     {
         $formBuilder = parent::createEntityFormBuilder($entity, $view);
 

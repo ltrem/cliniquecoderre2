@@ -265,7 +265,7 @@ class EventController extends Controller
     }
 
     /**
-     * Answer from Appointment Availability Notification
+     * Answer from Event Availability Notification
      *
      * @Route("/proposition-de-rendez-vous/{token}/{answer}", name="appointment_notification_answer", defaults={"answer" = null})
      * @Method({"GET", "POST"})

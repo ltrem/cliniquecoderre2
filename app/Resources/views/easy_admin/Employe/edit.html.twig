@@ -1,66 +1,97 @@
-{% extends "@EasyAdmin/default/layout.html.twig" %}
+{% set employe = form.vars.data %}
 
-{% block content_title %}
-    Dashboard <small>Paneau de contrôle</small>
-{% endblock %}
+{% extends '@EasyAdmin/default/edit.html.twig' %}
 
-{% block main %}
-    <div class="row">
-        <div class="col-sm-9">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Votre horaire</h3>
-                </div>
-                <div class="box-body no-padding">
+    {% block entity_form %}
+
+        <div class="nav-tabs-custom">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist" style="margin-bottom: 15px;">
+                <li role="presentation" class="active"><a href="#events" aria-controls="events" role="tab" data-toggle="tab">Rendez-vous</a></li>
+                <li role="presentation"><a href="#info" aria-controls="employe" role="tab" data-toggle="tab">Informations générales</a></li>
+                <li role="presentation"><a href="#communications" aria-controls="communcations" role="tab" data-toggle="tab">Communications <span class="badge">{{ employe.communications|length }}</span></a></li>
+                <li role="presentation"><a href="#configurations" aria-controls="configurations" role="tab" data-toggle="tab">Configurations de l'horaire</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+
+
+                <div role="tabpanel" class="tab-pane active" id="events">
                     {% include 'ADesignsCalendarBundle::calendar.html.twig' %}
                 </div>
-            </div>
-        </div>
 
-        <div class="col-sm-3">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Nouveau rendez-vous</h3>
+                {# Employe #}
+                <div role="tabpanel" class="tab-pane" id="info">
+                    {{ form(form) }}
                 </div>
-                <!-- /.box-header -->
-                <!-- form start -->
-                <form role="form">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputFile">File input</label>
-                            <input type="file" id="exampleInputFile">
 
-                            <p class="help-block">Example block-level help text here.</p>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox"> Check me out
-                            </label>
-                        </div>
-                    </div>
-                    <!-- /.box-body -->
+                {# Communications #}
+                <div role="tabpanel" class="tab-pane" id="communications">
 
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="page-header">
+                        <h3>
+                            {{ 'admin.client.communications.title'|trans }}
+                            <a data-toggle="modal" href="{{ path('communication_new', { 'employe': employe.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Envoyer une communication</a>
+                        </h3>
+
                     </div>
-                </form>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Date d'envoi</th>
+                            <th>Titre</th>
+                            <th>Contenu de la communication</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if employe.communications|length %}
+                            {% for communication in employe.communications %}
+                                <tr>
+                                    <td>{{ communication.dateSent|date('Y-m-d H:i:s') }}</td>
+                                    <td>{{ communication.title }}</td>
+                                    <td>{{ communication.content }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4">
+                                    Aucune communication
+                                </td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+                {# Configuration #}
+                <div role="tabpanel"  class="tab-pane " id="configurations">
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
+                            <i class="fa fa-calendar"></i>
+                            <h3 class="box-title">Gestion des plages horaire</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div id="calendar-schedule"></div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+
             </div>
-        </div>
-    </div>
-{% endblock %}
 
-{% block head_javascript %}
-    {{ parent() }}
-    {% include 'easy_admin/head_javascript.html.twig' %}
-{% endblock head_javascript %}
+        </div>
+
+        {# HIDDEN SCHEDULE FORM #}
+        {{ form_start(schedule_form, {'method': 'post', 'action': path('admin_schedule_edit', { 'id': schedule.id }), 'attr': {'id': 'schedule_form'}}) }}
+        {{ form_widget(schedule_form) }}
+        <div class="schedule-blocks hidden"></div>
+        {{ form_end(schedule_form) }}
+
+    {% endblock entity_form %}
+
 
 {% block body_javascript %}
     {{ parent() }}
@@ -158,7 +189,7 @@
                         events: function(start, end, timezone, callback) {
 
                             // Show loading
-                            $('.loading').show();
+                            $("#main").LoadingOverlay("show");
 
                             $.ajax({
                                 url: Routing.generate('fullcalendar_loader'),
@@ -187,7 +218,7 @@
                                         });
                                     });
 
-                                    $('.loading').hide();
+                                    $("#main").LoadingOverlay("hide", true);
 
                                     callback(events);
                                 }
@@ -287,7 +318,7 @@
                         events: function(start, end, timezone, callback) {
 
                             // Show loading
-                            $('.loading').show();
+                            $("#main").LoadingOverlay("show");
 
                             $.ajax({
                                 url: Routing.generate('fullcalendar_loader'),
@@ -318,7 +349,7 @@
                                         });
                                     });
 
-                                    $('.loading').hide();
+                                    $("#main").LoadingOverlay("hide", true);
 
                                     callback(events);
                                 }
@@ -340,7 +371,27 @@
                 }
             });
 
+
+            $('.isPrimary').parent().hide();
+
+
+            // Used for popups calendar
+            // Render Schedule Calendar
+            //$('#myModal').on('shown.bs.modal', function () {
+            //    $("#calendar-schedule").fullCalendarScheduler('render');
+            //});
+
+            /*
+             $(document).on("click",".open_schedule_edit",function(e) {
+             e.preventDefault();
+
+             // Load .modal-content with ajax form
+             $('#myModal').find('.modal-content').load( $(this).attr('href'), function() {
+             // When content is loaded, show modal
+             $('#myModal').modal('show');
+             });
+             });
+             */
         });
     </script>
-
 {% endblock %}

@@ -88,13 +88,11 @@ knp_paginator:
 # Vich Uploader
 vich_uploader:
     db_driver: orm # or mongodb or propel or phpcr
-
     mappings:
         receipt:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /receipts_pdf
             upload_destination: '%kernel.root_dir%/../web/receipts_pdf'
-
             inject_on_load:     true
             delete_on_update:   true
             delete_on_remove:   true
@@ -102,7 +100,6 @@ vich_uploader:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /images
             upload_destination: '%kernel.root_dir%/../web/images'
-
             inject_on_load:     true
             delete_on_update:   true
             delete_on_remove:   true
@@ -160,6 +157,12 @@ vresh_twilio:
 easy_admin:
     site_name: 'Cliniquecoderre.com'
     design:
+        menu:
+            - { label: 'Dashboard' }
+            - { label: 'Accueil', icon: 'desktop', route: 'easyadmin', default: true }
+            - { entity: 'Client', icon: 'users', label: 'menu.client' }
+            - { entity: 'Employe', icon: 'users', label: 'menu.employe' }
+            - { entity: 'Event', icon: 'calendar', label: 'menu.appointment' }
         form_theme:
           - horizontal
           - easy_admin/_form_theme.html.twig
@@ -170,13 +173,23 @@ easy_admin:
             - { name: 'edit', icon: 'pencil' }
     entities:
         Client:
-            controller: AppBundle\Controller\EasyAdmin\ClientController
             class: AppBundle\Entity\Client
+            controller: AppBundle\Controller\EasyAdmin\ClientController
+            search:
+                sort: ['createdAt', 'DESC']
+            list:
+                fields:
+                    - { property: 'firstname', label: 'client.firstname' }
+                    - { property: 'lastname', label: 'client.lastname' }
+                    - { property: 'gender', label: 'client.gender' }
+                    - { property: 'user', label: 'client.email' }
+                    - { property: 'phonecell', label: 'general.info.phoneCell', template: 'easy_admin/field_phone.html.twig' }
+                    - { property: 'createdAt', label: 'admin.client.table.createdat' }
             form:
                 fields:
                     - { type: 'group', label: 'Information général', css_class: 'col-sm-6' }
-                    - firstname
-                    - lastname
+                    - { property: 'firstname', label: 'client.firstname' }
+                    - { property: 'lastname', label: 'client.lastname' }
                     - { property: 'birthdate', type_options: { widget: 'single_text', format: 'yyyy-MM-dd', attr: {'class': 'birthdate_datepicker '} } }
                     - { property: 'gender', type: 'choice', type_options: { placeholder: false, choices: { Homme:'Homme', Femme:'Femme' } } }
                     - { type: 'section', label: 'Adresse', icon: 'address-card' }
@@ -192,5 +205,42 @@ easy_admin:
                     - { property: 'email', type: 'text', type_options: { required: true, disabled: true, mapped: true} }
         Employe:
             class: AppBundle\Entity\Employe
+            controller: AppBundle\Controller\EasyAdmin\EmployeController
+            list:
+                fields:
+                    - { property: 'firstname', label: 'employe.firstname' }
+                    - { property: 'lastname', label: 'employe.lastname' }
+                    - { property: 'user', label: 'employe.email' }
+                    - { property: 'phonecell', label: 'general.info.phoneCell', template: 'easy_admin/field_phone.html.twig' }
+                    - { property: 'createdAt', label: 'admin.employe.table.createdat' }
+            form:
+                fields:
+                    - { type: 'group', label: 'Information général', css_class: 'col-sm-6' }
+                    - { property: 'firstname', label: 'employe.firstname' }
+                    - { property: 'lastname', label: 'employe.lastname' }
+                    - { property: 'birthdate', type_options: { widget: 'single_text', format: 'yyyy-MM-dd', attr: {'class': 'birthdate_datepicker '} } }
+                    - { property: 'gender', type: 'choice', type_options: { placeholder: false, choices: { Homme:'Homme', Femme:'Femme' } } }
+                    - { type: 'section', label: 'Adresse', icon: 'address-card' }
+                    - { property: 'coordinates', css_class: 'collection_wrapper', type: collection, type_options: { entry_type: 'AppBundle\Form\CoordinateType', allow_add: false, allow_delete: false, by_reference: false } }
+                    - { type: 'group', label: 'Information de contact', css_class: 'col-sm-6' }
+                    - { type: 'section', label: 'Usager', icon: 'user' }
+                    - { property: 'email', type: 'text', type_options: { required: true, mapped: false } }
+                    - { type: 'section', label: 'Contact', icon: 'phone' }
+                    - { property: 'contacts', css_class: 'collection_wrapper', type: collection, type_options: { entry_type: 'AppBundle\Form\ContactType', allow_add: false, allow_delete: false, by_reference: false } }
+            edit:
+                titles: 'New %%entity.firstname%%'
+                fields:
+                    - { property: 'email', type: 'text', type_options: { required: true, disabled: true, mapped: true} }
         Event:
             class: AppBundle\Entity\Event
+            controller: AppBundle\Controller\EasyAdmin\EventController
+            list:
+                fields:
+                    - { property: 'client', label: 'general.info.name' }
+                    - { property: 'startTime', label: 'admin.event.table.startTime' }
+                    - { property: 'emergency', label: 'admin.event.table.emergency', type: 'boolean' }
+            form:
+                fields:
+                    - { property: 'client' }
+                    - { property: 'employe' }
+                    - { property: 'startTime', type_options: { widget: 'single_text', format: 'yyyy-MM-dd hh:mm', attr: {'class': 'event_datetimepicker '} } }

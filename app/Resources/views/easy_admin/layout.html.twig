@@ -20,6 +20,10 @@
 {% block body_javascript %}
     <script>
         $( document ).ready(function() {
+
+            // Initialize inputmask
+            $(":input").inputmask();
+
             $(".birthdate_datepicker").datetimepicker({
                 bootcssVer: 3,
                 format: 'yyyy-mm-dd',
@@ -27,6 +31,18 @@
                 minView: 'month',
                 fontAwesome: true,
                 language: 'fr'
+            });
+
+            $(".event_datetimepicker").datetimepicker({
+                bootcssVer: 3,
+                format: 'yyyy-mm-dd hh:ii',
+                autoclose: true,
+                stepping: 60,
+                minView: 'day',
+                todayHighlight: true,
+                language: 'fr',
+                todayBtn: true,
+                {#pickerPosition: "bottom-left",#}
             });
 
             // Fix to hide the isPrimary checkbox from CoordinateType field

@@ -9,7 +9,7 @@ class AppointmentAvailabilityNotificationEvent extends Event {
     const NAME = "app.appointement_availability_notification";
 
     /*
-     * @var Appointment
+     * @var Event
      */
     private $appointment_notification;
 

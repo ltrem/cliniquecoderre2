@@ -1,0 +1,49 @@
+{% set event = form.vars.data %}
+
+{% extends '@EasyAdmin/default/edit.html.twig' %}
+
+    {% block entity_form %}
+
+        <div class="nav-tabs-custom">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist" style="margin-bottom: 15px;">
+                <li role="presentation" class="active"><a href="#info" aria-controls="events" role="tab" data-toggle="tab">Rendez-vous</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+
+                <h3>Reçus d'assurance <a data-toggle="modal" href="{{ path('admin_receipt_new', { 'id': event.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Créer un reçus d'assurance</a></h3>
+
+                {# Event #}
+                <div role="tabpanel" class="tab-pane active" id="info">
+                    {{ form(form) }}
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endblock entity_form %}
+
+
+{% block body_javascript %}
+    {{ parent() }}
+
+    <script>
+
+        $( document ).ready(function() {
+
+            // Reload calendar depending on tab opened
+            $('a[data-toggle="tab"][aria-controls="events"]').on('shown.bs.tab', function (e) {
+                $('#calendar-holder').fullCalendar('refetchEvents');
+                $('#calendar-holder').fullCalendar('render');
+            });
+            $('a[data-toggle="tab"][aria-controls="configurations"]').on('shown.bs.tab', function (e) {
+                $('#calendar-schedule').fullCalendarScheduler('render');
+            });
+            $('#myTab a:first').tab('show');
+
+        });
+    </script>
+{% endblock %}

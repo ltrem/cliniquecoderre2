@@ -65,7 +65,7 @@ class ReceiptController extends Controller
                 $newFile = new UploadedFile($filename, $filename, null, filesize($filename), false, true);
                 $receipt->setImageFile($newFile);
 
-                // Add receipt to Appointment
+                // Add receipt to Event
                 $event->addReceipt($receipt);
                 $em = $this->getDoctrine()->getManager();
 

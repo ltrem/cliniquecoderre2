@@ -117,7 +117,7 @@ class UserController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        // Appointment Availability Notification
+        // Event Availability Notification
         $appointmentAvailabilityNotification = $em->getRepository('AppBundle:AppointmentAvailabilityNotification')->findAppointmentAvailabilityFromClient($user->getClient());
         $notifToken = '';
         $eventOffered = '';
@@ -276,6 +276,7 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
             $user = $form->getData();
+            $user->setResetPasswordToken('');
 
             $em->persist($user);
             $em->flush();

@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 // TODO: Add new appointment availability validation mechanism
 
 /**
- * Admin Appointment Controller
+ * Admin Event Controller
  *
  * @Route("admin/event")
  */

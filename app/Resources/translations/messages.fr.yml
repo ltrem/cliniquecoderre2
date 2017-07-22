@@ -1,3 +1,7 @@
+menu:
+    employe: 'Employé'
+    client: 'Client'
+    appointment: 'Rendez-vous'
 references:
     weekday:
         1: 'Lundi'
@@ -112,6 +116,9 @@ admin:
         selectProfessional: 'Avec qui voulez-vous prendre un rendez-vous?'
         selectReason: 'Quel est la raison de votre rendez-vous?'
         create: 'Réserver mon rendez-vous'
+        table:
+            emergency: 'Urgence'
+            startTime: 'Date et heure du rendez-vous'
         form:
             name: 'Nom'
             startTime: 'Date et heure du rendez-vous'
@@ -188,6 +195,7 @@ profile:
 client:
     firstname: 'Prénom'
     lastname: 'Nom'
+    email: 'Courriel'
     address: 'Adresse complète'
     city: 'Ville'
     province: 'Province'
@@ -207,6 +215,7 @@ client:
 employe:
     firstname: 'Prénom'
     lastname: 'Nom'
+    email: 'Courriel'
     tag: 'Tag système'
     address: 'Adresse complète'
     city: 'Ville'

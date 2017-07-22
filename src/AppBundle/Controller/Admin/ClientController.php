@@ -165,7 +165,7 @@ class ClientController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         if ($user = $client->getUser()) {
-            // Appointment Availability Notification
+            // Event Availability Notification
             $appointmentAvailabilityNotification = $em->getRepository('AppBundle:AppointmentAvailabilityNotification')->findAppointmentAvailabilityFromClient($user->getClient());
             $notifToken = '';
             $eventOffered = '';

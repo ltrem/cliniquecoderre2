@@ -9,7 +9,7 @@ class AppointmentCancelledEvent extends Event {
     const NAME = "app.appointment_cancelled";
 
     /*
-     * @var Appointment
+     * @var Event
      */
     private $appointment;
 

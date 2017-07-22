@@ -127,6 +127,35 @@ class Employe
         return $this->firstname . ' ' . $this->lastname;
     }
 
+    public function getFullname() {
+        return implode(' ', array($this->firstname, $this->lastname));
+    }
+
+    public function getEmail()
+    {
+        if ($this->user) {
+            return $this->user->getEmail();
+        }
+    }
+
+    public function getPhoneCell() {
+        if ($this->contacts[0]) {
+            return $this->contacts[0]->getPhoneCell();
+        }
+    }
+
+    public function getPhoneHome() {
+        if ($this->contacts[0]) {
+            return $this->contacts[0]->getPhoneHome();
+        }
+    }
+
+    public function getPhoneWork() {
+        if ($this->contacts[0]) {
+            return $this->contacts[0]->getPhoneWork();
+        }
+    }
+
 
     /**
      * Get id
@@ -246,10 +275,6 @@ class Employe
         $this->lastname = $lastname;
 
         return $this;
-    }
-
-    public function getFullname() {
-        return $this->firstname . ' ' . $this->lastname;
     }
 
     /**

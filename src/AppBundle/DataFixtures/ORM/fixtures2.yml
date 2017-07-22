@@ -69,7 +69,7 @@ AppBundle\Entity\Event:
 
 JMose\CommandSchedulerBundle\Entity\ScheduledCommand:
     command_1:
-        name: Appointment Availability Notification - Event 2
+        name: Event Availability Notification - Event 2
         command: app:appointment_availability_notification
         arguments: --event_id=2 --schedule_command_id=1
         cronExpression: "* * * * *"

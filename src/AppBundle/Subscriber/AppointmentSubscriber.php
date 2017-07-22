@@ -26,7 +26,7 @@ class AppointmentSubscriber implements EventSubscriberInterface {
 
     public function onAppointmentCancel(AppointmentCancelledEvent $event) {
 
-        // Tell client that his Appointment have been cancelled
+        // Tell client that his Event have been cancelled
         {
             $user = $event->getAppointment()->getClient()->getUser();
             $appointment = $event->getAppointment();

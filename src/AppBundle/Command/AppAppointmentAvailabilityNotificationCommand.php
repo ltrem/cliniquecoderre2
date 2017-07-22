@@ -28,7 +28,7 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
 
-        // Get Appointment that was cancelled to notify about free space
+        // Get Event that was cancelled to notify about free space
         $event_id = $input->getOption('event_id');
         $schedule_command_id = $input->getOption('schedule_command_id');
 

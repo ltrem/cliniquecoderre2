@@ -94,7 +94,7 @@ AppBundle\Entity\Event:
 
 JMose\CommandSchedulerBundle\Entity\ScheduledCommand:
     command_1:
-        name: Appointment Availability Notification - Event 1
+        name: Event Availability Notification - Event 1
         command: app:appointment_availability_notification
         arguments: --event_id=1 --schedule_command_id=1
         cronExpression: "* * * * *"
@@ -153,32 +153,32 @@ AppBundle\Entity\Contact:
     contact_1:
         phoneCell: <phoneNumber()>
         phoneCellCarrier: "@cell_carrier_3"
-        phoneHome: 11
-        phoneWork: 11
+        phoneHome: <phoneNumber()>
+        phoneWork: <phoneNumber()>
         employe: "@employe_1"
     contact_2:
         phoneCell: <phoneNumber()>
         phoneCellCarrier: "@cell_carrier_3"
-        phoneHome: 11
-        phoneWork: 11
+        phoneHome: <phoneNumber()>
+        phoneWork: <phoneNumber()>
         employe: "@employe_2"
     contact_3:
         phoneCell: <phoneNumber()>
         phoneCellCarrier: "@cell_carrier_3"
-        phoneHome: 11
-        phoneWork: 11
+        phoneHome: <phoneNumber()>
+        phoneWork: <phoneNumber()>
         client: "@client_3"
     contact_4:
         phoneCell: <phoneNumber()>
         phoneCellCarrier: "@cell_carrier_3"
-        phoneHome: 11
-        phoneWork: 11
+        phoneHome: <phoneNumber()>
+        phoneWork: <phoneNumber()>
         client: "@client_4"
     contact_5:
         phoneCell: <phoneNumber()>
         phoneCellCarrier: "@cell_carrier_3"
-        phoneHome: 11
-        phoneWork: 11
+        phoneHome: <phoneNumber()>
+        phoneWork: <phoneNumber()>
         client: "@client_5"
 AppBundle\Entity\CellCarrier:
     cell_carrier_1:

@@ -25,16 +25,32 @@ class ContactType extends AbstractType
                 'label' => 'client.phoneCell',
                 'default_region' => 'CA',
                 'format' => PhoneNumberFormat::NATIONAL,
+                'attr' => array(
+                    'data-inputmask' => "\"mask\": \"1 (999) 999-9999\"",
+                    'data-mask' => '',
+                )
             ))
             ->add('phoneCellCarrier', null, array(
                 'label' => 'client.phoneCellCarrier',
             ))
-            ->add('phoneWork', TextType::class, array(
+            ->add('phoneWork', PhoneNumberType::class, array(
                 'label' => 'client.phoneWork',
+                'default_region' => 'CA',
+                'format' => PhoneNumberFormat::NATIONAL,
+                'attr' => array(
+                    'data-inputmask' => "\"mask\": \"1 (999) 999-9999\"",
+                    'data-mask' => '',
+                ),
                 'required'  => false
             ))
-            ->add('phoneHome', TextType::class, array(
+            ->add('phoneHome', PhoneNumberType::class, array(
                 'label' => 'client.phoneHome',
+                'default_region' => 'CA',
+                'format' => PhoneNumberFormat::NATIONAL,
+                'attr' => array(
+                    'data-inputmask' => "\"mask\": \"1 (999) 999-9999\"",
+                    'data-mask' => '',
+                ),
                 'required'  => false
             ));
     }

@@ -68,7 +68,7 @@ class AppointmentManager {
             $this->em->flush();
 
             // Add flash message
-            $this->session->getFlashBag()->add('notice', 'Appointment cancelled ' . $appointment->getName());
+            $this->session->getFlashBag()->add('notice', 'Event cancelled ' . $appointment->getName());
 
             // Send notification to user
             $this->communicationMailer->sendCommunication($communication);
@@ -85,7 +85,7 @@ class AppointmentManager {
 
         // Create a CRON that will handle notification
         $scheduledCommand = new ScheduledCommand();
-        $scheduledCommand->setName('Appointment Availability Notification - Event #' . $appointment->getId());
+        $scheduledCommand->setName('Event Availability Notification - Event #' . $appointment->getId());
         $scheduledCommand->setCommand('app:appointment_availability_notification');
         $scheduledCommand->setArguments('--event_id=' . $appointment->getId());
         //$scheduledCommand->setCronExpression('*/1 7-21 * * *');

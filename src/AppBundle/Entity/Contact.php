@@ -57,14 +57,14 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(name="phone_work", type="string", length=255, nullable=true)
+     * @ORM\Column(name="phone_work", type="phone_number", nullable=true)
      */
     private $phoneWork;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="phone_home", type="string", length=255, nullable=true)
+     * @ORM\Column(name="phone_home", type="phone_number", nullable=true)
      */
     private $phoneHome;
 

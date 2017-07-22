@@ -7,7 +7,8 @@ security:
 
     role_hierarchy:
         ROLE_CLIENT:      ROLE_USER
-        ROLE_ADMIN:       ROLE_USER, ROLE_CLIENT
+        ROLE_EMPLOYE:     ROLE_USER
+        ROLE_ADMIN:       ROLE_USER, ROLE_CLIENT, ROLE_EMPLOYE
         ROLE_SUPER_ADMIN: ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
