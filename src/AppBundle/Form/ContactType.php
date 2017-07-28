@@ -28,10 +28,12 @@ class ContactType extends AbstractType
                 'attr' => array(
                     'data-inputmask' => "\"mask\": \"1 (999) 999-9999\"",
                     'data-mask' => '',
-                )
+                    'class' => 'required'
+                ),
+                'required'  => true
             ))
             ->add('phoneCellCarrier', null, array(
-                'label' => 'client.phoneCellCarrier',
+                'label' => 'client.phoneCellCarrier'
             ))
             ->add('phoneWork', PhoneNumberType::class, array(
                 'label' => 'client.phoneWork',

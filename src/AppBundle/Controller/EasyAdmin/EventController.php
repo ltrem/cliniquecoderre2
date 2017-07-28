@@ -56,7 +56,7 @@ class EventController extends BaseAdminController
             // Send a notice to the employe to notify of the user creation
             //$this->get('event_dispatcher')->dispatch(ClientCreatedEvent::NAME, new ClientCreatedEvent($user));
 
-            $this->addFlash('notice', 'Welcome '. $user->getEmail());
+            $this->addFlash('success', 'Nouveau rendez-vous créée '. $event->getStartTime());
 
             $em->getConnection()->commit();
 
@@ -109,6 +109,7 @@ class EventController extends BaseAdminController
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
 
         $editForm->handleRequest($this->request);
+
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->dispatch(EasyAdminEvents::PRE_UPDATE, array('entity' => $entity));
 

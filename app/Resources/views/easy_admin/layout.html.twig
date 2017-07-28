@@ -21,6 +21,9 @@
     <script>
         $( document ).ready(function() {
 
+            // Select2
+            $('select[data-select="true"]').select2();
+
             // Initialize inputmask
             $(":input").inputmask();
 
@@ -33,6 +36,7 @@
                 language: 'fr'
             });
 
+            /* NOT FOR EVERYWHERE APPARENTLY
             $(".event_datetimepicker").datetimepicker({
                 bootcssVer: 3,
                 format: 'yyyy-mm-dd hh:ii',
@@ -43,7 +47,14 @@
                 language: 'fr',
                 todayBtn: true,
                 {#pickerPosition: "bottom-left",#}
+            })
+            .on('changeDate', function(ev){
+                starttime = moment(ev.date).startOf('hour').format('YYYY-MM-DD HH:mm');
+                endtime = moment(ev.date).add(1, 'hour').format('YYYY-MM-DD HH:mm');
+                $('#event_endTime').val(endtime);
+                $('#event_startTime').val(starttime);
             });
+            */
 
             // Fix to hide the isPrimary checkbox from CoordinateType field
             $('.isPrimary').closest('.form-group').hide();
@@ -71,9 +82,6 @@
                     $(this).find(".modal-content").empty();
                 }
             });
-
-            // Select2
-            $('select[data-select="true"]').select2();
 
             var url = document.location.toString();
             if (url.match('#')) {

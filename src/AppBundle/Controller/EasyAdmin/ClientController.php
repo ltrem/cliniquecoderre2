@@ -158,6 +158,8 @@ class ClientController extends BaseAdminController
             $this->executeDynamicMethod('preUpdate<EntityName>Entity', array($entity));
             $this->em->flush();
 
+            $this->addFlash('success', 'Welcome '.$entity->getEmail());
+
             $this->dispatch(EasyAdminEvents::POST_UPDATE, array('entity' => $entity));
 
             $refererUrl = $this->request->query->get('referer', '');

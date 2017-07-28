@@ -162,7 +162,11 @@ easy_admin:
             - { label: 'Accueil', icon: 'desktop', route: 'easyadmin', default: true }
             - { entity: 'Client', icon: 'users', label: 'menu.client' }
             - { entity: 'Employe', icon: 'users', label: 'menu.employe' }
-            - { entity: 'Event', icon: 'calendar', label: 'menu.appointment' }
+            - label: 'Horaire'
+              icon: 'calendar'
+              children:
+                - { entity: 'Event', icon: 'calendar', label: 'menu.appointment' }
+            #- { entity: 'Event', label: 'menu.appointment_new', icon: 'calendar-plus-o', params: { action: 'new' } }
         form_theme:
           - horizontal
           - easy_admin/_form_theme.html.twig
@@ -196,9 +200,9 @@ easy_admin:
                     - { property: 'coordinates', css_class: 'collection_wrapper', type: collection, type_options: { entry_type: 'AppBundle\Form\CoordinateType', allow_add: false, allow_delete: false, by_reference: false } }
                     - { type: 'group', label: 'Information de contact', css_class: 'col-sm-6' }
                     - { type: 'section', label: 'Usager', icon: 'user' }
-                    - { property: 'email', type: 'text', type_options: { required: true, mapped: false } }
+                    - { property: 'email', type: 'email', type_options: { required: true, mapped: false } }
                     - { type: 'section', label: 'Contact', icon: 'phone' }
-                    - { property: 'contacts', css_class: 'collection_wrapper', type: collection, type_options: { entry_type: 'AppBundle\Form\ContactType', allow_add: false, allow_delete: false, by_reference: false } }
+                    - { property: 'contacts', css_class: 'collection_wrapper', type: collection, type_options: { entry_type: 'AppBundle\Form\ContactType', allow_add: false, allow_delete: false, by_reference: false, required: true } }
             edit:
                 titles: 'New %%entity.firstname%%'
                 fields:
@@ -241,6 +245,7 @@ easy_admin:
                     - { property: 'emergency', label: 'admin.event.table.emergency', type: 'boolean' }
             form:
                 fields:
+                    - { property: 'name' }
                     - { property: 'client' }
                     - { property: 'employe' }
-                    - { property: 'startTime', type_options: { widget: 'single_text', format: 'yyyy-MM-dd hh:mm', attr: {'class': 'event_datetimepicker '} } }
+                    - { property: 'startTime', type_options: { widget: 'single_text', format: 'yyyy-MM-dd HH:mm', html5: false, attr: {'class': 'event_datetimepicker '} } }

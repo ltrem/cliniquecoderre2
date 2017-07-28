@@ -7,6 +7,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,15 +18,18 @@ class AdminAppointmentType extends AbstractType
     {
         $builder
             ->add('client', EntityType::class, array(
-                'class' => 'AppBundle\Entity\Client',
-                'required' => true,
+                'class'  => 'AppBundle:Client',
+                'choice_label'  => 'fullname',
+                'required'  => true,
+                'attr' => ['data-select' => 'true']
             ))
             ->add('employe', EntityType::class, array(
-                'class' => 'AppBundle\Entity\Employe',
-                'required' => true,
-                //'expanded' => true,
+                'class'  => 'AppBundle:Employe',
+                'choice_label'  => 'fullname',
+                'required'  => true,
+                'attr' => ['data-select' => 'true']
             ))
-            ->add('name', TextType::class, array(
+            ->add('name', TextareaType::class, array(
                 'label' => 'admin.event.selectReason',
             ))
             ->add('emergency', CheckboxType::class, array(

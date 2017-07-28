@@ -59,6 +59,7 @@ class Event
      * @var \DateTime
      *
      * @ORM\Column(name="startTime", type="datetime", nullable=false)
+     *
      */
     private $startTime;
 

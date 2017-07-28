@@ -2,6 +2,7 @@
 namespace AppBundle\Controller\EasyAdmin;
 
 use AppBundle\Entity\User;
+use AppBundle\Form\AdminAppointmentType;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,9 +27,14 @@ class AdminController extends BaseAdminController
 
         $this->initialize($request);
 
+        // Get form
+        $form_event = $this->createForm(AdminAppointmentType::class);
+
         if (null === $request->query->get('entity')) {
+
             return $this->render('easy_admin/dashboard.html.twig', array(
-                'employe' => $user->getEmploye()
+                'employe' => $user->getEmploye(),
+                'form_event' => $form_event->createView(),
             ));
         }
 

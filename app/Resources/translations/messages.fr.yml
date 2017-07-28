@@ -2,6 +2,7 @@ menu:
     employe: 'Employé'
     client: 'Client'
     appointment: 'Rendez-vous'
+    appointment_new: 'Créer rendez-vous'
 references:
     weekday:
         1: 'Lundi'
@@ -114,7 +115,7 @@ admin:
                 success: 'Vous avez un nouveau rendez-vous de scédulé!'
         selectEmpty: 'Une de ces dates vous convient-elle?'
         selectProfessional: 'Avec qui voulez-vous prendre un rendez-vous?'
-        selectReason: 'Quel est la raison de votre rendez-vous?'
+        selectReason: 'Raison du rendez-vous?'
         create: 'Réserver mon rendez-vous'
         table:
             emergency: 'Urgence'
@@ -122,11 +123,12 @@ admin:
         form:
             name: 'Nom'
             startTime: 'Date et heure du rendez-vous'
+
             reason: 'Raison'
             endTime: 'Fin'
             categories: 'Catégories'
             cancellationReason: 'Pourquoi voulez-vous annuler votre rendez-vous?'
-            emergency: 'Me prévenir si une plage horaire ce libère'
+            emergency: 'Urgence'
         error:
             notFree: 'Impossible de sélectionner une case déjà réservé!'
         filter:
@@ -138,6 +140,7 @@ admin:
         new:
             title: 'Nouveau RENDEZ-VOUS'
             submit: 'Créer le rendez-vous'
+            exist: 'Impossible de créer le rendez-vous'
         edit:
             title: 'Modifier les informations du rendez-vous'
             success: 'Le rendez-vous à été modifié avec succès!'

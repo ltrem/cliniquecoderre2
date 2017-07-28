@@ -127,19 +127,35 @@ class AppointmentController extends Controller
             $event->setEndTime($endTime->modify("+1 hour"));
         }
 
-
         // Verify if it's an Ajax call
         if($request->isXmlHttpRequest()) {
 
             if ($form->isSubmitted() && $form->isValid()) {
+
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($event);
-                $em->flush();
+                // Validate event doesn't exist before adding it
+                $exist = $em->getRepository('AppBundle:Event')->findOneByEmployeBetweenDate($event->getEmploye(), $event->getStartTime(), $event->getEndTime());
+                if (!$exist) {
+                    $em->persist($event);
+                    $em->flush();
 
-                $flash_message = $this->renderView('flash_message.html.twig', array(
-                    'flash_message' => $this->get('translator')->trans('admin.event.edit.success')
-                ));
-
+                    $flash_message = true;
+                    $this->addFlash(
+                        'success',
+                        $this->get('translator')->trans('admin.event.edit.success')
+                    );
+                    /*
+                    $flash_message = $this->renderView('flash_message.html.twig', array(
+                        'flash_message' => $this->get('translator')->trans('admin.event.edit.success')
+                    ));
+                    */
+                } else {
+                    $flash_message = true;
+                    $this->addFlash(
+                        'danger',
+                        $this->get('translator')->trans('admin.event.new.exist')
+                    );
+                }
 
                 //return $this->redirectToRoute('admin_event');
                 return new Response(json_encode(array('status'=> $flash_message)));
