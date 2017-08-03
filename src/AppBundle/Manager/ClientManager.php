@@ -70,7 +70,7 @@ class ClientManager {
         //$this->session->getFlashBag()->add('notice', 'Event cancelled ' . $appointment->getName());
 
         // Send notification to user
-        $this->communicationMailer->sendCommunication($communication);
+        $this->communicationMailer->send($communication);
 
         $this->em->getConnection()->commit();
 

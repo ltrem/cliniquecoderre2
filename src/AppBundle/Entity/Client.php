@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
 
 /**
  * Client
@@ -86,7 +88,7 @@ class Client
     private $coordinates;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Communication", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Communication", mappedBy="clients", cascade={"persist"})
      * @ORM\JoinTable(name="client_communication")
      */
     private $communications;
@@ -116,7 +118,13 @@ class Client
     }
 
     public function __toString() {
-        return $this->firstname . ' ' . $this->lastname;
+        return implode(' ', array($this->firstname, $this->lastname));
+    }
+
+    public function getFullNameEmailPhoneToString() {
+        $util = PhoneNumberUtil::getInstance();
+        $phone = $util->format($this->getPhoneCell(), PhoneNumberFormat::NATIONAL);
+        return implode(' ', array($this->firstname, $this->lastname, '('.$this->getEmail().')', '('.$phone.')'));
     }
 
     public function getFullname() {

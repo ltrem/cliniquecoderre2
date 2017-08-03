@@ -2,37 +2,39 @@
 
 namespace AppBundle\Subscriber;
 
-use AppBundle\Entity\Client;
-use AppBundle\Entity\Contact;
-use AppBundle\Entity\Coordinate;
+use AppBundle\Entity\Communication;
 use AppBundle\Entity\User;
+use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class EasyAdminSubscriber implements EventSubscriberInterface
 {
 
-    public static function getSubscribedEvents()
+    private $tokenStorage;
+    public function __construct(TokenStorageInterface $tokenStorage)
     {
-        return array(
-           // 'easy_admin.post_new' => array('addCoordinate'),
-        );
+        $this->tokenStorage = $tokenStorage;
     }
 
-    public function addCoordinate(GenericEvent $event)
+    public static function getSubscribedEvents()
+    {
+        return [
+            EasyAdminEvents::PRE_PERSIST => 'onPrePersist',
+        ];
+    }
+
+    public function onPrePersist(GenericEvent $event)
     {
         $entity = $event->getSubject();
 
-        // Add Client and default Coordinate to User
-        $user = new User();
-        $coordinate = new Coordinate();
-        $contact = new Contact();
-
-        $coordinate->setIsPrimary(true);
-        $entity->addCoordinate($coordinate);
-        $entity->addContact($contact);
-        $user->setClient($entity);
-
-        $event['entity'] = $entity;
+        if ($entity instanceof Communication) {
+            $user = $this->tokenStorage->getToken()->getUser();
+            if (!$user instanceof User) {
+                $user = null;
+            }
+            $entity->setSentBy($user);
+        }
     }
 }

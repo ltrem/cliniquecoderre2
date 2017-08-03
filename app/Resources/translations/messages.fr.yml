@@ -3,6 +3,7 @@ menu:
     client: 'Client'
     appointment: 'Rendez-vous'
     appointment_new: 'Créer rendez-vous'
+    communication: 'Messagerie'
 references:
     weekday:
         1: 'Lundi'
@@ -139,6 +140,7 @@ admin:
             noResult: 'Aucun résultat'
         new:
             title: 'Nouveau RENDEZ-VOUS'
+            success: 'Le rendez-vous a été créé avec succès!'
             submit: 'Créer le rendez-vous'
             exist: 'Impossible de créer le rendez-vous'
         edit:
@@ -184,6 +186,8 @@ admin:
         communications:
             title: 'Communications'
             new: 'Nouvelle communication'
+    communication:
+        title: 'Créer une nouvelle communication'
 
 login:
     title: 'Connexion'

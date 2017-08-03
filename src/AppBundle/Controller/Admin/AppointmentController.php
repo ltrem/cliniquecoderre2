@@ -11,6 +11,7 @@ use AppBundle\Form\SearchEventType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -130,37 +131,55 @@ class AppointmentController extends Controller
         // Verify if it's an Ajax call
         if($request->isXmlHttpRequest()) {
 
-            if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted()) {
 
-                $em = $this->getDoctrine()->getManager();
-                // Validate event doesn't exist before adding it
-                $exist = $em->getRepository('AppBundle:Event')->findOneByEmployeBetweenDate($event->getEmploye(), $event->getStartTime(), $event->getEndTime());
-                if (!$exist) {
-                    $em->persist($event);
-                    $em->flush();
+                if ($form->isValid()) {
 
-                    $flash_message = true;
-                    $this->addFlash(
-                        'success',
-                        $this->get('translator')->trans('admin.event.edit.success')
-                    );
-                    /*
-                    $flash_message = $this->renderView('flash_message.html.twig', array(
-                        'flash_message' => $this->get('translator')->trans('admin.event.edit.success')
-                    ));
-                    */
+                    $em = $this->getDoctrine()->getManager();
+                    // Validate event doesn't exist before adding it
+                    $exist = $em->getRepository('AppBundle:Event')->findOneByEmployeBetweenDate($event->getEmploye(), $event->getStartTime(), $event->getEndTime());
+                    if (!$exist) {
+                        $em->persist($event);
+                        $em->flush();
+
+                        $this->addFlash(
+                            'success',
+                            $this->get('translator')->trans('admin.event.new.success')
+                        );
+
+                        $response = array(
+                            'success' => 1,
+                            'message' => $this->get('translator')->trans('admin.event.new.success')
+                        );
+
+                        /*
+                        $flash_message = $this->renderView('flash_message.html.twig', array(
+                            'flash_message' => $this->get('translator')->trans('admin.event.edit.success')
+                        ));
+                        */
+                    } else {
+                        $response = array(
+                            'success' => 0,
+                            'message' => $this->get('translator')->trans('admin.event.new.exist'),
+                            'data' => ['startTime' => $this->get('translator')->trans('admin.event.new.exist') ],
+                        );
+                    }
+
                 } else {
-                    $flash_message = true;
-                    $this->addFlash(
-                        'danger',
-                        $this->get('translator')->trans('admin.event.new.exist')
-                    );
+
+                    // TODO: Return error over JSON response for the ajax
+                    $response = array(
+                        'success' => 0,
+                        'message' => 'Invalid form',
+                        'data' => $this->getErrorMessages($form));
                 }
 
                 //return $this->redirectToRoute('admin_event');
-                return new Response(json_encode(array('status'=> $flash_message)));
+                return new Response(json_encode(array('result' => $response)));
+
             }
 
+            // If form is not submitted, return the form template
             return $this->render('admin/event/event_ajax.html.twig', array(
                 'client'    => $client,
                 'employe'   => $employe,
@@ -214,6 +233,24 @@ class AppointmentController extends Controller
             'event' => $event,
             'form' => $editForm->createView(),
         ));
+    }
+
+    // Generate an array contains a key -> value with the errors where the key is the name of the form field
+    protected function getErrorMessages(Form $form)
+    {
+        $errors = array();
+
+        foreach ($form->getErrors() as $key => $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        foreach ($form->all() as $child) {
+            if (!$child->isValid()) {
+                $errors[$child->getName()] = $this->getErrorMessages($child);
+            }
+        }
+
+        return $errors;
     }
 
 }

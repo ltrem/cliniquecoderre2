@@ -167,6 +167,7 @@ easy_admin:
               children:
                 - { entity: 'Event', icon: 'calendar', label: 'menu.appointment' }
             #- { entity: 'Event', label: 'menu.appointment_new', icon: 'calendar-plus-o', params: { action: 'new' } }
+            - { entity: 'Communication', icon: 'envelope', label: 'menu.communication' }
         form_theme:
           - horizontal
           - easy_admin/_form_theme.html.twig
@@ -249,3 +250,26 @@ easy_admin:
                     - { property: 'client' }
                     - { property: 'employe' }
                     - { property: 'startTime', type_options: { widget: 'single_text', format: 'yyyy-MM-dd HH:mm', html5: false, attr: {'class': 'event_datetimepicker '} } }
+        Communication:
+            class: AppBundle\Entity\Communication
+            controller: AppBundle\Controller\EasyAdmin\CommunicationController
+            list:
+                fields:
+                    - dateSent
+                    - title
+                    - { property: 'clients', type_options: { class: 'AppBundle\Entity\Client', choice_label: 'getFullNameEmailPhoneToString' } }
+                actions:
+                    - -edit
+                    - -delete
+            form:
+                title: 'admin.communication.title'
+                fields:
+                    - { property: 'title' }
+                    - { property: 'content' }
+                    - { property: 'clients', type_options: { class: 'AppBundle\Entity\Client', choice_label: 'getFullNameEmailPhoneToString', expanded: true, multiple: true, attr: {'class': 'event_datetimepicker '} } }
+                    - property: 'type'
+                      type: 'choice'
+                      type_options: {
+                          choices: [ {email: 'email', sms: 'sms'} ],
+                          multiple: true,
+                          expanded: true }

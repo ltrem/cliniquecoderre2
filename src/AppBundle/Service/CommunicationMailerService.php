@@ -15,7 +15,7 @@ class CommunicationMailerService
         $this->twilio = $twilio;
     }
 
-    public function sendCommunication(Communication $communication)
+    public function send(Communication $communication)
     {
 
         // Send email

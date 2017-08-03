@@ -229,7 +229,7 @@ class UserController extends Controller
                         $client->addCommunication($communication);
 
                         // Send notification to user
-                        $this->get('app.communication_mailer')->sendCommunication($communication);
+                        $this->get('app.communication_mailer')->send($communication);
 
                         $em->flush();
 

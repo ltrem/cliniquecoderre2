@@ -20,7 +20,6 @@ class AdminController extends BaseAdminController
     {
 
         $user = $this->getUser();
-        dump($user);
         if (!is_object($user) || !$user instanceof User) {
             throw new AccessDeniedException('This user does not have access to this sections.');
         }

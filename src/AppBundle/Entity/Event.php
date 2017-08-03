@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Event
@@ -59,6 +60,7 @@ class Event
      * @var \DateTime
      *
      * @ORM\Column(name="startTime", type="datetime", nullable=false)
+     * @Assert\NotBlank()
      *
      */
     private $startTime;

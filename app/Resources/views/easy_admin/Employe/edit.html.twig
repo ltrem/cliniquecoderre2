@@ -2,6 +2,11 @@
 
 {% extends '@EasyAdmin/default/edit.html.twig' %}
 
+{% block content_title %}
+    {{ employe.fullname }}
+    <small>{{ parent() }}</small>
+{% endblock %}
+
     {% block entity_form %}
 
         <div class="nav-tabs-custom">
@@ -18,7 +23,32 @@
 
 
                 <div role="tabpanel" class="tab-pane active" id="events">
-                    {% include 'ADesignsCalendarBundle::calendar.html.twig' %}
+
+                    <div class="row">
+
+                        <div class="col-sm-8">
+                            {% include 'ADesignsCalendarBundle::calendar.html.twig' %}
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="box box-solid">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Nouveau rendez-vous</h3>
+                                </div><!-- /.box-header -->
+                                <!-- form start -->
+                                {{ form_start(form_event, {'attr': {'id': 'event_new'}, 'action': path('admin_event_new')}) }}
+                                <div class="box-body">
+                                    {{ form_widget(form_event) }}
+                                    <p class="help-block">Sélectionner une case disponible</p>
+                                </div><!-- /.box-body -->
+                                <div class="box-footer">
+                                    <button type="submit" class="btn btn-success" data-loading-text="Envoi en cours...">{{ 'admin.event.new.submit'|trans({}, 'messages') }}</button>
+                                </div>
+                                {{ form_end(form_event) }}
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
 
                 {# Employe #}
@@ -106,8 +136,8 @@
 
             // Reload calendar depending on tab opened
             $('a[data-toggle="tab"][aria-controls="events"]').on('shown.bs.tab', function (e) {
-                $('#calendar-holder').fullCalendar('refetchEvents');
                 $('#calendar-holder').fullCalendar('render');
+                $('#calendar-holder').fullCalendar('refetchEvents');
             });
             $('a[data-toggle="tab"][aria-controls="configurations"]').on('shown.bs.tab', function (e) {
                 $('#calendar-schedule').fullCalendarScheduler('render');

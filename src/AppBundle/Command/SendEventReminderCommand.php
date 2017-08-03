@@ -87,7 +87,7 @@ class SendEventReminderCommand extends ContainerAwareCommand
                 $reminder->setEvent($event);
 
                 // Send communication
-                $this->getContainer()->get('app.communication_mailer')->sendCommunication($communication);
+                $this->getContainer()->get('app.communication_mailer')->send($communication);
 
                 // Persist
                 $em->persist($reminder);

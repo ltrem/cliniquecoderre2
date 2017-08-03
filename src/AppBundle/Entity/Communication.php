@@ -2,7 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Communication
@@ -71,7 +73,8 @@ class Communication
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=255)
+     * @ORM\Column(name="type", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
      */
     private $type;
 
@@ -81,6 +84,21 @@ class Communication
      * @ORM\Column(name="dateSent", type="datetime")
      */
     private $dateSent;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="sent_by_id")
+     */
+    private $sentBy;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Client", inversedBy="communications")
+     */
+    private $clients;
+
+    public function __construct() {
+        $this->clients = new ArrayCollection();
+    }
 
     public function __toString() {
         return (string) $this->getId();
@@ -279,5 +297,57 @@ class Communication
     public function getDateSent()
     {
         return $this->dateSent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSentBy()
+    {
+        return $this->sentBy;
+    }
+
+    /**
+     * @param mixed $sentBy
+     */
+    public function setSentBy($sentBy)
+    {
+        $this->sentBy = $sentBy;
+    }
+
+    /**
+     * Get clients
+     *
+     * @return \AppBundle\Entity\Client
+     */
+    public function getClients()
+    {
+        return $this->clients;
+    }
+
+    /**
+     * Add client
+     *
+     * @param \AppBundle\Entity\Client $client
+     *
+     * @return Client
+     */
+    public function addEventReminder(Client $client)
+    {
+        $client->addCommunication($this);
+        $this->clients[] = $client;
+
+        return $this;
+    }
+
+    /**
+     * Remove client
+     *
+     * @param \AppBundle\Entity\Client $client
+     */
+    public function removeClient(Client $client)
+    {
+        $this->clients->removeElement($client);
+        $client->removeCommunication(null);
     }
 }

@@ -17,15 +17,16 @@ class AdminAppointmentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('client', EntityType::class, array(
-                'class'  => 'AppBundle:Client',
+            ->setMethod('POST')
+            ->add('employe', EntityType::class, array(
+                'class'  => 'AppBundle:Employe',
                 'choice_label'  => 'fullname',
                 'required'  => true,
                 'attr' => ['data-select' => 'true']
             ))
-            ->add('employe', EntityType::class, array(
-                'class'  => 'AppBundle:Employe',
-                'choice_label'  => 'fullname',
+            ->add('client', EntityType::class, array(
+                'class'  => 'AppBundle:Client',
+                'choice_label'  => 'fullNameEmailPhoneToString',
                 'required'  => true,
                 'attr' => ['data-select' => 'true']
             ))
@@ -43,8 +44,7 @@ class AdminAppointmentType extends AbstractType
                     'class'=>'event_datetimepicker',
                 ),
                 'widget' => 'single_text',
-                'required' => true,
-                'view_timezone' => 'America/Montreal'
+                'required' => true
             ))
             ->add('endTime', DateTimeType::class, array(
                 'label' => false,
@@ -53,8 +53,7 @@ class AdminAppointmentType extends AbstractType
                     'class'=>'form_datetime hidden'
                 ),
                 'widget' => 'single_text',
-                'required' => false,
-                'view_timezone' => 'America/Montreal'
+                'required' => false
             ));
     }
 

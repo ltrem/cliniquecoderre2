@@ -53,9 +53,21 @@ services:
 
     app.easy_admin_subscriber:
         class: AppBundle\Subscriber\EasyAdminSubscriber
+        arguments: ['@security.token_storage']
         tags:
             - { name: kernel.event_subscriber }
 
     app.client_manager:
             class: AppBundle\Manager\ClientManager
             arguments: ['@doctrine.orm.entity_manager', '@templating', '@session', '@app.communication_mailer', '@libphonenumber.phone_number_util', '@router','@translator']
+
+    app.communication_manager:
+                class: AppBundle\Manager\CommunicationManager
+                arguments: ['@doctrine.orm.entity_manager', '@app.communication_mailer']
+
+
+    app.communication_subscriber:
+        class: AppBundle\Subscriber\CommunicationSubscriber
+        arguments: ['@app.communication_manager']
+        tags:
+            - { name: kernel.event_subscriber }

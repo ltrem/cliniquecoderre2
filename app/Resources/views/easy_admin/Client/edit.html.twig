@@ -2,6 +2,11 @@
 
 {% extends '@EasyAdmin/default/edit.html.twig' %}
 
+{% block content_title %}
+    {{ client.fullname }}
+    <small>{{ parent() }}</small>
+{% endblock %}
+
     {% block entity_form %}
 
             <div class="nav-tabs-custom">
@@ -219,7 +224,7 @@
                                         <td>{{ communication.dateSent|date('Y-m-d H:i:s') }}</td>
                                         <td>{{ communication.email }}</td>
                                         <td>{{ communication.title }}</td>
-                                        <td>{{ communication.content }}</td>
+                                        <td>{{ communication.content|raw }}</td>
                                     </tr>
                                 {% endfor %}
                             {% else %}

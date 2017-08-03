@@ -83,7 +83,7 @@ class CommunicationController extends Controller
 
                 // Send Communication
                 $mailerService = $this->get('app.communication_mailer');
-                $mailerService->sendCommunication($communication);
+                $mailerService->send($communication);
 
                 // Save the communication
                 $em = $this->getDoctrine()->getManager();
