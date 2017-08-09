@@ -71,23 +71,23 @@ AppBundle\Entity\EventCancellation:
 AppBundle\Entity\Event:
     event_{1}:
         name: Rendez-vous <current()>
-        startTime: <(new \DateTime('2017-07-31 13:00:00'))>
-        endTime: <(new \DateTime('2017-07-31 14:00:00'))>
+        startTime: <(new \DateTime('2020-07-31 13:00:00'))>
+        endTime: <(new \DateTime('2020-07-31 14:00:00'))>
         client: "@client_3"
         employe: "@employe_1"
         emergency: 0
         cancellation: "@event_cancellation_1"
     event_{2}:
         name: Rendez-vous <current()>
-        startTime: <(new \DateTime('2017-08-07 14:00:00'))>
-        endTime: <(new \DateTime('2017-08-07 15:00:00'))>
+        startTime: <(new \DateTime('2020-08-07 14:00:00'))>
+        endTime: <(new \DateTime('2020-08-07 15:00:00'))>
         client: "@client_4"
         employe: "@employe_2"
         emergency: 1
     event_{3}:
         name: Rendez-vous <current()>
-        startTime: <(new \DateTime('2017-09-07 14:00:00'))>
-        endTime: <(new \DateTime('2017-09-07 15:00:00'))>
+        startTime: <(new \DateTime('2020-09-07 14:00:00'))>
+        endTime: <(new \DateTime('2020-09-07 15:00:00'))>
         client: "@client_5"
         employe: "@employe_2"
         emergency: 1

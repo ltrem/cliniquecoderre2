@@ -27,6 +27,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new Vresh\TwilioBundle\VreshTwilioBundle(),
             new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
+            new cspoo\Swiftmailer\MailgunBundle\cspooSwiftmailerMailgunBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

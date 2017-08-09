@@ -51,6 +51,9 @@ class AppointmentSubscriber implements EventSubscriberInterface {
 
             if ($event_to_edit->getAnswer() == 1) {
                 $notification_result = $this->appointmentManager->swapClientAppointmentAvailabilityAnswer($event_to_edit, $from_this_client, $to_this_client);
+
+                // TODO: Delete Scheduled Command
+                //$this->appointmentManager->removeScheduledCommand($event_to_edit->getCommand());
             }
         }
     }

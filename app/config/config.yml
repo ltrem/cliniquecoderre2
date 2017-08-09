@@ -65,13 +65,20 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
+cspoo_swiftmailer_mailgun:
+    key: "%mailgun_key%"
+    domain: "%mailgun_domain%"
+    #http_client: 'httplug.client' # Optional. Defaults to null and uses discovery to find client.
+
 # Swiftmailer Configuration
 swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
-    #spool:     { type: memory }
+    transport: "mailgun"
+    spool:     { type: memory }
+    #transport: "%mailer_transport%"
+    #host:      "%mailer_host%"
+    #username:  "%mailer_user%"
+    #password:  "%mailer_password%"
+
 
 # KNP Paginator
 knp_paginator:
@@ -255,8 +262,8 @@ easy_admin:
             controller: AppBundle\Controller\EasyAdmin\CommunicationController
             list:
                 fields:
-                    - dateSent
                     - title
+                    - dateSent
                     - { property: 'clients', type_options: { class: 'AppBundle\Entity\Client', choice_label: 'getFullNameEmailPhoneToString' } }
                 actions:
                     - -edit

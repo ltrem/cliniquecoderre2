@@ -131,4 +131,18 @@ class AppointmentManager {
             $this->em->getConnection()->commit();
         }
     }
+
+    public function removeScheduledCommand(int $id)
+    {
+        $scheduledCommand = $this->em->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')->find($id);
+
+        if ($scheduledCommand !== null) {
+            $this->em->remove($scheduledCommand);
+            $this->em->flush($scheduledCommand);
+
+            $this->session->getFlashBag()->add('success', 'Notification automatique de disponibilitées supprimé!');
+        } else {
+            $this->session->getFlashBag()->add('error', 'L\'annulation de notification automatique de disponibilitée n\'a pas fonctionnée!');
+        }
+    }
 }

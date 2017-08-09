@@ -145,4 +145,25 @@ class EventRepository extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findAllUpcomingEmergency()
+    {
+        // Get Upcoming Event that have Emergency checked
+        $now = new \DateTime('now');
+        $startTime = new \DateTime($now->modify('+1days')->setTime(00, 00, 00)->format("Y-m-d H:i:s"));
+
+        return $this->createQueryBuilder('e')
+            ->select('e')
+            ->leftJoin('e.appointmentAvailabilityNotifications', 'notif')
+            ->leftJoin('notif.eventToReplace', 'etr')
+            ->where('e.cancellation IS NULL')
+            ->andWhere('e.emergency = 1')
+            ->andWhere('e.startTime > :startTime')
+            ->andWhere('etr.client IS NULL')
+            ->setParameter('startTime', $startTime)
+            ->orderBy('e.startTime', 'DESC')
+            ->addOrderBy('e.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

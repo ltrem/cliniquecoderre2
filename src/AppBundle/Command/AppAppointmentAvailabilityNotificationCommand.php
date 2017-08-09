@@ -32,6 +32,7 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
         $event_id = $input->getOption('event_id');
         $schedule_command_id = $input->getOption('schedule_command_id');
 
+        // TODO: We have to make sure that the $eventFreed from the command scheduler is still FREE and not already accepted
         $eventFreed = $em->getRepository('AppBundle:Event')->find($event_id);
 
         // Find if client are on emergency list, meaning:
@@ -90,7 +91,7 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
 
             // Send notification to user
             $this->getContainer()->get('app.communication_mailer')
-                ->sendCommunication($communication);
+                ->send($communication);
 
             $output->writeln('Notification sent to ' . $communication->getEmail());
 

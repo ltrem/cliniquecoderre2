@@ -48,4 +48,15 @@ class AppointmentAvailabilityNotificationRepository extends \Doctrine\ORM\Entity
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findAppointmentNotificationSent($event)
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.eventFreed = :event')
+            ->setParameter('event', $event)
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

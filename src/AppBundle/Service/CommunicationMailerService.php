@@ -20,7 +20,7 @@ class CommunicationMailerService
 
         // Send email
         $message = \Swift_Message::newInstance()
-            ->setFrom('info@cliniquecoderre.com')
+            ->setFrom('info@sandbox1762d322d00b43cf95d08ef04f8151fc.mailgun.org')
             ->setSubject(
                 $communication->getTitle()
             )

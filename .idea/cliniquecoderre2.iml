@@ -5,7 +5,9 @@
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/var" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/adesigns/calendar-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/clue/stream-filter" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/cspoo/swiftmailer-mailgun-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/annotations" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/cache" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/collections" />
@@ -25,6 +27,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/fzaninotto/faker" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/giggsey/libphonenumber-for-php" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/giggsey/locale" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/promises" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/incenteev/composer-parameter-handler" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/javiereguiluz/easyadmin-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jdorn/sql-formatter" />
@@ -35,6 +40,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/knplabs/knp-snappy" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/knplabs/knp-snappy-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/liip/functional-test-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mailgun/mailgun-php" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/misd/phone-number-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/mtdowling/cron-expression" />
@@ -42,6 +48,19 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/ocramius/proxy-manager" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/pagerfanta/pagerfanta" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/cache-plugin" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/client-common" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/curl-client" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/discovery" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/guzzle6-adapter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/httplug" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/httplug-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/logger-plugin" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/message" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/message-factory" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/multipart-stream-builder" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/promise" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/stopwatch-plugin" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-common" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-docblock" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/type-resolver" />
@@ -54,6 +73,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/phpunit" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/phpunit-mock-objects" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-message" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/log" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/comparator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/diff" />
@@ -93,7 +113,9 @@
       <library name="PHP" type="php">
         <CLASSES>
           <root url="file://$MODULE_DIR$/vendor/adesigns/calendar-bundle" />
+          <root url="file://$MODULE_DIR$/vendor/clue/stream-filter" />
           <root url="file://$MODULE_DIR$/vendor/composer" />
+          <root url="file://$MODULE_DIR$/vendor/cspoo/swiftmailer-mailgun-bundle" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/annotations" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/cache" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/collections" />
@@ -113,6 +135,9 @@
           <root url="file://$MODULE_DIR$/vendor/fzaninotto/faker" />
           <root url="file://$MODULE_DIR$/vendor/giggsey/libphonenumber-for-php" />
           <root url="file://$MODULE_DIR$/vendor/giggsey/locale" />
+          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
+          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/promises" />
+          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
           <root url="file://$MODULE_DIR$/vendor/incenteev/composer-parameter-handler" />
           <root url="file://$MODULE_DIR$/vendor/javiereguiluz/easyadmin-bundle" />
           <root url="file://$MODULE_DIR$/vendor/jdorn/sql-formatter" />
@@ -123,6 +148,7 @@
           <root url="file://$MODULE_DIR$/vendor/knplabs/knp-snappy" />
           <root url="file://$MODULE_DIR$/vendor/knplabs/knp-snappy-bundle" />
           <root url="file://$MODULE_DIR$/vendor/liip/functional-test-bundle" />
+          <root url="file://$MODULE_DIR$/vendor/mailgun/mailgun-php" />
           <root url="file://$MODULE_DIR$/vendor/misd/phone-number-bundle" />
           <root url="file://$MODULE_DIR$/vendor/monolog/monolog" />
           <root url="file://$MODULE_DIR$/vendor/mtdowling/cron-expression" />
@@ -130,6 +156,19 @@
           <root url="file://$MODULE_DIR$/vendor/ocramius/proxy-manager" />
           <root url="file://$MODULE_DIR$/vendor/pagerfanta/pagerfanta" />
           <root url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/cache-plugin" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/client-common" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/curl-client" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/discovery" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/guzzle6-adapter" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/httplug" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/httplug-bundle" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/logger-plugin" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/message" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/message-factory" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/multipart-stream-builder" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/promise" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/stopwatch-plugin" />
           <root url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-common" />
           <root url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-docblock" />
           <root url="file://$MODULE_DIR$/vendor/phpdocumentor/type-resolver" />
@@ -142,6 +181,7 @@
           <root url="file://$MODULE_DIR$/vendor/phpunit/phpunit" />
           <root url="file://$MODULE_DIR$/vendor/phpunit/phpunit-mock-objects" />
           <root url="file://$MODULE_DIR$/vendor/psr/cache" />
+          <root url="file://$MODULE_DIR$/vendor/psr/http-message" />
           <root url="file://$MODULE_DIR$/vendor/psr/log" />
           <root url="file://$MODULE_DIR$/vendor/sebastian/comparator" />
           <root url="file://$MODULE_DIR$/vendor/sebastian/diff" />
@@ -177,7 +217,9 @@
         </CLASSES>
         <SOURCES>
           <root url="file://$MODULE_DIR$/vendor/adesigns/calendar-bundle" />
+          <root url="file://$MODULE_DIR$/vendor/clue/stream-filter" />
           <root url="file://$MODULE_DIR$/vendor/composer" />
+          <root url="file://$MODULE_DIR$/vendor/cspoo/swiftmailer-mailgun-bundle" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/annotations" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/cache" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/collections" />
@@ -197,6 +239,9 @@
           <root url="file://$MODULE_DIR$/vendor/fzaninotto/faker" />
           <root url="file://$MODULE_DIR$/vendor/giggsey/libphonenumber-for-php" />
           <root url="file://$MODULE_DIR$/vendor/giggsey/locale" />
+          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
+          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/promises" />
+          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
           <root url="file://$MODULE_DIR$/vendor/incenteev/composer-parameter-handler" />
           <root url="file://$MODULE_DIR$/vendor/javiereguiluz/easyadmin-bundle" />
           <root url="file://$MODULE_DIR$/vendor/jdorn/sql-formatter" />
@@ -207,6 +252,7 @@
           <root url="file://$MODULE_DIR$/vendor/knplabs/knp-snappy" />
           <root url="file://$MODULE_DIR$/vendor/knplabs/knp-snappy-bundle" />
           <root url="file://$MODULE_DIR$/vendor/liip/functional-test-bundle" />
+          <root url="file://$MODULE_DIR$/vendor/mailgun/mailgun-php" />
           <root url="file://$MODULE_DIR$/vendor/misd/phone-number-bundle" />
           <root url="file://$MODULE_DIR$/vendor/monolog/monolog" />
           <root url="file://$MODULE_DIR$/vendor/mtdowling/cron-expression" />
@@ -214,6 +260,19 @@
           <root url="file://$MODULE_DIR$/vendor/ocramius/proxy-manager" />
           <root url="file://$MODULE_DIR$/vendor/pagerfanta/pagerfanta" />
           <root url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/cache-plugin" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/client-common" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/curl-client" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/discovery" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/guzzle6-adapter" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/httplug" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/httplug-bundle" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/logger-plugin" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/message" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/message-factory" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/multipart-stream-builder" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/promise" />
+          <root url="file://$MODULE_DIR$/vendor/php-http/stopwatch-plugin" />
           <root url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-common" />
           <root url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-docblock" />
           <root url="file://$MODULE_DIR$/vendor/phpdocumentor/type-resolver" />
@@ -226,6 +285,7 @@
           <root url="file://$MODULE_DIR$/vendor/phpunit/phpunit" />
           <root url="file://$MODULE_DIR$/vendor/phpunit/phpunit-mock-objects" />
           <root url="file://$MODULE_DIR$/vendor/psr/cache" />
+          <root url="file://$MODULE_DIR$/vendor/psr/http-message" />
           <root url="file://$MODULE_DIR$/vendor/psr/log" />
           <root url="file://$MODULE_DIR$/vendor/sebastian/comparator" />
           <root url="file://$MODULE_DIR$/vendor/sebastian/diff" />
