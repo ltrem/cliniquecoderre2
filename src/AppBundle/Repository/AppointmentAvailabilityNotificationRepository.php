@@ -41,7 +41,6 @@ class AppointmentAvailabilityNotificationRepository extends \Doctrine\ORM\Entity
         return $this->createQueryBuilder('a')
             ->select('a')
             ->where('a.eventFreed = :event')
-            ->andWhere('a.answer IS NULL')
             ->setParameter('event', $event)
             ->orderBy('a.createdAt', 'DESC')
             ->setMaxResults(1)

@@ -26,6 +26,7 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $doctrine = $this->getContainer()->get('doctrine');
         $em = $this->getContainer()->get('doctrine')->getManager();
 
         // Get Event that was cancelled to notify about free space
@@ -33,19 +34,24 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
         $schedule_command_id = $input->getOption('schedule_command_id');
 
         // TODO: We have to make sure that the $eventFreed from the command scheduler is still FREE and not already accepted
-        $eventFreed = $em->getRepository('AppBundle:Event')->find($event_id);
+        $eventFreed = $doctrine->getRepository('AppBundle:Event')->find($event_id);
+        $lastNotificationSent = $doctrine->getRepository('AppBundle:AppointmentAvailabilityNotification')->findLastAppointmentNotificationSent($eventFreed);
+        if ($lastNotificationSent instanceof AppointmentAvailabilityNotification) {
+            $lastNotificationAnswer = $lastNotificationSent->getAnswer();
+        } else {
+            $lastNotificationAnswer = null;
+        }
 
         // Find if client are on emergency list, meaning:
         // - Upcoming event scheduled
         // - Not Cancelled
         // - Without Notification for this event
-        $eligibleEmergency = $em->getRepository('AppBundle:Event')->findUpcomingEmergency();
+        $eligibleEmergency = $doctrine->getRepository('AppBundle:Event')->findUpcomingEmergency();
 
         // If eligibleEmergency is not null, and eventFreed is not expired, proceed with notification
-        if ($eligibleEmergency !== null && $eventFreed->getEndTime() >= new \DateTime('now')) {
+        if ($eligibleEmergency !== null && $eventFreed->getEndTime() >= new \DateTime('now') && $lastNotificationAnswer != 1) {
 
             // Set answer to last notification NO
-            $lastNotificationSent = $em->getRepository('AppBundle:AppointmentAvailabilityNotification')->findLastAppointmentNotificationSent($eventFreed);
             if ($lastNotificationSent) {
                 $lastNotificationSent->setAnswer(0);
             }
@@ -100,7 +106,7 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
         } else {
 
             // If no eligible client, remove CRON
-            $scheduledCommand = $em->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')->find($schedule_command_id);
+            $scheduledCommand = $doctrine->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')->find($schedule_command_id);
 
             if ($scheduledCommand !== null) {
                 $em->remove($scheduledCommand);
