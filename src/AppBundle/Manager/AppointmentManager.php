@@ -68,7 +68,7 @@ class AppointmentManager {
             $this->em->flush();
 
             // Add flash message
-            $this->session->getFlashBag()->add('notice', 'Event cancelled ' . $appointment->getName());
+            $this->session->getFlashBag()->add('success', 'Event cancelled ' . $appointment->getName());
 
             // Send notification to user
             $this->communicationMailer->send($communication);

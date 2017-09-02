@@ -289,7 +289,7 @@ class CalendarEventListener
                 $endTime = new \DateTime($blockEvent->getEndDateTime()->format("Y-m-d H:i:s"));
 
                 if ($selectedEmploye != 'all') {
-                    $companyEvent = $this->entityManager->getRepository('AppBundle:Event')->findOneByEmployeBetweenDate($selectedEmploye, $startTime, $endTime);
+                    $companyEvent = $this->entityManager->getRepository('AppBundle:Event')->findOneNotCancelledByEmployeBetweenDate($selectedEmploye, $startTime, $endTime);
 
                     // If Event scheduled
                     if (is_object($companyEvent) && $companyEvent instanceof Event) {

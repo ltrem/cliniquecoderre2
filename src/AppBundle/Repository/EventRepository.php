@@ -108,6 +108,23 @@ class EventRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
+    public function findOneNotCancelledByEmployeBetweenDate(Employe $employe, \DateTime $start, \DateTime $end)
+    {
+        return $this->createQueryBuilder('e')
+            ->select('e')
+            ->where('e.startTime >= :startTime')
+            ->andWhere('e.endTime <= :endTime')
+            ->andWhere('e.employe = :employe')
+            ->andWhere('e.cancellation is null')
+            ->setParameter('startTime', $start)
+            ->setParameter('endTime', $end)
+            ->setParameter('employe', $employe)
+            ->orderBy('e.startTime', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function findOneByEmployeBetweenDate(Employe $employe, \DateTime $start, \DateTime $end)
     {
         return $this->createQueryBuilder('e')

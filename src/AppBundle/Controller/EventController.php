@@ -269,6 +269,7 @@ class EventController extends Controller
      *
      * @Route("/proposition-de-rendez-vous/{token}/{answer}", name="appointment_notification_answer", defaults={"answer" = null})
      * @Method({"GET", "POST"})
+     * @Security("is_granted('IS_AUTHENTICATED_ANONYMOUSLY')")
      */
     public function availabilityNotificationAnswerAction(Request $request, string $token, $answer)
     {
@@ -280,14 +281,14 @@ class EventController extends Controller
         }
 
         if (!is_object($availabilityNotification) || !$availabilityNotification instanceof AppointmentAvailabilityNotification) {
-            throw new AccessDeniedException('The token is either bad or expired.');
+            // throw new AccessDeniedException('The token is either bad or expired.');
+            return $this->render('event/appointment_notification_expired.html.twig');
         }
 
         $form = $this->createForm(AppointmentAvailabilityNotificationAnswerType::class, $availabilityNotification, array(
             'action' => $this->generateUrl('appointment_notification_answer', array('token' => $token)),
         ));
         $form->handleRequest($request);
-
 
         // Verify if it's an Ajax call
         if($request->isXmlHttpRequest()) {

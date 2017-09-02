@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="page-header">
+                    <h3 class="modal-title" id="exampleModalLabel">
+                        {{ 'event.availability.expired.message'|trans }}
+                    </h3>
+                </div>
+
+                <div class="col-sm-12">
+                    <a class="btn btn-lg btn-success" href="/">{{ 'Return to home page'|trans }}</a>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

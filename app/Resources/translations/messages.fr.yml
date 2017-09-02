@@ -1,4 +1,6 @@
+Return to home page: Retourner à la page d'accueil
 menu:
+    homepage: 'Page d''accueil'
     employe: 'Employé'
     client: 'Client'
     appointment: 'Rendez-vous'
@@ -58,6 +60,8 @@ event:
     error:
         notFree: 'Impossible de sélectionner une case déjà réservé!'
     availability:
+        expired:
+            message: 'Le rendez-vous offert n''est plus disponibles.'
         email:
             title: 'Voulez-vous ce rendez-vous?'
         question: 'Voulez-vous ce rendez-vous?'
