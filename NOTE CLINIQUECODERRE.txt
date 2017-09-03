@@ -29,6 +29,9 @@ TODO: Prod
 
 TODO: Faire le tour des courriels / messages
     - Voir tout les courriels et SMS envoyés par le système, les traduires et les testers.
+        - email_appointment_notification.html.twig
+        - email_registration_confirmation.html.twig
+
     - Implanter la logique d'utiliser un seul folder pour les mails (mail/***.twig) et utiliser les templates comme indiqué ici:
         -http://alexandre-salome.fr/blog/Generate-Mails-With-Twig
 

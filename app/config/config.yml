@@ -7,6 +7,9 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    #Mailgun
+    mailgun_key: "key-f134f0f597e2abe169e3ae2cbd081bc3"
+    mailgun_domain: "sandbox1762d322d00b43cf95d08ef04f8151fc.mailgun.org"
 
 framework:
     #esi:             ~

@@ -1,9 +1,14 @@
+{#
 {% block subject %}
     {% autoescape false %}
         Ceci est mon sujet Appointment Notification - Voulez vous ce rnedez-vous?
     {% endautoescape %}
 {% endblock %}
+#}
 {% block body_html %}
+    <h3>Une plage horaire c'est libéré : {{ eventFreed.startTime|date('H:ia') }} - {{ eventFreed.startTime|localizeddate('full', 'none') }}.</h3>
+    Désirez-vous la réserver?
+    <br /><br />
     <a href="{{ availabilityNotificationYesUrl }}">{{ 'event.availability.answer.yes'|trans }}</a>
     <br />
     <a href="{{ availabilityNotificationNoUrl }}">{{ 'event.availability.answer.no'|trans }}</a>

@@ -207,6 +207,7 @@
                 minTime: "08:00:00",
                 maxTime: "20:00:00",
                 slotLabelFormat:"HH:mm a",
+                timeFormat: 'HH:mm',
                 defaultView: 'agendaWeek',
                 eventSources: [
                     {
@@ -230,6 +231,7 @@
 
                                     var events = [];
                                     $.each(data, function(index) {
+                                        console.log( data[index].start);
                                         events.push({
                                             allDay: false,
                                             backgroundColor: data[index].backgroundColor,

@@ -76,6 +76,7 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
             $communication->setType('sms,email');
 
             $notification_template= $this->getContainer()->get('templating')->render('event/email_appointment_notification.html.twig', array(
+                'eventFreed' => $eventFreed,
                 'availabilityNotificationYesUrl' => $this->getContainer()->get('router')->generate('appointment_notification_answer', array('token' => $token, 'answer' => 1), UrlGeneratorInterface::ABSOLUTE_URL),
                 'availabilityNotificationNoUrl' =>  $this->getContainer()->get('router')->generate('appointment_notification_answer', array('token' => $token, 'answer' => 0), UrlGeneratorInterface::ABSOLUTE_URL)
             ));
