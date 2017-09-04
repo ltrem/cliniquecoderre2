@@ -6,10 +6,15 @@
 {% endblock %}
 #}
 {% block body_html %}
-    <h3>Une plage horaire c'est libéré : {{ eventFreed.startTime|date('H:ia') }} - {{ eventFreed.startTime|localizeddate('full', 'none') }}.</h3>
+    <h3>Système de notification CliniqueCoderre.com</h3>
+    Une plage horaire c'est libéré à {{ eventFreed.startTime|date('H:ia') }} le {{ eventFreed.startTime|localizeddate('full', 'none', 'fr') }}.</h3>
     Désirez-vous la réserver?
     <br /><br />
     <a href="{{ availabilityNotificationYesUrl }}">{{ 'event.availability.answer.yes'|trans }}</a>
-    <br />
+    <br /><br />
     <a href="{{ availabilityNotificationNoUrl }}">{{ 'event.availability.answer.no'|trans }}</a>
+    <br /><br />
+    CliniqueCoderre.com
+    Ostéopathie - Massothérapie
+    395 rue Cormier, Drummondville
 {% endblock %}

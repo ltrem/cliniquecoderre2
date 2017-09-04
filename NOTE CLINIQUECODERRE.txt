@@ -45,6 +45,10 @@ TODO: Recu d'assurance pour rendez-vous (création, modification, impression, env
     	- Créer rapport de reçus
 
 TODO: Test AppointmentManager notification system's
+
+    TODO PROBLEM: Bug d'envoi de notification si un client à un rendez-vous en urgence ayant déjà reçu une notification
+
+
     TO TEST
     POSSIBLY DONE? - Ajouter un option de notification pour rendez-vous d'urgence
     -----------------------------------------------------------------------------------------------------

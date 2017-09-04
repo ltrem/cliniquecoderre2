@@ -48,6 +48,8 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
         // - Without Notification for this event
         $eligibleEmergency = $doctrine->getRepository('AppBundle:Event')->findUpcomingEmergency();
 
+        dump($eligibleEmergency);
+        die();
         // If eligibleEmergency is not null, and eventFreed is not expired, proceed with notification
         if ($eligibleEmergency !== null && $eventFreed->getEndTime() >= new \DateTime('now') && $lastNotificationAnswer != 1) {
 
@@ -73,6 +75,7 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
             $communication->setPhone($phone_to_email);
             $communication->setDateSent(new \DateTime('now'));
             $communication->setTitle($this->getContainer()->get('translator')->trans('event.availability.email.title'));
+            $communication->addClient($client);
             $communication->setType('sms,email');
 
             $notification_template= $this->getContainer()->get('templating')->render('event/email_appointment_notification.html.twig', array(
@@ -81,9 +84,6 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
                 'availabilityNotificationNoUrl' =>  $this->getContainer()->get('router')->generate('appointment_notification_answer', array('token' => $token, 'answer' => 0), UrlGeneratorInterface::ABSOLUTE_URL)
             ));
             $communication->setContent($notification_template);
-
-            // Assign communication to client
-            $client->addCommunication($communication);
 
             // Create notification
             $notification = new AppointmentAvailabilityNotification();
@@ -108,6 +108,11 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
 
             // If no eligible client, remove CRON
             $scheduledCommand = $doctrine->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')->find($schedule_command_id);
+
+            // Set answer to 0 to last notification sent
+            if ($lastNotificationSent instanceof AppointmentAvailabilityNotification) {
+                $lastNotificationSent->setAnswer(0);
+            }
 
             if ($scheduledCommand !== null) {
                 $em->remove($scheduledCommand);

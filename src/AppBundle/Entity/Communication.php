@@ -332,7 +332,7 @@ class Communication
      *
      * @return Client
      */
-    public function addEventReminder(Client $client)
+    public function addClient(Client $client)
     {
         $client->addCommunication($this);
         $this->clients[] = $client;

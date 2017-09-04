@@ -136,8 +136,10 @@ class AppointmentController extends Controller
                 if ($form->isValid()) {
 
                     $em = $this->getDoctrine()->getManager();
+
                     // Validate event doesn't exist before adding it
-                    $exist = $em->getRepository('AppBundle:Event')->findOneByEmployeBetweenDate($event->getEmploye(), $event->getStartTime(), $event->getEndTime());
+                    $exist = $em->getRepository('AppBundle:Event')->findOneNotCancelledByEmployeBetweenDate($event->getEmploye(), $event->getStartTime(), $event->getEndTime());
+
                     if (!$exist) {
                         $em->persist($event);
                         $em->flush();
