@@ -58,8 +58,7 @@ class ClientManager {
         $communication->setTitle($this->translator->trans('registration.emailConfirmation.subject'));
         $communication->setContent($password_reset_template);
         $communication->setEmail($user->getUsername());
-
-        $client->addCommunication($communication);
+        $communication->addClient($client);
 
         // Add communication to database
         $this->em->persist($communication);

@@ -46,10 +46,9 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
         // - Upcoming event scheduled
         // - Not Cancelled
         // - Without Notification for this event
-        $eligibleEmergency = $doctrine->getRepository('AppBundle:Event')->findUpcomingEmergency();
+        $eligibleEmergency = $doctrine->getRepository('AppBundle:Event')->findUpcomingEmergency($eventFreed);
 
-        dump($eligibleEmergency);
-        die();
+
         // If eligibleEmergency is not null, and eventFreed is not expired, proceed with notification
         if ($eligibleEmergency !== null && $eventFreed->getEndTime() >= new \DateTime('now') && $lastNotificationAnswer != 1) {
 

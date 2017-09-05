@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 use AppBundle\Entity\Client;
 use AppBundle\Entity\Employe;
+use AppBundle\Entity\Event;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -141,7 +142,7 @@ class EventRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findUpcomingEmergency()
+    public function findUpcomingEmergency(Event $eventFreed)
     {
         // Get Upcoming Event that have Emergency checked
         $now = new \DateTime('now');
@@ -149,15 +150,16 @@ class EventRepository extends EntityRepository
 
         return $this->createQueryBuilder('e')
             ->select('e')
-            ->leftJoin('e.appointmentAvailabilityNotifications', 'notif')
+            ->leftJoin('e.appointmentAvailabilityNotifications', 'notif', 'WITH', 'notif.eventToReplace = e.id AND notif.eventFreed = :eventFreed')
             ->leftJoin('notif.eventToReplace', 'etr')
             ->where('e.cancellation IS NULL')
             ->andWhere('e.emergency = 1')
             ->andWhere('e.startTime > :startTime')
             ->andWhere('etr.client IS NULL')
             ->setParameter('startTime', $startTime)
-            ->orderBy('e.startTime', 'DESC')
-            ->addOrderBy('e.createdAt', 'DESC')
+            ->setParameter('eventFreed', $eventFreed)
+            ->orderBy('e.startTime', 'ASC')
+            ->addOrderBy('e.createdAt', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

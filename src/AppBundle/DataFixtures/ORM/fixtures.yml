@@ -43,6 +43,28 @@ AppBundle\Entity\Schedule:
       name: Horaire 2
       employe: "@employe_2"
 
+AppBundle\Entity\ScheduleBlock:
+    schedule_block_1:
+      schedule: "@schedule_1"
+      dateFrom: <(new \DateTime('2017-09-04 08:00:00'))>
+      dateTo: <(new \DateTime('2017-09-04 20:00:00'))>
+    schedule_block_2:
+      schedule: "@schedule_1"
+      dateFrom: <(new \DateTime('2017-09-05 08:00:00'))>
+      dateTo: <(new \DateTime('2017-09-05 20:00:00'))>
+    schedule_block_3:
+      schedule: "@schedule_1"
+      dateFrom: <(new \DateTime('2017-09-06 08:00:00'))>
+      dateTo: <(new \DateTime('2017-09-06 20:00:00'))>
+    schedule_block_4:
+      schedule: "@schedule_1"
+      dateFrom: <(new \DateTime('2017-09-07 08:00:00'))>
+      dateTo: <(new \DateTime('2017-09-07 20:00:00'))>
+    schedule_block_5:
+      schedule: "@schedule_1"
+      dateFrom: <(new \DateTime('2017-09-08 08:00:00'))>
+      dateTo: <(new \DateTime('2017-09-08 20:00:00'))>
+
 AppBundle\Entity\Client:
     client_{3}:
         firstname: Firstname <current()>
@@ -70,26 +92,36 @@ AppBundle\Entity\EventCancellation:
 
 AppBundle\Entity\Event:
     event_{1}:
-        name: Rendez-vous <current()>
-        startTime: <(new \DateTime('2020-07-31 13:00:00'))>
-        endTime: <(new \DateTime('2020-07-31 14:00:00'))>
+        name: Rendez-vous CANCEL <current()>
+        startTime: <(new \DateTime('2017-09-08 13:00:00'))>
+        endTime: <(new \DateTime('2017-09-08 14:00:00'))>
         client: "@client_3"
         employe: "@employe_1"
         emergency: 0
         cancellation: "@event_cancellation_1"
     event_{2}:
-        name: Rendez-vous <current()>
-        startTime: <(new \DateTime('2020-08-07 14:00:00'))>
-        endTime: <(new \DateTime('2020-08-07 15:00:00'))>
+        createdAt: <(new \DateTime('2017-09-08 14:00:00'))>
+        name: Rendez-vous URGENCE 1 <current()>
+        startTime: <(new \DateTime('2017-09-08 14:00:00'))>
+        endTime: <(new \DateTime('2017-09-08 15:00:00'))>
         client: "@client_4"
-        employe: "@employe_2"
+        employe: "@employe_1"
         emergency: 1
     event_{3}:
-        name: Rendez-vous <current()>
-        startTime: <(new \DateTime('2020-09-07 14:00:00'))>
-        endTime: <(new \DateTime('2020-09-07 15:00:00'))>
+        createdAt: <(new \DateTime('2017-09-08 15:00:00'))>
+        name: Rendez-vous URGENCE 2 <current()>
+        startTime: <(new \DateTime('2017-09-08 15:00:00'))>
+        endTime: <(new \DateTime('2017-09-08 16:00:00'))>
         client: "@client_5"
-        employe: "@employe_2"
+        employe: "@employe_1"
+        emergency: 1
+    event_{4}:
+        createdAt: <(new \DateTime('2017-09-08 16:00:00'))>
+        name: Rendez-vous URGENCE 3 <current()>
+        startTime: <(new \DateTime('2017-09-08 16:00:00'))>
+        endTime: <(new \DateTime('2017-09-08 17:00:00'))>
+        client: "@client_4"
+        employe: "@employe_1"
         emergency: 1
 
 JMose\CommandSchedulerBundle\Entity\ScheduledCommand:
