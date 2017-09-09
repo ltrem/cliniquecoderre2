@@ -5,6 +5,8 @@ TODO: CONFIGURATION - v1.0 cliniquecoderre.com
         extension=php_intl.dll
     2. install wkhtmltopdf on the server/computer
         - https://wkhtmltopdf.org/downloads.html
+    3. install curl
+        - https://stackoverflow.com/questions/29822686/curl-error-60-ssl-certificate-unable-to-get-local-issuer-certificate
 
     CMDER INIT:
         php bin/console doctrine:database:drop
