@@ -78,30 +78,6 @@ event:
         title: 'Nouveau reçus'
         date: 'Date du reçus d''assurance'
         submit: 'Enregistrer le reçus'
-registration:
-    flash:
-        password:
-            reset: 'Un courriel de réinitialisation à été envoyé!'
-    title: 'Enregistrement'
-    new:
-        title: 'Entrez vos informations personnel pour vous inscrires'
-        submit_and_appointment: 'Créer un profil et prendre un rendez-vous'
-    edit:
-        title: 'Editer vos information personnel'
-        submit_and_appointment: 'Enregistrer mes modifications'
-    yourprofile: 'Votre profil'
-    email:
-        first: 'Courriel'
-        second: 'Confirmation du courriel'
-    password:
-        first: 'Mot de passe'
-        second: 'Confirmation du mot de passe'
-    emailConfirmation:
-        subject: 'Création de profil sur Cliniquecoderre.com'
-        message: 'Veuillez confirmer votre inscription sur le site de rendez-vous de Cliniquecoderre.com'
-        button: 'Cliquez ici pour terminer votre inscription!'
-
-
 communication:
     message:
         create:
@@ -193,8 +169,33 @@ admin:
     communication:
         title: 'Créer une nouvelle communication'
 
+registration:
+    title: 'Créer un compte'
+    help: 'Vous n''avez pas de compte? <br /><br />Un compte vous permettra de prendre des rendez-vous, d''être sur une liste d''urgence et de recevoir diverse notification de rappel et d''ouverture de plage horaire.'
+    flash:
+        password:
+            reset: 'Un courriel de réinitialisation à été envoyé!'
+    title: 'Enregistrement'
+    new:
+        title: 'Entrez vos informations personnel pour vous inscrires'
+        submit_and_appointment: 'Créer un profil et prendre un rendez-vous'
+    edit:
+        title: 'Editer vos information personnel'
+        submit_and_appointment: 'Enregistrer mes modifications'
+    yourprofile: 'Votre profil'
+    email:
+        first: 'Courriel'
+        second: 'Confirmation du courriel'
+    password:
+        first: 'Mot de passe'
+        second: 'Confirmation du mot de passe'
+    emailConfirmation:
+        subject: 'Création de profil sur Cliniquecoderre.com'
+        message: 'Veuillez confirmer votre inscription sur le site de rendez-vous de Cliniquecoderre.com'
+        button: 'Cliquez ici pour terminer votre inscription!'
 login:
     title: 'Connexion'
+    create:
     forgot: 'Mot de passe oublié?'
     username: 'Courriel'
     password: 'Mot de passe'

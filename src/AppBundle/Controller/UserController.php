@@ -91,7 +91,7 @@ class UserController extends Controller
         }
 
         if($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('admin_dashboard');
+            return $this->redirectToRoute('easyadmin');
         }
 
         $client = $user->getClient();

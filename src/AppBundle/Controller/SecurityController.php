@@ -5,13 +5,14 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\LoginForm;
+use Symfony\Component\HttpFoundation\Request;
 
 class SecurityController extends Controller
 {
     /**
      * @Route("/login", name="security_login")
      */
-    public function loginAction()
+    public function loginAction(Request $request)
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 
@@ -24,7 +25,9 @@ class SecurityController extends Controller
         $form = $this->createForm(LoginForm::class, [
             '_username' => $lastUsername,
         ]);
-    
+
+        //$this->addFlash('login', $request->getSession()->get('_security.main.target_path'));
+
         return $this->render(
             'security/login.html.twig',
             array(

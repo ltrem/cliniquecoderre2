@@ -19,6 +19,14 @@ AppBundle\Entity\User:
         email: lautrem2@hotmail.com
         plainPassword: iliketurtles
         roles: ['ROLE_CLIENT']
+    user_{6}:
+        email: admin+<current()>@gmail.com
+        plainPassword: iliketurtles
+        roles: ['ROLE_ADMIN']
+    user_{7}:
+        email: client+<current()>@whatevers123.com
+        plainPassword: iliketurtles
+        roles: ['ROLE_CLIENT']
 AppBundle\Entity\Employe:
     employe_1:
         firstname: Simon
@@ -34,34 +42,44 @@ AppBundle\Entity\Employe:
         birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
         gender: Femme
         user: "@user_2"
+    employe_3:
+        firstname: Nathalie
+        lastname: Cye
+        tag: nath
+        birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
+        gender: Femme
+        user: "@user_6"
 
 AppBundle\Entity\Schedule:
     schedule_1:
-      name: Horaire 1
+      name: Horaire Simon
       employe: "@employe_1"
     schedule_2:
-      name: Horaire 2
+      name: Horaire Ju-Lee
       employe: "@employe_2"
+    schedule_3:
+      name: Horaire Nat
+      employe: "@employe_3"
 
 AppBundle\Entity\ScheduleBlock:
-    schedule_block_1:
-      schedule: "@schedule_1"
+    schedule_block_1{1..3}:
+      schedule: "@schedule_<current()>"
       dateFrom: <(new \DateTime('2017-09-04 08:00:00'))>
       dateTo: <(new \DateTime('2017-09-04 20:00:00'))>
-    schedule_block_2:
-      schedule: "@schedule_1"
+    schedule_block_2{1..3}:
+      schedule: "@schedule_<current()>"
       dateFrom: <(new \DateTime('2017-09-05 08:00:00'))>
       dateTo: <(new \DateTime('2017-09-05 20:00:00'))>
-    schedule_block_3:
-      schedule: "@schedule_1"
+    schedule_block_3{1..3}:
+      schedule: "@schedule_<current()>"
       dateFrom: <(new \DateTime('2017-09-06 08:00:00'))>
       dateTo: <(new \DateTime('2017-09-06 20:00:00'))>
-    schedule_block_4:
-      schedule: "@schedule_1"
+    schedule_block_4{1..3}:
+      schedule: "@schedule_<current()>"
       dateFrom: <(new \DateTime('2017-09-07 08:00:00'))>
       dateTo: <(new \DateTime('2017-09-07 20:00:00'))>
-    schedule_block_5:
-      schedule: "@schedule_1"
+    schedule_block_5{1..3}:
+      schedule: "@schedule_<current()>"
       dateFrom: <(new \DateTime('2017-09-08 08:00:00'))>
       dateTo: <(new \DateTime('2017-09-08 20:00:00'))>
 
@@ -84,11 +102,17 @@ AppBundle\Entity\Client:
         birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
         gender: Homme
         user: "@user_5"
+    client_{6}:
+        firstname: Firstname <current()>
+        lastname: Lastname <current()>
+        birthdate: <(new \DateTime('2017-01-07 00:00:00'))>
+        gender: Homme
+        user: "@user_6"
 
 
 AppBundle\Entity\EventCancellation:
-    event_cancellation_{1}:
-        reason: Cancellation 1
+    event_cancellation_{1..2}:
+        reason: Cancellation <current()>
 
 AppBundle\Entity\Event:
     event_{1}:
@@ -105,8 +129,9 @@ AppBundle\Entity\Event:
         startTime: <(new \DateTime('2017-09-08 14:00:00'))>
         endTime: <(new \DateTime('2017-09-08 15:00:00'))>
         client: "@client_4"
-        employe: "@employe_1"
+        employe: "@employe_2"
         emergency: 1
+        cancellation: "@event_cancellation_2"
     event_{3}:
         createdAt: <(new \DateTime('2017-09-08 15:00:00'))>
         name: Rendez-vous URGENCE 2 <current()>
@@ -126,19 +151,28 @@ AppBundle\Entity\Event:
 
 JMose\CommandSchedulerBundle\Entity\ScheduledCommand:
     command_1:
-        name: Event Availability Notification - Event 1
-        command: app:appointment_availability_notification
-        arguments: --event_id=1 --schedule_command_id=1
-        cronExpression: "* * * * *"
+        name: Event reminder
+        command: app:send-event-reminder
+        arguments: --number_of_day_before=1
+        cronExpression: "0 07 * * 1-5" #TODO: Add a system variable here (At %$07:00$% on every day-of-week from Monday through Friday, send a reminder for upcoming client appointment)
         executeImmediately: true
         priority: 1
         disabled: false
         locked: false
     command_2:
-        name: Event reminder
-        command: app:send-event-reminder
-        arguments: --number_of_day_before=1
-        cronExpression: "0 07 * * 1-5" #TODO: Add a system variable here (At %$07:00$% on every day-of-week from Monday through Friday, send a reminder for upcoming client appointment)
+        name: Event Availability Notification - Event 1
+        command: app:appointment_availability_notification
+        arguments: --event_id=1 --schedule_command_id=2
+        cronExpression: "* * * * *"
+        executeImmediately: true
+        priority: 1
+        disabled: false
+        locked: false
+    command_3:
+        name: Event Availability Notification - Event 2
+        command: app:appointment_availability_notification
+        arguments: --event_id=2 --schedule_command_id=3
+        cronExpression: "* * * * *"
         executeImmediately: true
         priority: 1
         disabled: false
@@ -180,6 +214,13 @@ AppBundle\Entity\Coordinate:
         country: Canada
         client: "@client_5"
         isPrimary: true
+    coordinate_6:
+        address: 395, rue Cormier
+        city: Drummondville
+        province: Quebec
+        country: Canada
+        client: "@client_6"
+        isPrimary: true
 
 AppBundle\Entity\Contact:
     contact_1:
@@ -212,6 +253,12 @@ AppBundle\Entity\Contact:
         phoneHome: <phoneNumber()>
         phoneWork: <phoneNumber()>
         client: "@client_5"
+    contact_6:
+        phoneCell: <phoneNumber()>
+        phoneCellCarrier: "@cell_carrier_3"
+        phoneHome: <phoneNumber()>
+        phoneWork: <phoneNumber()>
+        client: "@client_6"
 AppBundle\Entity\CellCarrier:
     cell_carrier_1:
         name: Bell Canada

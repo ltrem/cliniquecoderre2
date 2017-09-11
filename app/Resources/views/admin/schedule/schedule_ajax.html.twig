@@ -41,8 +41,6 @@
 
         // Append as many input as there are schedule block selected
         $('#calendar-schedule').fullCalendarScheduler('clientEvents').forEach(function(entry) {
-
-            console.log({start: entry.start.format(), end: entry.end.format()});
             $('.schedule-blocks').append($('<input />').attr('name', 'start[]').val(entry.start.format('YYYY-MM-DD HH:mm')));
             $('.schedule-blocks').append($('<input />').attr('name', 'end[]').val(entry.end.format('YYYY-MM-DD HH:mm')));
         });
