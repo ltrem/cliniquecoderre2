@@ -85,13 +85,13 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4 event_wrapper">
             <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">Nouveau rendez-vous</h3>
                 </div><!-- /.box-header -->
                 <!-- form start -->
-                <div class="event_wrapper">
+                <div>
                     {{ form_start(form_event, {'attr': {'id': 'event_new'}, 'action': path('admin_event_new')}) }}
                     <div class="box-body">
                         {{ form_widget(form_event) }}
@@ -214,6 +214,8 @@
 
 
             // Admin Event Calendar
+            var createEventFormHtml;
+
             $('#calendar-holder').fullCalendar({
                 locale: 'fr',
                 //hiddenDays: [0, 6],
@@ -274,6 +276,11 @@
                     }
                 ],
                 eventClick: function(calEvent, jsEvent, view) {
+
+                    if (!createEventFormHtml) {
+                        createEventFormHtml = $('.event_wrapper').clone();
+                    }
+
                     $('.myEvent').each(function() {
                         $(this).removeClass('myEvent');
                     });
@@ -281,14 +288,22 @@
                     // change the border color just for fun
                     if (!$(this).hasClass('unavailable')) {
 
+                        $( ".event_wrapper" ).html( createEventFormHtml.html() );
+
                         // Update Starttime in the form
                         starttime = moment(calEvent.start).format('YYYY-MM-DD HH:mm');
+
+                        $('#admin_appointment_startTime').closest('form').find("input[type=text], textarea").val("");
+                        $('#admin_appointment_startTime').closest('form').find("input[type=checkbox]").prop('checked', false);
                         $('#admin_appointment_startTime').val(starttime);
+
                         $(this).addClass('myEvent');
                     } else {
 
 
                         $("#main").LoadingOverlay("show");
+
+                        var myEvent = $(this).addClass('myEvent');
 
                         // TODO : Load edit form and display it
                         var event_id = calEvent.className[0].split('_')[1];
@@ -296,11 +311,11 @@
                         $.post( Routing.generate('admin_event_edit', { 'entity': 'Event', 'id': event_id }), function( data ) {
                             $( ".event_wrapper" ).html( data );
 
-                            $('#admin_appointment_startTime').val();
-                            $('#admin_appointment_startTime').prop('value', '');
-
                             $("#main").LoadingOverlay("hide", true);
+                            myEvent.addClass('myEvent');
                         });
+
+
                     }
                 },
             });

@@ -44,6 +44,7 @@ class AdminAppointmentType extends AbstractType
                     'class'=>'event_datetimepicker',
                 ),
                 'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd hh:mm',
                 'required' => true
             ))
             ->add('endTime', DateTimeType::class, array(
@@ -53,6 +54,7 @@ class AdminAppointmentType extends AbstractType
                     'class'=>'form_datetime hidden'
                 ),
                 'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd hh:mm',
                 'required' => false
             ));
     }
