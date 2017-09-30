@@ -1,0 +1,14 @@
+
+{{ form_start(form, {'attr': {'id': 'event_edit'}, 'action': path('admin_event_edit', { 'id': event.id })}) }}
+<div class="box-body">
+    {{ form_widget(form) }}
+</div><!-- /.box-body -->
+<div class="box-footer">
+    <button type="submit" class="btn btn-success" data-loading-text="Envoi en cours...">{{ 'admin.event.edit.submit'|trans({}, 'messages') }}</button>
+</div>
+{{ form_end(form) }}
+
+<script>
+    // Select2
+    $('select[data-select="true"]').select2();
+</script>
