@@ -198,13 +198,85 @@ class AppointmentController extends Controller
     /**
      * Displays a form to edit an existing event entity.
      *
-     * @Route("/{id}", name="admin_event_edit")
+     * @Route("/{id}", options={"expose"=true}, name="admin_event_edit")
      * @Method({"GET", "POST"})
      */
     public function eventEditAction(Request $request, Event $event)
     {
         $editForm = $this->createForm(AdminAppointmentType::class, $event);
         $editForm->handleRequest($request);
+
+        // Add 1 hour to StartTime (timezone problem?)
+        $startTime = $editForm->get('startTime')->getData();
+
+        if ($startTime) {
+            // Round to nearest lowest hour
+            $startTime = new \DateTime($startTime->format("Y-m-d H:00:00"));
+            $event->setStartTime($startTime);
+
+            // Add 1 hour to endTime
+            $endTime = new \DateTime($startTime->format("Y-m-d H:00:00"));
+            $event->setEndTime($endTime->modify("+1 hour"));
+        }
+
+        // Verify if it's an Ajax call
+        if($request->isXmlHttpRequest()) {
+
+            if ($editForm->isSubmitted()) {
+
+                if ($editForm->isValid()) {
+
+                    $em = $this->getDoctrine()->getManager();
+
+                    if (1) {
+                        $em->persist($event);
+                        $em->flush();
+
+                        $this->addFlash(
+                            'success',
+                            $this->get('translator')->trans('admin.event.edit.success')
+                        );
+
+                        $response = array(
+                            'success' => 1,
+                            'message' => $this->get('translator')->trans('admin.event.edit.success')
+                        );
+
+                        /*
+                        $flash_message = $this->renderView('flash_message.html.twig', array(
+                            'flash_message' => $this->get('translator')->trans('admin.event.edit.success')
+                        ));
+                        */
+                    } else {
+                        $response = array(
+                            'success' => 0,
+                            'message' => $this->get('translator')->trans('admin.event.new.exist'),
+                            'data' => ['startTime' => $this->get('translator')->trans('admin.event.new.exist') ],
+                        );
+                    }
+
+                } else {
+
+                    // TODO: Return error over JSON response for the ajax
+                    $response = array(
+                        'success' => 0,
+                        'message' => 'Invalid form',
+                        'data' => $this->getErrorMessages($editForm));
+                }
+
+                //return $this->redirectToRoute('admin_event');
+                return new Response(json_encode(array('result' => $response)));
+
+            }
+
+            // If form is not submitted, return the form template
+            return $this->render('easy_admin/Event/edit_ajax.html.twig', array(
+                'event'     => $event,
+                'client'    => $event->getClient(),
+                'employe'   => $event->getEmploye(),
+                'form' => $editForm->createView(),
+            ));
+        }
 
         // Add 1 hour to StartTime (timezone problem?)
         $startTime = $editForm->get('startTime')->getData();

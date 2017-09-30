@@ -2,3 +2,8 @@
 .collection_wrapper .field-collection > label:first-child {
     display: none;
 }
+
+
+.fc-view-container .unavailable:hover {
+    cursor: pointer !important;
+}

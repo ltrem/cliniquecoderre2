@@ -91,7 +91,8 @@
                     <h3 class="box-title">Nouveau rendez-vous</h3>
                 </div><!-- /.box-header -->
                 <!-- form start -->
-                {{ form_start(form_event, {'attr': {'id': 'event_new'}, 'action': path('admin_event_new')}) }}
+                <div class="event_wrapper">
+                    {{ form_start(form_event, {'attr': {'id': 'event_new'}, 'action': path('admin_event_new')}) }}
                     <div class="box-body">
                         {{ form_widget(form_event) }}
                         <p class="help-block">Sélectionner une case disponible</p>
@@ -99,7 +100,8 @@
                     <div class="box-footer">
                         <button type="submit" class="btn btn-success" data-loading-text="Envoi en cours...">{{ 'admin.event.new.submit'|trans({}, 'messages') }}</button>
                     </div>
-                {{ form_end(form_event) }}
+                    {{ form_end(form_event) }}
+                </div>
             </div>
         </div>
 
@@ -175,6 +177,25 @@
                         submitButton.button('reset');
                         $.each(response.result.data, function(e){
                             $("#event_new").find("input[name*='"+ e +"']").closest('.form-group').addClass('has-error');
+                        });
+                    }
+                    //your callback here
+                },'JSON');
+            });
+            $(document).on("submit", "#event_edit", function (e) {
+                e.preventDefault();
+                $("#event_edit").find('.has-error').removeClass('has-error');
+
+                var submitButton = $(this).find(':submit').button('loading');
+                var formSerialize = $(this).serialize();
+                $.post($(this).attr('action'), formSerialize, function(response){
+
+                    if(response.result.success) {
+                        location.reload();
+                    } else {
+                        submitButton.button('reset');
+                        $.each(response.result.data, function(e){
+                            $("#event_edit").find("input[name*='"+ e +"']").closest('.form-group').addClass('has-error');
                         });
                     }
                     //your callback here
@@ -265,9 +286,21 @@
                         $('#admin_appointment_startTime').val(starttime);
                         $(this).addClass('myEvent');
                     } else {
-                        $('#admin_appointment_startTime').val();
-                        $('#admin_appointment_startTime').prop('value', '');
-                        alert('{{ 'event.error.notFree'|trans }}');
+
+
+                        $("#main").LoadingOverlay("show");
+
+                        // TODO : Load edit form and display it
+                        var event_id = calEvent.className[0].split('_')[1];
+
+                        $.post( Routing.generate('admin_event_edit', { 'entity': 'Event', 'id': event_id }), function( data ) {
+                            $( ".event_wrapper" ).html( data );
+
+                            $('#admin_appointment_startTime').val();
+                            $('#admin_appointment_startTime').prop('value', '');
+
+                            $("#main").LoadingOverlay("hide", true);
+                        });
                     }
                 },
             });

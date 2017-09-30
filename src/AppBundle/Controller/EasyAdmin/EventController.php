@@ -9,9 +9,14 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\Schedule;
 use AppBundle\Entity\User;
 use AppBundle\Event\ClientCreatedEvent;
+use AppBundle\Form\AdminAppointmentType;
 use AppBundle\Form\ScheduleType;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class EventController extends BaseAdminController
 {
@@ -82,6 +87,7 @@ class EventController extends BaseAdminController
         ));
     }
 
+
     protected function editAction()
     {
         $this->dispatch(EasyAdminEvents::PRE_EDIT);
@@ -151,5 +157,56 @@ class EventController extends BaseAdminController
         }
 
         return call_user_func_array(array($this, $methodName), $arguments);
+    }
+
+    /**
+     * Lists all event entities.
+     *
+     * @Route("/ajaxTest/{entity}/{id}", options={"expose"=true}, name="ajax_test")
+     * @Method("POST")
+     */
+    public function ajaxTestAction($entity, $id, Request $request) {
+
+        $request->query->set('entity', $entity);
+        $request->query->set('action', 'delete');
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new HttpException(406);
+        }
+
+        $this->initialize($request);
+        $object = $this->em->find($this->entity['class'], $id);
+
+        if (!$object)
+        {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm(AdminAppointmentType::class, $object);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->em->remove($object);
+            $this->em->flush();
+
+            $this->addFlash(
+                'success',
+                $this->get('translator')->trans('admin.event.edit.success')
+            );
+
+            $response = array(
+                'success' => 1,
+                'message' => $this->get('translator')->trans('admin.event.edit.success')
+            );
+
+            //return $this->redirectToRoute('admin_event');
+            return new Response(json_encode(array('result' => $response)));
+        }
+
+        return $this->render('easy_admin/Event/edit_ajax.html.twig', array(
+            'event' => $object,
+            'form' => $form->createView(),
+        ));
     }
 }

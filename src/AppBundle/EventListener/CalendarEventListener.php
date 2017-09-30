@@ -301,11 +301,8 @@ class CalendarEventListener
                         $titleContent .= ' - ' . $companyEvent->getClient()->getUser()->getEmail();
                         $blockEvent->setTitle($titleContent);
 
-                        if ($companyEvent->getEmploye()->getId() == 2) {
-                            $eventClass = 'unavailable julee-unavailable';
-                        } else {
-                            $eventClass = 'unavailable simon-unavailable';
-                        }
+                        // TODO: Il faudrait assigner des paramètres de configuration pour pouvoir changer la couleur pour chaque employé
+                        $eventClass = 'event_' . $companyEvent->getId() . ' unavailable '. $companyEvent->getEmploye()->getTag() . '-unavailable';
 
                         //optional calendar event settings
                         $blockEvent->setAllDay(false); // default is false, set to true if this is an all day event

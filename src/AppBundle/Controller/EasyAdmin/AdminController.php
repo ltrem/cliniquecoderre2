@@ -60,6 +60,7 @@ class AdminController extends BaseAdminController
             return $this->render('easy_admin/dashboard.html.twig', array(
                 'employe' => $user->getEmploye(),
                 'form_event' => $form_event->createView(),
+                'form_event_edit' => $form_event->createView(),
                 'availabilityNotifications' => $arrayNotification,
             ));
         }
@@ -73,7 +74,7 @@ class AdminController extends BaseAdminController
      * @Route("/cancel-appointment-notification/{id}", name="admin_appointment_notification_answer")
      * @Method({"GET", "POST"})
      */
-    public function cancelAppointmentAction(Request $request, int $id)
+    public function cancelAppointmentNotificationAction(Request $request, int $id)
     {
         $scheduledCommand = $this->get('doctrine')->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')->find($id);
 

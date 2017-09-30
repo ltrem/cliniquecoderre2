@@ -183,7 +183,7 @@ class ScheduleController extends Controller
      */
     public function deleteScheduleBlockAction(Request $request, ScheduleBlock $scheduleBlock)
     {
-        // TODO: Get deleteScheduleBlockAction to work with AJAX and form validation
+        // TODO: Get deleteScheduleBlockAction to work with AJAX and form validation with commented code bellow
         //$form = $this->createScheduleBlockDeleteForm($scheduleBlock);
         //$form->handleRequest($request);
 
