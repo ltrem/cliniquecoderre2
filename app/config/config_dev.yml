@@ -31,4 +31,4 @@ monolog:
         #    level:  info
 
 swiftmailer:
-    delivery_address: lautrem2@hotmail.com
+    delivery_address: lautrem2@gmail.com

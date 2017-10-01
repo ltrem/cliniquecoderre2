@@ -71,11 +71,11 @@ class AppAppointmentAvailabilityNotificationCommand extends ContainerAwareComman
             // Create a communication
             $communication = new Communication();
             $communication->setEmail($user->getEmail());
-            $communication->setPhone($phone_to_email);
+            $communication->setPhone($client_contacts[0]->getPhoneCell());
             $communication->setDateSent(new \DateTime('now'));
             $communication->setTitle($this->getContainer()->get('translator')->trans('event.availability.email.title'));
             $communication->addClient($client);
-            $communication->setType('sms,email');
+            $communication->setType('email');
 
             $notification_template= $this->getContainer()->get('templating')->render('event/email_appointment_notification.html.twig', array(
                 'eventFreed' => $eventFreed,

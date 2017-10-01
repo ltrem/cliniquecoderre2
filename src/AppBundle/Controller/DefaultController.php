@@ -40,7 +40,7 @@ class DefaultController extends Controller
             )
         ;
 
-        $message->setTo('lautrem2@hotmail.com');
+        $message->setTo('lautrem2@gmail.com');
         $this->get('mailer')->send($message);
 
         return 'woops';

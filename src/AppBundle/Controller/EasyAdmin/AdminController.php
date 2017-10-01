@@ -5,6 +5,7 @@ use AppBundle\Entity\User;
 use AppBundle\Form\AdminAppointmentType;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Mailgun\Mailgun;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +14,23 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class AdminController extends BaseAdminController
 {
+
+    /**
+     * @Route("/mailgun", name="mailgun")
+     */
+    public function mailgunAction() {
+        # Instantiate the client.
+        $mgClient = new Mailgun('key-f134f0f597e2abe169e3ae2cbd081bc3');
+        $domain = "sandbox1762d322d00b43cf95d08ef04f8151fc.mailgun.org";
+
+        # Make the call to the client.
+        $result = $mgClient->sendMessage("$domain",
+            array('from'    => 'info@sandbox1762d322d00b43cf95d08ef04f8151fc.mailgun.org',
+                'to'      => 'lautrem2@gmail.com',
+                'subject' => 'Hello',
+                'text'    => 'Testing some Mailgun awesomeness!'));
+    }
+
     /**
      * @Route("/", name="easyadmin")
      * @param Request $request

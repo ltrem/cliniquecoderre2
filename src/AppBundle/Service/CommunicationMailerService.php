@@ -3,6 +3,7 @@ namespace AppBundle\Service;
 
 
 use AppBundle\Entity\Communication;
+use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vresh\TwilioBundle\Service\TwilioWrapper;
@@ -30,10 +31,15 @@ class CommunicationMailerService
 
         if (in_array('sms', $type)) {
 
+            $phoneNumber = $communication->getPhone();
+            if ($phoneNumber instanceof PhoneNumber) {
+                $phoneNumber = $this->phoneUtil->format($phoneNumber, \libphonenumber\PhoneNumberFormat::E164);
+            }
+
             // Send SMS (with Vresh/TwilioBundle)
             $this->twilio->account->messages->sendMessage(
                 $this->container->getParameter('twilio_from_phone'), // From a Twilio number in your account
-                $this->phoneUtil->format($communication->getPhone(), \libphonenumber\PhoneNumberFormat::E164), // Text any number
+                $phoneNumber, // Text any number
                 $communication->getContent()
             );
 
@@ -53,7 +59,6 @@ class CommunicationMailerService
                     'text/html'
                 )
             ;
-
             $this->mailer->send($message);
         }
 
