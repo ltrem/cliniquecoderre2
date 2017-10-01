@@ -30,7 +30,7 @@ services:
 
     app.communication_mailer:
         class: AppBundle\Service\CommunicationMailerService
-        arguments: ['@mailer', '@twilio.api']
+        arguments: ['@service_container', '@mailer', '@twilio.api', '@libphonenumber.phone_number_util']
 
     app.appointment_subscriber:
         class: AppBundle\Subscriber\AppointmentSubscriber

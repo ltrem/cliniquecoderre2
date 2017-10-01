@@ -91,17 +91,15 @@
                     <h3 class="box-title">Nouveau rendez-vous</h3>
                 </div><!-- /.box-header -->
                 <!-- form start -->
-                <div>
-                    {{ form_start(form_event, {'attr': {'id': 'event_new'}, 'action': path('admin_event_new')}) }}
-                    <div class="box-body">
-                        {{ form_widget(form_event) }}
-                        <p class="help-block">Sélectionner une case disponible</p>
-                    </div><!-- /.box-body -->
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-success" data-loading-text="Envoi en cours...">{{ 'admin.event.new.submit'|trans({}, 'messages') }}</button>
-                    </div>
-                    {{ form_end(form_event) }}
+                {{ form_start(form_event, {'attr': {'id': 'event_new'}, 'action': path('admin_event_new')}) }}
+                <div class="box-body">
+                    {{ form_widget(form_event) }}
+                    <p class="help-block">Sélectionner une case disponible</p>
+                </div><!-- /.box-body -->
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-success" data-loading-text="Envoi en cours...">{{ 'admin.event.new.submit'|trans({}, 'messages') }}</button>
                 </div>
+                {{ form_end(form_event) }}
             </div>
         </div>
 
@@ -163,7 +161,7 @@
 
             // Submit form #event_new
             $('#admin_appointment_startTime').prop("readonly", true);
-            $("#event_new").submit(function(e){
+            $(document).on("submit", "#event_new", function (e) {
                 e.preventDefault();
                 $("#event_new").find('.has-error').removeClass('has-error');
 
@@ -305,11 +303,12 @@
 
                         var myEvent = $(this).addClass('myEvent');
 
-                        // TODO : Load edit form and display it
                         var event_id = calEvent.className[0].split('_')[1];
 
                         $.post( Routing.generate('admin_event_edit', { 'entity': 'Event', 'id': event_id }), function( data ) {
+
                             $( ".event_wrapper" ).html( data );
+                            $('#admin_appointment_startTime').prop("readonly", true);
 
                             $("#main").LoadingOverlay("hide", true);
                             myEvent.addClass('myEvent');

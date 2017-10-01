@@ -1,4 +1,8 @@
 Return to home page: Retourner à la page d'accueil
+Save: Enregistrer
+Edit: Modifier
+New: Nouveau
+Cancel: Annuler
 menu:
     homepage: 'Page d''accueil'
     employe: 'Employé'
@@ -108,7 +112,7 @@ admin:
             reason: 'Raison'
             endTime: 'Fin'
             categories: 'Catégories'
-            cancellationReason: 'Pourquoi voulez-vous annuler votre rendez-vous?'
+            cancellationReason: 'Pourquoi voulez-vous annuler ce rendez-vous?'
             emergency: 'Urgence'
         error:
             notFree: 'Impossible de sélectionner une case déjà réservé!'
@@ -127,6 +131,9 @@ admin:
             title: 'Modifier les informations du rendez-vous'
             success: 'Le rendez-vous à été modifié avec succès!'
             submit: 'Modifier le rendez-vous'
+        cancellation:
+            title: 'Annuler le rendez-vous'
+            submit: 'Je confirme vouloir annuler le rendez-vous!'
     employe:
         filter:
             name: 'Nom de l''employé'

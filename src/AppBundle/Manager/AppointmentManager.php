@@ -48,7 +48,7 @@ class AppointmentManager {
             // Create a communication
             $communication = new Communication();
             $communication->setEmail($user->getEmail());
-            $communication->setPhone($phone_to_email);
+            $communication->setPhone($client_contacts[0]->getPhoneCell());
             $communication->setDateSent(new \DateTime('now'));
             $communication->setTitle($appointment->getName());
             $communication->setContent($appointment->getCancellation()->getReason());

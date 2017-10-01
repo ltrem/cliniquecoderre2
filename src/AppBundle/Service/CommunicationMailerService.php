@@ -3,52 +3,57 @@ namespace AppBundle\Service;
 
 
 use AppBundle\Entity\Communication;
+use libphonenumber\PhoneNumberUtil;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Vresh\TwilioBundle\Service\TwilioWrapper;
 
 class CommunicationMailerService
 {
+    private $container;
     private $mailer;
     private $twilio;
+    private $phoneUtil;
 
-    public function __construct($mailer, $twilio)
+    public function __construct(ContainerInterface $container, $mailer, TwilioWrapper $twilio, PhoneNumberUtil $phoneUtil)
     {
+        $this->container = $container;
         $this->mailer = $mailer;
         $this->twilio = $twilio;
+        $this->phoneUtil = $phoneUtil;
     }
 
     public function send(Communication $communication)
     {
 
-        // Send email
-        $message = \Swift_Message::newInstance()
-            ->setFrom('info@sandbox1762d322d00b43cf95d08ef04f8151fc.mailgun.org')
-            ->setSubject(
-                $communication->getTitle()
-            )
-            ->setBody(
-                $communication->getContent(),
-                'text/html'
-            )
-        ;
-
         $type = explode(',',$communication->getType());
-
-        if (in_array('email', $type)) {
-            $message->setTo($communication->getEmail());
-            // Send message
-            $this->mailer->send($message);
-        }
+        $type = array_map('trim', $type);
 
         if (in_array('sms', $type)) {
-            /* TWILIO SETUP
-            $this->twilio->account->messages->sendMessage(
-                '+15005550006', // From a Twilio number in your account
-                '+18198188736', // Text any number
-                "Hello monkey!"
-            );
-            */
 
-            $message->setTo($communication->getPhone());
-            // Send message
+            // Send SMS (with Vresh/TwilioBundle)
+            $this->twilio->account->messages->sendMessage(
+                $this->container->getParameter('twilio_from_phone'), // From a Twilio number in your account
+                $this->phoneUtil->format($communication->getPhone(), \libphonenumber\PhoneNumberFormat::E164), // Text any number
+                $communication->getContent()
+            );
+
+        }
+
+        if (in_array('email', $type)) {
+
+            // Prepare and send email (With cspooSwiftmailerMailgunBundle)
+            $message = \Swift_Message::newInstance()
+                ->setFrom($this->container->getParameter('mailgun_from'))
+                ->setTo($communication->getEmail())
+                ->setSubject(
+                    $communication->getTitle()
+                )
+                ->setBody(
+                    $communication->getContent(),
+                    'text/html'
+                )
+            ;
+
             $this->mailer->send($message);
         }
 

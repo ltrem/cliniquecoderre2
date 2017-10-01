@@ -4,8 +4,11 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\Client;
 use AppBundle\Entity\Employe;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\EventCancellation;
 use AppBundle\Entity\Receipt;
+use AppBundle\Event\AppointmentCancelledEvent;
 use AppBundle\Form\AdminAppointmentType;
+use AppBundle\Form\EventCancellationType;
 use AppBundle\Form\EventType;
 use AppBundle\Form\SearchEventType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -307,6 +310,52 @@ class AppointmentController extends Controller
             'event' => $event,
             'form' => $editForm->createView(),
         ));
+    }
+
+
+    /**
+     * Cancel the Event.
+     *
+     * @Route("/{id}/cancel", name="admin_event_cancel")
+     * @Method({"GET", "POST"})
+     */
+    public function cancelAction(Request $request, Event $event)
+    {
+
+        if ($event->getCancellation()) {
+            return $this->redirectToRoute('user_profile');
+        }
+
+        $eventCancellation = new EventCancellation();
+
+        $form = $this->createForm(EventCancellationType::class, $eventCancellation, array('isAdmin' => true));
+        $form->handleRequest($request);
+
+        // Verify if it's an Ajax call
+        if($request->isXmlHttpRequest()) {
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $event->setCancellation($eventCancellation);
+                $em = $this->getDoctrine()->getManager();
+
+                $em->persist($eventCancellation);
+                $em->getConnection()->beginTransaction();
+                $em->flush();
+
+                // Send a notice to every client that are waiting for an appointment
+                $this->get('event_dispatcher')->dispatch(AppointmentCancelledEvent::NAME, new AppointmentCancelledEvent($event));
+
+                $em->getConnection()->commit();
+
+                return new Response(json_encode(array('status'=>'success')));
+            }
+
+            return $this->render('easy_admin/Event/cancel_ajax.html.twig', array(
+                'event' => $event,
+                'form' => $form->createView(),
+            ));
+        }
     }
 
     // Generate an array contains a key -> value with the errors where the key is the name of the form field

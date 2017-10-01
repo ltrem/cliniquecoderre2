@@ -3,7 +3,12 @@
     display: none;
 }
 
+/* FIX so the calendar event are not shrinked when clicked */
+.fc-view a:active {
+    position: absolute !important;
+}
 
 .fc-view-container .unavailable:hover {
     cursor: pointer !important;
 }
+

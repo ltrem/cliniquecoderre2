@@ -10,7 +10,8 @@
             {{ form_widget(form) }}
         </div><!-- /.box-body -->
         <div class="box-footer">
-            <button type="submit" class="btn btn-success" data-loading-text="Envoi en cours...">{{ 'admin.event.edit.submit'|trans({}, 'messages') }}</button>
+            <button type="submit" class="btn btn-success" data-loading-text="Envoi en cours...">{{ 'Save'|trans({}, 'messages') }}</button>
+            <a data-toggle="modal" href="{{ path('admin_event_cancel', { 'id': event.id }) }}" data-target="#myModal" class="btn btn-xs btn-danger">{{ 'Cancel'|trans({}, 'messages') }}</a>
         </div>
         {{ form_end(form) }}
     </div>

@@ -17,9 +17,16 @@ class EventCancellationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $label_format = 'event.form.cancellationReason';
+        if ($options['isAdmin']) {
+            $label_format = 'admin.event.form.cancellationReason';
+        }
         $builder
             ->add('reason', TextType::class, array(
-                'label_format' => 'event.form.cancellationReason'
+                'label_format' => $label_format,
+                'attr' => [
+                    'autofocus' => true
+                ]
             ));
     }
 
@@ -29,7 +36,8 @@ class EventCancellationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => EventCancellation::class
+            'data_class' => EventCancellation::class,
+            'isAdmin' => false,
         ));
     }
 
