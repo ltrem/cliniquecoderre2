@@ -26,7 +26,7 @@ class ReceiptController extends Controller
      * @Route("/new/{id}", name="admin_receipt_new")
      * @Method({"GET", "POST"})
      */
-    public function cancelAction(Request $request, Event $event)
+    public function newAction(Request $request, Event $event)
     {
 
         $receipt = new Receipt();

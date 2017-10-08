@@ -105,6 +105,7 @@ admin:
         table:
             emergency: 'Urgence'
             startTime: 'Date et heure du rendez-vous'
+            receipt: 'Reçu'
         form:
             name: 'Nom'
             startTime: 'Date et heure du rendez-vous'

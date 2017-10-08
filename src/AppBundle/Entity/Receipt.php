@@ -103,7 +103,7 @@ class Receipt
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
      *
-     * @return Product
+     * @return Receipt
      */
     public function setImageFile(File $image = null)
     {
@@ -129,7 +129,7 @@ class Receipt
     /**
      * @param string $imageName
      *
-     * @return Product
+     * @return Receipt
      */
     public function setImageName($imageName)
     {
@@ -149,7 +149,7 @@ class Receipt
     /**
      * @param integer $imageSize
      *
-     * @return Product
+     * @return Receipt
      */
     public function setImageSize($imageSize)
     {
@@ -222,7 +222,7 @@ class Receipt
      *
      * @param \AppBundle\Entity\Client $client
      *
-     * @return Client
+     * @return Receipt
      */
     public function setClient(Client $client = null)
     {
@@ -242,7 +242,9 @@ class Receipt
     }
 
     /**
-     * @return mixed
+     * Get Event
+     *
+     * @return \AppBundle\Entity\Event
      */
     public function getEvent()
     {
@@ -283,6 +285,10 @@ class Receipt
 
     /**
      * Set receiptDate
+     *
+     * @param datetime $receiptDate
+     *
+     * @return Receipt
      */
     public function setReceiptDate($receiptDate)
     {

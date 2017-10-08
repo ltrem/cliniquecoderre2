@@ -25,7 +25,7 @@ class ReceiptType extends AbstractType
                     'class' => 'event_datetimepicker'
                 ),
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd hh:mm',
+                'format' => 'yyyy-MM-dd HH:mm',
                 'required' => true,
                 'view_timezone' => 'America/Montreal',
                 'data' => new \DateTime()
