@@ -115,11 +115,11 @@ vich_uploader:
 knp_snappy:
     pdf:
         enabled:    true
-        binary:     "\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\""
+        binary:     "%wlhtmltopdf_path%"
         options:    []
     image:
         enabled:    true
-        binary:     "\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltoimage.exe\""
+        binary:     "%wlhtmltoimg_path%"
         options:    []
 
 # JMoseCommandSchedulerBundle
