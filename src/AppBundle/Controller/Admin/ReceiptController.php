@@ -41,9 +41,25 @@ class ReceiptController extends Controller
 
                 // TODO: Changer la logique ci bas... présentement, si la génération de PDF plante, le "reçus d'assurance ne sera pas créée.
 
+                // Add receipt to Event
+                $event->addReceipt($receipt);
+                $em = $this->getDoctrine()->getManager();
+
                 // Generate Receipt in PDF format in a temporary files (KnpSnappy will delete it)
                 $tmp_file = base64_encode(random_bytes(10));
                 $filename = '/tmp/'. $tmp_file . '.pdf';
+
+                $this->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView(
+                        'event/receipt/receipt.html.twig',
+                        array(
+                            'receipt'  => $receipt
+                        )
+                    ),
+                    $filename
+                );
+
+                /*
                 $this->get('knp_snappy.pdf')->generate('http://www.google.fr', $filename, array(
                     'orientation' => 'landscape',
                     'enable-javascript' => true,
@@ -60,14 +76,10 @@ class ReceiptController extends Controller
                     'enable-external-links' => true,
                     'enable-internal-links' => true
                 ));
-
+                */
                 // Create new uploaded file and assign it to receipt
                 $newFile = new UploadedFile($filename, $filename, null, filesize($filename), false, true);
                 $receipt->setImageFile($newFile);
-
-                // Add receipt to Event
-                $event->addReceipt($receipt);
-                $em = $this->getDoctrine()->getManager();
 
                 $em->persist($receipt);
                 $em->getConnection()->beginTransaction();

@@ -29,6 +29,7 @@ class AdminController extends Controller
      */
     public function indexAction()
     {
+        dump($this->getParameter('phpt'));
         return $this->render('admin/homepage.html.twig');
     }
 

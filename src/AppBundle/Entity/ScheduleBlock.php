@@ -126,7 +126,7 @@ class ScheduleBlock
     }
 
     /**
-     * @return \Date
+     * @return \DateTime
      */
     public function getDateFrom()
     {
@@ -142,7 +142,7 @@ class ScheduleBlock
     }
 
     /**
-     * @return \Date
+     * @return \DateTime
      */
     public function getDateTo()
     {
@@ -150,7 +150,7 @@ class ScheduleBlock
     }
 
     /**
-     * @param \Date $dateTo
+     * @param \DateTime $dateTo
      */
     public function setDateTo($dateTo)
     {

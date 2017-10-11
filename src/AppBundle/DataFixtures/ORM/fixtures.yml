@@ -221,6 +221,13 @@ AppBundle\Entity\Coordinate:
         country: Canada
         client: "@client_6"
         isPrimary: true
+    coordinate_7:
+        address: 395, rue Cormier
+        city: Drummondville
+        province: Quebec
+        country: Canada
+        employe: "@employe_3"
+        isPrimary: true
 
 AppBundle\Entity\Contact:
     contact_1:
@@ -259,6 +266,12 @@ AppBundle\Entity\Contact:
         phoneHome: <phoneNumber()>
         phoneWork: <phoneNumber()>
         client: "@client_6"
+    contact_7:
+        phoneCell: <phoneNumber()>
+        phoneCellCarrier: "@cell_carrier_3"
+        phoneHome: <phoneNumber()>
+        phoneWork: <phoneNumber()>
+        employe: "@employe_3"
 AppBundle\Entity\CellCarrier:
     cell_carrier_1:
         name: Bell Canada

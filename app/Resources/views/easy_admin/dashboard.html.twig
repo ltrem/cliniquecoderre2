@@ -156,6 +156,7 @@
     <script type="text/javascript" src="{{ asset('js/fullCalendarScheduler.js') }}"></script>
 
     <script>
+        var currentEmploye, currentClient;
 
         $( document ).ready(function() {
 
@@ -199,10 +200,16 @@
                     //your callback here
                 },'JSON');
             });
+
             $(document).on('change', "[name*='employe']", function() {
                 // Show loading
                 $("#main").LoadingOverlay("show");
+
+                currentEmploye = $(this).val();
                 $("[name*='startTime']").val('');
+
+                $('#admin_appointment_startTime').closest('form').find("input[type=text], textarea").val("");
+                $('#admin_appointment_startTime').closest('form').find("input[type=checkbox]").prop('checked', false);
 
                 // Reload event
                 $.when( $('#calendar-holder').fullCalendar( 'refetchEvents' )).then(function(){
@@ -210,6 +217,9 @@
                 })
             });
 
+            $(document).on('change', "[name*='client']", function() {
+                currentClient = $(this).val();
+            });
 
             // Admin Event Calendar
             var createEventFormHtml;
@@ -276,6 +286,7 @@
                 eventClick: function(calEvent, jsEvent, view) {
 
                     if (!createEventFormHtml) {
+                        $('.event_wrapper').find('select[data-select="true"]').select2('destroy');
                         createEventFormHtml = $('.event_wrapper').clone();
                     }
 
@@ -283,10 +294,17 @@
                         $(this).removeClass('myEvent');
                     });
 
-                    // change the border color just for fun
+                    // prepare new event form
                     if (!$(this).hasClass('unavailable')) {
 
                         $( ".event_wrapper" ).html( createEventFormHtml.html() );
+
+                        if(currentEmploye) {
+                            $("[name*='employe']").val(currentEmploye);
+                        }
+                        if(currentClient) {
+                            $("[name*='client']").val(currentClient);
+                        }
 
                         // Update Starttime in the form
                         starttime = moment(calEvent.start).format('YYYY-MM-DD HH:mm');
@@ -297,7 +315,6 @@
 
                         $(this).addClass('myEvent');
                     } else {
-
 
                         $("#main").LoadingOverlay("show");
 
@@ -312,10 +329,12 @@
 
                             $("#main").LoadingOverlay("hide", true);
                             myEvent.addClass('myEvent');
+
                         });
-
-
                     }
+
+                    // Select2
+                    $('select[data-select="true"]').select2();
                 },
             });
 

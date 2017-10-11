@@ -25,9 +25,12 @@ TODO: CONFIGURATION - v1.0 cliniquecoderre.com
     WEBSITE CONFIG:
         1. Add image to every employe
 
-
 TODO: Prod
     - Tester la génération de PDF
+
+TODO: Dashboard
+    - Vérifier de pouvoir entrer des rendez-vous pour les autres employés.
+
 
 TODO: Faire le tour des courriels / messages
     - Voir tout les courriels et SMS envoyés par le système, les traduires et les testers.
@@ -48,6 +51,7 @@ TODO: Recu d'assurance pour rendez-vous (création, modification, impression, env
 
 TODO: Test AppointmentManager notification system's
 
+    TODO Thinking: Potential problem, when there are, let say, two notification active, the same user receive two notification
     TODO PROBLEM: Bug d'envoi de notification si un client à un rendez-vous en urgence ayant déjà reçu une notification
 
 

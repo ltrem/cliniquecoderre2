@@ -12,6 +12,12 @@
     </div>
 {% endblock %}
 
+{% block user_menu_dropdown %}
+    <li>
+        <a href="{{ _logout_path }}"><i class="fa fa-sign-out"></i> {{ 'user.signout'|trans(domain = 'EasyAdminBundle') }}</a>
+    </li>
+{% endblock user_menu_dropdown %}
+
 {% block head_javascript %}
     {{ parent() }}
     {% include 'easy_admin/head_javascript.html.twig' %}
@@ -45,8 +51,7 @@
                 minView: 'day',
                 todayHighlight: true,
                 language: 'fr',
-                todayBtn: true,
-                {#pickerPosition: "bottom-left",#}
+                todayBtn: true
             })
             .on('changeDate', function(ev){
                 starttime = moment(ev.date).startOf('hour').format('YYYY-MM-DD HH:mm');

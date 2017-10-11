@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Event;
+use AppBundle\Entity\ScheduleBlock;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Nelmio\Alice\Fixtures;
@@ -27,6 +28,7 @@ class LoadFixtures implements FixtureInterface, ContainerAwareInterface
         ]);
 
         $this->loadEvents($manager);
+        $this->loadScheduleBlocks($manager);
 
     }
 
@@ -99,6 +101,37 @@ class LoadFixtures implements FixtureInterface, ContainerAwareInterface
 
             $manager->persist($event);
             $manager->flush();
+        }
+
+    }
+
+    public function loadScheduleBlocks(ObjectManager $manager) {
+
+        $scheduleBlocks = [];
+
+        $schedule = 3;
+
+        while ($schedule-- >= 0) {
+
+            $day = 300;
+            while ($day-- >= 0) {
+
+                $dateFrom = new \DateTime('now');
+                $dateFrom->setTime('08', '00')->modify('+' . $day . ' day');
+
+                $dateTo = new \DateTime('now');
+                $dateTo->setTime('17', '00')->modify('+' . $day . ' day');
+
+                $scheduleBlock = new ScheduleBlock();
+                $scheduleBlock->setDateFrom($dateFrom);
+                $scheduleBlock->setDateTo($dateTo);
+
+                $objSchedule = $manager->getRepository('AppBundle:Schedule')->find($schedule+1);
+                $scheduleBlock->setSchedule($objSchedule);
+
+                $manager->persist($scheduleBlock);
+                $manager->flush();
+            }
         }
 
     }

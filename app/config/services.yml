@@ -13,6 +13,12 @@ services:
         tags:
             - { name: twig.extension }
 
+    twig.extension.database_globals:
+        class: AppBundle\Twig\Extension\DatabaseGlobalsExtension
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: twig.extension }
+
     app.security.login_form_authenticator:
         class: AppBundle\Security\LoginFormAuthenticator
         autowire: true
