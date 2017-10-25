@@ -10,11 +10,31 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'general.modal.close'|trans }}</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'event.receipt.print'|trans }}</button>
-        {% for receipt in event.receipts %}
-            <a type="button" class="btn btn-primary" href="{{ asset(vich_uploader_asset(receipt, 'imageFile')) }}">{{ 'event.receipt.send'|trans }}</a>
-        {% endfor %}
-        <button type="submit" class="btn btn-success" data-loading-text="Sauvegarde du reçus en cours...">{{ 'event.receipt.submit'|trans }}</button>
+        <div class="btn-group">
+            <button id="submit_receipt_button" name="save" type="submit" class="btn btn-primary" data-loading-text="Sauvegarde du reçus en cours...">{{ 'event.receipt.submit'|trans }}</button>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li>
+                    <a>
+                        <button type="submit" name="saveAndPrint" style="
+                            background:none;
+                            border:none;
+                            font-size:1em;">{{ 'event.receipt.print'|trans }}</button>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <button type="submit" name="saveAndSend" style="
+                            background:none;
+                            border:none;
+                            font-size:1em;">{{ 'event.receipt.saveAndSend'|trans }}</button>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
     </div>
     {{ form_end(form) }}
 
@@ -31,8 +51,8 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'general.modal.close'|trans }}</button>
-        <a type="button" class="btn btn-default" target="_blank" href="{{ asset(vich_uploader_asset(receipt, 'imageFile')) }}">{{ 'receipt.print'|trans }}</a>
-        <a type="button" class="btn btn-primary" target="_blank" href="{{ asset(vich_uploader_asset(receipt, 'imageFile')) }}">{{ 'receipt.send'|trans }}</a>
+        <a type="button" class="btn btn-default" target="_blank" href="{{ asset(vich_uploader_asset(receipt, 'imageFile')) }}">{{ 'event.receipt.print'|trans }}</a>
+        <a type="button" class="btn btn-primary" target="_blank" href="{{ path('admin_receipt_send', { 'id': receipt.id }) }}">{{ 'event.receipt.send'|trans }}</a>
     </div>
 
 {% endif %}
@@ -55,15 +75,18 @@
         {#pickerPosition: "bottom-left",#}
     })
 
-    $("#receipt_new").submit(function(e){
+    $(document).on('click', '#saveAndSend', function(e){
+        $("#submit_receipt_button").click();
+    });
 
+    $("#receipt_new").submit(function(e){
         e.preventDefault();
+
         $(this).find(':submit').button('loading');
         var formSerialize = $(this).serialize();
         $.post($(this).attr('action'), formSerialize, function(response){
             //your callback here
             location.reload();
-
         },'JSON');
     });
 </script>

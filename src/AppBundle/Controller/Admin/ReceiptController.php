@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Entity\Communication;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Receipt;
+use AppBundle\Event\CommunicationSentEvent;
 use AppBundle\Form\ReceiptType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,6 +29,44 @@ class ReceiptController extends Controller
      */
     public function showAction(Receipt $receipt)
     {
+        return $this->render('event/receipt/receipt_ajax.html.html.twig', array(
+            'receipt' => $receipt,
+        ));
+    }
+
+    /**
+     * Finds and displays a receipt entity.
+     *
+     * @Route("/send/{id}", name="admin_receipt_send")
+     * @Method("GET")
+     */
+    public function sendAction(Receipt $receipt)
+    {
+
+        $communication = new Communication();
+        $communication->setDateSent(new \DateTime('now'));
+        $communication->setType('email');
+        $communication->addClient($receipt->getEvent()->getClient());
+        $communication->setTitle('Reçu d\'assurance');
+        $communication->setContent(
+            $this->renderView(
+                'event/receipt/receipt.html.twig',
+                array(
+                    'receipt'  => $receipt
+                )
+            )
+        );
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($communication);
+        $em->getConnection()->beginTransaction();
+        $em->flush();
+
+        // Dispatch an event to send the communication
+        $this->get('event_dispatcher')->dispatch(CommunicationSentEvent::NAME, new CommunicationSentEvent($communication));
+
+        $em->getConnection()->commit();
+
         return $this->render('event/receipt/receipt_ajax.html.html.twig', array(
             'receipt' => $receipt,
         ));
@@ -97,8 +137,9 @@ class ReceiptController extends Controller
                 $em->getConnection()->beginTransaction();
                 $em->flush();
 
-                // TODO: Maybe send an email with the invoice by email by triggering an event like bellow
-                    //$this->get('event_dispatcher')->dispatch(AppointmentCancelledEvent::NAME, new AppointmentCancelledEvent($event));
+                if ($request->attributes->has('saveAndSend')) {
+                    $this->sendAction($receipt);
+                }
 
                 $em->getConnection()->commit();
 

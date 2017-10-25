@@ -86,6 +86,7 @@ event:
         date: 'Date du reçus d''assurance'
         submit: 'Enregistrer le reçus'
         send: 'Envoyer par courriel'
+        saveAndSend: 'Enregistrer et envoyer par courriel'
         print: 'Imprimer'
 communication:
     message:
