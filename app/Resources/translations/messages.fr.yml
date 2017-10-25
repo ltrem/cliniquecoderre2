@@ -79,9 +79,14 @@ event:
         title: 'Annuler mon rendez-vous'
         submit: 'Je confirme vouloir annuler mon rendez-vous!'
     receipt:
-        title: 'Nouveau reçus'
+        new:
+            title: 'Nouveau reçus'
+        edit:
+            title: 'Reçu'
         date: 'Date du reçus d''assurance'
         submit: 'Enregistrer le reçus'
+        send: 'Envoyer par courriel'
+        print: 'Imprimer'
 communication:
     message:
         create:

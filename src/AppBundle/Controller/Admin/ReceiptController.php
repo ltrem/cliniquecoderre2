@@ -19,6 +19,18 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ReceiptController extends Controller
 {
+    /**
+     * Finds and displays a receipt entity.
+     *
+     * @Route("/{id}", name="admin_receipt_show")
+     * @Method("GET")
+     */
+    public function showAction(Receipt $receipt)
+    {
+        return $this->render('event/receipt/receipt_ajax.html.html.twig', array(
+            'receipt' => $receipt,
+        ));
+    }
 
     /**
      * Create a receipt for an event

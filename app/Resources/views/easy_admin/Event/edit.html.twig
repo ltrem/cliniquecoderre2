@@ -13,11 +13,43 @@
             <!-- Tab panes -->
             <div class="tab-content">
 
-                <h3>Reçus d'assurance <a data-toggle="modal" href="{{ path('admin_receipt_new', { 'id': event.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Créer un reçus d'assurance</a></h3>
-
                 {# Event #}
                 <div role="tabpanel" class="tab-pane active" id="info">
-                    {{ form(form) }}
+
+                    <div class="row">
+                        <div class="col-sm-8">
+                            {{ form(form) }}
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="field-group">
+                                <div class="box box-default">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">
+                                            Reçus d'assurance
+                                        </h3>
+                                    </div>
+
+                                    <div class="box-body">
+                                        {% if event.receipts|length %}
+                                            <ul>
+                                                {% for receipt in event.receipts %}
+                                                    <li>
+                                                        <a data-toggle="modal" href="{{ path('admin_receipt_show', { 'id': receipt.id }) }}" data-target="#myModal" class="btn btn-xs btn-info">{{ receipt.receiptDate|date('Y-m-d') }} - {{ receipt.amount }} $</a>
+                                                        {# PRINT
+                                                        <a target="_blank" href="{{ asset(vich_uploader_asset(receipt, 'imageFile')) }}">{{ receipt.receiptDate|date('Y-m-d') }} - {{ receipt.amount }} $</a>
+                                                        #}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+
+                                        {% else %}
+                                            <a data-toggle="modal" href="{{ path('admin_receipt_new', { 'id': event.id }) }}" data-target="#myModal" class="btn btn-xs btn-success">Créer un reçus d'assurance</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -31,6 +63,17 @@
     {{ parent() }}
 
     <script>
+        $(".event_datetimepicker").datetimepicker({
+            bootcssVer: 3,
+            format: 'yyyy-mm-dd hh:ii',
+            autoclose: true,
+            stepping: 60,
+            minView: 'day',
+            todayHighlight: true,
+            language: 'fr',
+            todayBtn: true
+            {#pickerPosition: "bottom-left",#}
+        })
 
         $( document ).ready(function() {
 

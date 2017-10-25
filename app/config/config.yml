@@ -259,7 +259,7 @@ easy_admin:
                     - { property: 'name' }
                     - { property: 'client' }
                     - { property: 'employe' }
-                    - { property: 'startTime', type_options: { widget: 'single_text', format: 'yyyy-MM-dd HH:mm', html5: false, attr: {'class': 'event_datetimepicker '} } }
+                    - { property: 'startTime', label: 'admin.event.table.startTime', type_options: { widget: 'single_text', format: 'yyyy-MM-dd HH:mm', html5: false, attr: {'class': 'event_datetimepicker '} } }
         Communication:
             class: AppBundle\Entity\Communication
             controller: AppBundle\Controller\EasyAdmin\CommunicationController
