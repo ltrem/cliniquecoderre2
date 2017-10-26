@@ -88,6 +88,7 @@ event:
         send: 'Envoyer par courriel'
         saveAndSend: 'Enregistrer et envoyer par courriel'
         print: 'Imprimer'
+        saveAndPrint: 'Enregistrer et imprimer'
 communication:
     message:
         create:

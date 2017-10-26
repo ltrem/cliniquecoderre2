@@ -6,7 +6,8 @@
         <h4 class="modal-title" id="exampleModalLabel">{{ 'event.receipt.new.title'|trans }}</h4>
     </div>
     <div class="modal-body">
-        {{ form_widget(form) }}
+        {{ form_row(form.receiptDate) }}
+        {{ form_row(form.amount) }}
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'general.modal.close'|trans }}</button>
@@ -17,22 +18,11 @@
             </button>
             <ul class="dropdown-menu" role="menu">
                 <li>
-                    <a>
-                        <button type="submit" name="saveAndPrint" style="
-                            background:none;
-                            border:none;
-                            font-size:1em;">{{ 'event.receipt.print'|trans }}</button>
-                    </a>
+                    {{ form_widget(form.saveAndPrint) }}
                 </li>
                 <li>
-                    <a>
-                        <button type="submit" name="saveAndSend" style="
-                            background:none;
-                            border:none;
-                            font-size:1em;">{{ 'event.receipt.saveAndSend'|trans }}</button>
-                    </a>
+                    {{ form_widget(form.saveAndSend) }}
                 </li>
-
             </ul>
         </div>
     </div>
@@ -73,17 +63,21 @@
         language: 'fr',
         todayBtn: true
         {#pickerPosition: "bottom-left",#}
-    })
-
-    $(document).on('click', '#saveAndSend', function(e){
-        $("#submit_receipt_button").click();
     });
+
 
     $("#receipt_new").submit(function(e){
         e.preventDefault();
 
         $(this).find(':submit').button('loading');
+
+        // TODO: Find a way to add this hidden input only when button saveAndSend is clicked
+        {
+            $(this).append($('<input />').attr({type: 'hidden', name: 'receipt[saveAndSend]'}));
+        }
+
         var formSerialize = $(this).serialize();
+
         $.post($(this).attr('action'), formSerialize, function(response){
             //your callback here
             location.reload();

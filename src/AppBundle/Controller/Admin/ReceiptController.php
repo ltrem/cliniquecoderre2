@@ -10,6 +10,7 @@ use AppBundle\Form\ReceiptType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -81,14 +82,23 @@ class ReceiptController extends Controller
     public function newAction(Request $request, Event $event)
     {
 
+
         $receipt = new Receipt();
 
         $form = $this->createForm(ReceiptType::class, $receipt);
+        $form->add('saveAndPrint', SubmitType::class, array(
+            'label_format' => 'event.receipt.saveAndPrint',
+            'attr' => array('class' => 'saveAndPrint'),
+        ));
+        $form->add('saveAndSend', SubmitType::class, array(
+            'label_format' => 'event.receipt.saveAndSend',
+            'attr' => array('class' => 'saveAndSend'),
+        ));
         $form->handleRequest($request);
 
         // Verify if it's an Ajax call
-        if($request->isXmlHttpRequest()) {
-
+        if($request->isXmlHttpRequest())
+        {
             if ($form->isSubmitted() && $form->isValid()) {
 
                 // TODO: Changer la logique ci bas... présentement, si la génération de PDF plante, le "reçus d'assurance ne sera pas créée.
@@ -137,7 +147,7 @@ class ReceiptController extends Controller
                 $em->getConnection()->beginTransaction();
                 $em->flush();
 
-                if ($request->attributes->has('saveAndSend')) {
+                if (isset($request->request->get('receipt')['saveAndSend'])) {
                     $this->sendAction($receipt);
                 }
 
