@@ -25,12 +25,19 @@ TODO: CONFIGURATION - v1.0 cliniquecoderre.com
     WEBSITE CONFIG:
         1. Add image to every employe
 
+TODO: Ajouter un système de configuration qui est paramétrable par les users
+
+TODO: Reçu d'assurance
+    - À la création du reçu, ajouter des options pour
+        1. Imprimer le reçu
+        2. Envoyer le reçu par courriel
+        3. Imprimer et envoyer le reçu par courriel
+
 TODO: Prod
-    - Tester la génération de PDF
+    I think it's good? - Tester la génération de PDF
 
 TODO: Dashboard
-    - Vérifier de pouvoir entrer des rendez-vous pour les autres employés.
-
+    I think it's good? - Vérifier de pouvoir entrer des rendez-vous pour les autres employés.
 
 TODO: Faire le tour des courriels / messages
     - Voir tout les courriels et SMS envoyés par le système, les traduires et les testers.

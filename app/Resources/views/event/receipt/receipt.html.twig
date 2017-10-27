@@ -25,13 +25,13 @@
                 {{ receipt.event.client }}
             </span>
             <span style="font-size:14px;float:left;width:100%;">
-			jessika@gmail.com
+			    {{ receipt.event.client.email }}
 			</span>
         </div>
 
         <div style="width:40%; float:right;padding: 10px;">
             <span style="font-size:14px;float:right;  padding:10px; text-align:right;">
-                <b>Date : </b>{{ receipt.createdAt|date('Y-m-d H:i') }}
+                <b>Date : </b>{{ receipt.createdAt|date('Y-m-d') }}
             </span>
             <span style="font-size:14px;float:right;  padding:10px; text-align:right;">
                <b>Numéro de reçu # : </b>{{ receipt.id }}
@@ -52,7 +52,7 @@
 
         <div style="width:100%;float:left;">
             <span style="float:left; text-align:left;padding:10px;width:50%;color:#888;">
-            session with Jessika test
+            session with {{ receipt.event.client }}
 
 
             <span style="font-size:10px; float:left; width:100%;">
@@ -60,7 +60,7 @@
             </span>
         </span>
             <span style="font-weight:normal;float:left;padding:10px ;width:40%;color:#888;text-align:right;">
-            373 INR
+            373 $
         </span>
         </div>
         <div style="width:100%;float:left;">
@@ -71,14 +71,14 @@
             </span>
         </span>
             <span style="font-weight:normal;float:left;padding:10px ;width:40%;color:#888;text-align:right;">
-            373 INR
+            373 $
         </span>
         </div>
 
         <div style="width:100%;float:left; background:#fff;">
 
          <span style="font-weight:600;float:right;padding:10px 0px;width:40%;color:#666;text-align:center;">
-           Total : 373 INR
+           Total : 373 $
         </span>
         </div>
 

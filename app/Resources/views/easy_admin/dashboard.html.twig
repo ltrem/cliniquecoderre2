@@ -97,13 +97,13 @@
                     <p class="help-block">Sélectionner une case disponible</p>
                 </div><!-- /.box-body -->
                 <div class="box-footer">
-                    <button type="submit" class="btn btn-success" data-loading-text="Envoi en cours...">{{ 'admin.event.new.submit'|trans({}, 'messages') }}</button>
+                    <button type="submit" class="btn btn-success" data-loading-text="Enregistrement en cours...">{{ 'admin.event.new.submit'|trans({}, 'messages') }}</button>
                 </div>
                 {{ form_end(form_event) }}
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4 hide">
             <p class="text-center">
                 <strong>Goal Completion</strong>
             </p>
@@ -271,7 +271,8 @@
                                             start: data[index].start,
                                             end: data[index].end,
                                             textColor: data[index].textColor,
-                                            title: data[index].title
+                                            title: data[index].title,
+                                            qTip: '<span>Hoola!!!</span>'
                                         });
                                     });
 

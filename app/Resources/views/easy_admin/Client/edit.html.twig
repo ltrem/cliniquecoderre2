@@ -71,15 +71,15 @@
                                                             <tr>
                                                         {% endif %}
                                                         {# <th scope="row"><a href="{{ path('event_show', { 'id': event.id }) }}">{{ event.id }}</a></td> #}
-                                                        <td>{{ event.name }}</td>
-                                                        <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
-                                                        <td>
-                                                            {% if event.cancellation|length  %}
-                                                                <a data-toggle="modal" class="btn btn-xs btn-info">Rendez-vous annuler</a>
-                                                            {% else %}
-                                                                <a data-toggle="modal" href="{{ path('event_cancel', { 'id': event.id }) }}" data-target="#myModal" class="btn btn-xs btn-danger">Annuler mon rendez-vous</a>
-                                                            {% endif %}
-                                                        </td>
+                                                            <td>{{ event.name }}</td>
+                                                            <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
+                                                            <td>
+                                                                {% if event.cancellation|length  %}
+                                                                    <a data-toggle="modal" class="btn btn-xs btn-info">Rendez-vous annuler</a>
+                                                                {% else %}
+                                                                    <a data-toggle="modal" href="{{ path('event_cancel', { 'id': event.id }) }}" data-target="#myModal" class="btn btn-xs btn-danger">Annuler mon rendez-vous</a>
+                                                                {% endif %}
+                                                            </td>
                                                         </tr>
                                                         {% if event.cancellation|length  %}
                                                             <tr class="danger cancelled hide">
