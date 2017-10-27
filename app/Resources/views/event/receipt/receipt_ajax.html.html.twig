@@ -1,21 +1,57 @@
 
-{{ form_start(form, {'attr': {'id': 'receipt_new'}, 'action': path('admin_receipt_new', { 'id': event.id })}) }}
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="exampleModalLabel">{{ 'event.receipt.title'|trans }}</h4>
-</div>
-<div class="modal-body">
-    {{ form_widget(form) }}
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'general.modal.close'|trans }}</button>
-    <button type="submit" class="btn btn-success" data-loading-text="Sauvegarde du reçus en cours...">{{ 'event.receipt.submit'|trans }}</button>
-</div>
-{{ form_end(form) }}
+{% if form is defined %}
+    {{ form_start(form, {'attr': {'id': 'receipt_new'}, 'action': path('admin_receipt_new', { 'id': event.id })}) }}
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">{{ 'event.receipt.new.title'|trans }}</h4>
+    </div>
+    <div class="modal-body">
+        {{ form_row(form.receiptDate) }}
+        {{ form_row(form.amount) }}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'general.modal.close'|trans }}</button>
+        <div class="btn-group">
+            <button id="submit_receipt_button" name="save" type="submit" class="btn btn-primary" data-loading-text="Sauvegarde du reçus en cours...">{{ 'event.receipt.submit'|trans }}</button>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li>
+                    {{ form_widget(form.saveAndPrint) }}
+                </li>
+                <li>
+                    {{ form_widget(form.saveAndSend) }}
+                </li>
+            </ul>
+        </div>
+    </div>
+    {{ form_end(form) }}
+
+{% elseif receipt is defined %}
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">{{ 'event.receipt.edit.title'|trans }}</h4>
+    </div>
+    <div class="modal-body">
+        {{ receipt.event.employe.fullname }} <br />
+        {{ receipt.event.client.fullNameEmailPhoneToString }} <br />
+        {{ receipt.receiptDate|date('Y-m-d') }}<br />
+        {{ receipt.amount }} $
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'general.modal.close'|trans }}</button>
+        <a type="button" class="btn btn-default" target="_blank" href="{{ asset(vich_uploader_asset(receipt, 'imageFile')) }}">{{ 'event.receipt.print'|trans }}</a>
+        <a type="button" class="btn btn-primary" target="_blank" href="{{ path('admin_receipt_send', { 'id': receipt.id }) }}">{{ 'event.receipt.send'|trans }}</a>
+    </div>
+
+{% endif %}
 
 
 <script>
 
+    // Initialize inputmask
+    $(":input").inputmask();
 
     $(".event_datetimepicker").datetimepicker({
         bootcssVer: 3,
@@ -27,17 +63,24 @@
         language: 'fr',
         todayBtn: true
         {#pickerPosition: "bottom-left",#}
-    })
+    });
+
 
     $("#receipt_new").submit(function(e){
-
         e.preventDefault();
+
         $(this).find(':submit').button('loading');
+
+        // TODO: Find a way to add this hidden input only when button saveAndSend is clicked
+        {
+            $(this).append($('<input />').attr({type: 'hidden', name: 'receipt[saveAndSend]'}));
+        }
+
         var formSerialize = $(this).serialize();
+
         $.post($(this).attr('action'), formSerialize, function(response){
             //your callback here
             location.reload();
-
         },'JSON');
     });
 </script>

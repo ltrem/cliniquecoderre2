@@ -2,12 +2,15 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Entity\Communication;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Receipt;
+use AppBundle\Event\CommunicationSentEvent;
 use AppBundle\Form\ReceiptType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +22,56 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ReceiptController extends Controller
 {
+    /**
+     * Finds and displays a receipt entity.
+     *
+     * @Route("/{id}", name="admin_receipt_show")
+     * @Method("GET")
+     */
+    public function showAction(Receipt $receipt)
+    {
+        return $this->render('event/receipt/receipt_ajax.html.html.twig', array(
+            'receipt' => $receipt,
+        ));
+    }
+
+    /**
+     * Finds and displays a receipt entity.
+     *
+     * @Route("/send/{id}", name="admin_receipt_send")
+     * @Method("GET")
+     */
+    public function sendAction(Receipt $receipt)
+    {
+
+        $communication = new Communication();
+        $communication->setDateSent(new \DateTime('now'));
+        $communication->setType('email');
+        $communication->addClient($receipt->getEvent()->getClient());
+        $communication->setTitle('Reçu d\'assurance');
+        $communication->setContent(
+            $this->renderView(
+                'event/receipt/receipt.html.twig',
+                array(
+                    'receipt'  => $receipt
+                )
+            )
+        );
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($communication);
+        $em->getConnection()->beginTransaction();
+        $em->flush();
+
+        // Dispatch an event to send the communication
+        $this->get('event_dispatcher')->dispatch(CommunicationSentEvent::NAME, new CommunicationSentEvent($communication));
+
+        $em->getConnection()->commit();
+
+        return $this->render('event/receipt/receipt_ajax.html.html.twig', array(
+            'receipt' => $receipt,
+        ));
+    }
 
     /**
      * Create a receipt for an event
@@ -29,14 +82,23 @@ class ReceiptController extends Controller
     public function newAction(Request $request, Event $event)
     {
 
+
         $receipt = new Receipt();
 
         $form = $this->createForm(ReceiptType::class, $receipt);
+        $form->add('saveAndPrint', SubmitType::class, array(
+            'label_format' => 'event.receipt.saveAndPrint',
+            'attr' => array('class' => 'saveAndPrint'),
+        ));
+        $form->add('saveAndSend', SubmitType::class, array(
+            'label_format' => 'event.receipt.saveAndSend',
+            'attr' => array('class' => 'saveAndSend'),
+        ));
         $form->handleRequest($request);
 
         // Verify if it's an Ajax call
-        if($request->isXmlHttpRequest()) {
-
+        if($request->isXmlHttpRequest())
+        {
             if ($form->isSubmitted() && $form->isValid()) {
 
                 // TODO: Changer la logique ci bas... présentement, si la génération de PDF plante, le "reçus d'assurance ne sera pas créée.
@@ -85,8 +147,9 @@ class ReceiptController extends Controller
                 $em->getConnection()->beginTransaction();
                 $em->flush();
 
-                // TODO: Maybe send an email with the invoice by email by triggering an event like bellow
-                    //$this->get('event_dispatcher')->dispatch(AppointmentCancelledEvent::NAME, new AppointmentCancelledEvent($event));
+                if (isset($request->request->get('receipt')['saveAndSend'])) {
+                    $this->sendAction($receipt);
+                }
 
                 $em->getConnection()->commit();
 
