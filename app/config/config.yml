@@ -37,6 +37,7 @@ framework:
 
 # Twig Configuration
 twig:
+    exception_controller: AppBundle:Exception:showException
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     form_themes:
@@ -153,13 +154,13 @@ jmose_command_scheduler:
 #Twilio
 vresh_twilio:
     #(Required) Your Account SID from www.twilio.com/user/account
-    sid: 'AC75f34ca68fdf6a4aef16a6ead523152d'
+    sid: "%vresh_twilio_sid%"
     #(Required) Your Auth Token from www.twilio.com/user/account
-    authToken: '8e663558b95c976d258d30b74252a7a5'
+    authToken: "%vresh_twilio_authtoken%"
     #(Optional, default: '2010-04-01') Twilio API version
-    version: '2010-04-01'
+    version: "%vresh_twilio_version%"
     #(Optional, default: 1) Number of times to retry failed requests
-    retryAttempts: 3
+    retryAttempts: "%vresh_twilio_retryattempts%"
 
 #EasyAdminBundle
 easy_admin:

@@ -23,9 +23,6 @@ parameters:
     router.request_context.scheme: http
     router.request_context.base_url: /
 
-    #twilio
-    twilio_from_phone: '+18737002935'
-
     #Mailgun
     mailgun_key: "key-f134f0f597e2abe169e3ae2cbd081bc3"
     mailgun_domain: "sandbox1762d322d00b43cf95d08ef04f8151fc.mailgun.org"
@@ -34,3 +31,10 @@ parameters:
     #wkhtmltopdf
     wlhtmltopdf_path: "\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\""
     wlhtmltoimg_path: "\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltoimage.exe\""
+
+    #twilio
+    twilio_from_phone: '+12892747067'
+    vresh_twilio_sid: AC75f34ca68fdf6a4aef16a6ead523152d
+    vresh_twilio_authToken: 8e663558b95c976d258d30b74252a7a5
+    vresh_twilio_version: 2010-04-01
+    vresh_twilio_retryAttempts: 3
