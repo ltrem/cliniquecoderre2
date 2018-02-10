@@ -34,18 +34,19 @@ class CommunicationController extends Controller
     {
         $client = '';
         $employee = '';
+        $email = '';
 
         if ($request->query->get('client'))
         {
             $client = $request->query->get('client');
             $client = $this->getDoctrine()->getManager()->getRepository('AppBundle:Client')->find($client);
-            $email = $client->getUser()->getUsername();
+            $email = $client->getUser()->getEmail();
         }
         if ($request->query->get('employe'))
         {
             $employee = $request->query->get('employe');
             $employee = $this->getDoctrine()->getManager()->getRepository('AppBundle:Employe')->find($employee);
-            $email = $employee->getUser()->getUsername();
+            $email = $employee->getUser()->getEmail();
         }
 
         $user = $this->getUser();
@@ -55,6 +56,7 @@ class CommunicationController extends Controller
 
         $communication = new Communication();
         $communication->setEmail($email);
+        $communication->setPhone($client->getPhoneCell());
 
         $form = $this->createForm(CommunicationType::class, $communication);
         $form->handleRequest($request);
