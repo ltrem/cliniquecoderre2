@@ -33,9 +33,6 @@ TODO: Reçu d'assurance
         2. Envoyer le reçu par courriel
         3. Imprimer et envoyer le reçu par courriel
 
-TODO: Prod
-    I think it's good? - Tester la génération de PDF
-
 TODO: Dashboard
     I think it's good? - Vérifier de pouvoir entrer des rendez-vous pour les autres employés.
 
@@ -100,6 +97,9 @@ Permettre de trier des clients avec leur "prochaine date de rendez-vous!"
 
 DONE DEAL
 -----------------------------------------------------------------------------------------------------
+
+DONETODO: Prod
+    I think it's good? - Tester la génération de PDF
 
 DONETODO: Mettre le site sur l'environnement de production
 DONETODO: Ajuster la command d'envoi de courriel de rappel

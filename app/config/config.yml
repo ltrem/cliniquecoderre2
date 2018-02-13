@@ -37,7 +37,6 @@ framework:
 
 # Twig Configuration
 twig:
-    exception_controller: AppBundle:Exception:showException
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     form_themes:
@@ -271,7 +270,6 @@ easy_admin:
                     - type
                     - { property: 'clients', type_options: { class: 'AppBundle\Entity\Client', choice_label: 'getFullNameEmailPhoneToString' } }
                 actions:
-                    - -edit
                     - -delete
             form:
                 title: 'admin.communication.title'
