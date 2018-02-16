@@ -17,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle;
 
 /**
  * Event controller.
@@ -26,6 +27,29 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class EventController extends Controller
 {
+    /**
+     * Lists all event entities.
+     *
+     * @Route("/showMeTHeWay", name="event_random")
+     */
+    public function showMeTheWayAction()
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+        // first check our log entries
+        $repo = $em->getRepository('Gedmo\Loggable\Entity\LogEntry'); // we use default log entry class
+        $client = $em->find('AppBundle:Client', 10 /*article id*/);
+        dump($client->getFullname()); // prints "my title"
+        $logs = $repo->getLogEntries($client);
+        dump($logs);
+        /* $logs contains 2 logEntries */
+        // lets revert to first version
+        //$repo->revert($client, 1/*version*/);
+        // notice article is not persisted yet, you need to persist and flush it
+        //$em->persist($client);
+        //$em->flush();
+    }
+
+
     /**
      * Lists all event entities.
      *

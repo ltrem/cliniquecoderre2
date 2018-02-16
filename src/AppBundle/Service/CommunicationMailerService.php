@@ -36,12 +36,18 @@ class CommunicationMailerService
                 $phoneNumber = $this->phoneUtil->format($phoneNumber, \libphonenumber\PhoneNumberFormat::E164);
             }
 
-            // Send SMS (with Vresh/TwilioBundle)
-            $this->twilio->account->messages->sendMessage(
-                $this->container->getParameter('twilio_from_phone'), // From a Twilio number in your account
-                $phoneNumber, // Text any number
-                $communication->getContent()
-            );
+            try {
+                // Send SMS (with Vresh/TwilioBundle)
+                $this->twilio->account->messages->sendMessage(
+                    $this->container->getParameter('twilio_from_phone'), // From a Twilio number in your account
+                    $phoneNumber, // Text any number
+                    $communication->getContent()
+                );
+            }
+            catch(\Exception $e){
+                dump($e);
+                exit;
+            }
 
         }
 

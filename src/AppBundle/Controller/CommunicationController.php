@@ -34,7 +34,6 @@ class CommunicationController extends Controller
     {
         $client = '';
         $employee = '';
-        $email = '';
 
         if ($request->query->get('client'))
         {

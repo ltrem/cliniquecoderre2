@@ -104,6 +104,15 @@ class Communication
         return (string) $this->getId();
     }
 
+    public function getClientsName()
+    {
+        $clientsName = [];
+        foreach ($this->clients as $client) {
+            $clientsName[] = $client->getFullname();
+        }
+        return implode(', ', $clientsName);
+    }
+
     /**
      * Get id
      *

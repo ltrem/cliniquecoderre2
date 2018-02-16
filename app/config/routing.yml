@@ -11,6 +11,10 @@ easy_admin_bundle:
     type:     annotation
     prefix:   /easyadmin
 
+craue_config_settings:
+  resource: "@CraueConfigBundle/Resources/config/routing/settings.xml"
+  prefix: /settings
+
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 

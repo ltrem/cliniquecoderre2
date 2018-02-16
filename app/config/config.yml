@@ -65,6 +65,18 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        mappings:
+            gedmo_loggable:
+                type: annotation
+                prefix: Gedmo\Loggable\Entity
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+
+# Stof Doctrine Extension Configuration
+stof_doctrine_extensions:
+    default_locale: "%locale%"
+    orm:
+        default:
+            loggable: true
 
 cspoo_swiftmailer_mailgun:
     key: "%mailgun_key%"
@@ -265,10 +277,10 @@ easy_admin:
             controller: AppBundle\Controller\EasyAdmin\CommunicationController
             list:
                 fields:
-                    - title
-                    - dateSent
-                    - type
-                    - { property: 'clients', type_options: { class: 'AppBundle\Entity\Client', choice_label: 'getFullNameEmailPhoneToString' } }
+                    - { property: 'dateSent', label: 'admin.communication.dateSent' }
+                    - { property: 'clientsName', label: 'admin.communication.clientsName' }
+                    - { property: 'type', label: 'admin.communication.type' }
+                    - { property: 'title', label: 'admin.communication.subject' }
                 actions:
                     - -delete
             form:

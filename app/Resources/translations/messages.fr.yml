@@ -183,6 +183,10 @@ admin:
             new: 'Nouvelle communication'
     communication:
         title: 'Créer une nouvelle communication'
+        dateSent: 'Date d''envoi'
+        type: 'SMS/EMAIL'
+        clientsName: 'Clients rejoins'
+        subject: 'Sujet du message'
 
 registration:
     title: 'Créer un compte'

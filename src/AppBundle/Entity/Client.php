@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Client
@@ -13,6 +14,7 @@ use libphonenumber\PhoneNumberUtil;
  * @ORM\Table(name="client")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ClientRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @Gedmo\Loggable
  */
 class Client
 {
