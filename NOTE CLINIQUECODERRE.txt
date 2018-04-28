@@ -25,6 +25,14 @@ TODO: CONFIGURATION - v1.0 cliniquecoderre.com
     WEBSITE CONFIG:
         1. Add image to every employe
 
+
+TODO: Design
+    - Faire un template pour module de reçu
+        - Impression
+        - Courriel (réutiliser le courriel de notification de disponibilité de rendez-vous) et ajouter une pièce jointe de l'impression
+
+TODO: Ajouter plus de champs pour les informations du rendez-vous, le problème du client, etc.
+
 TODO: Ajouter un système de configuration qui est paramétrable par les users
 
 TODO: Reçu d'assurance

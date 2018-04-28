@@ -15,7 +15,8 @@
                 <li role="presentation" class="active"><a href="#events" aria-controls="events" role="tab" data-toggle="tab">Rendez-vous</a></li>
                 <li role="presentation"><a href="#info" aria-controls="employe" role="tab" data-toggle="tab">Informations générales</a></li>
                 <li role="presentation"><a href="#communications" aria-controls="communcations" role="tab" data-toggle="tab">Communications <span class="badge">{{ employe.communications|length }}</span></a></li>
-                <li role="presentation"><a href="#configurations" aria-controls="configurations" role="tab" data-toggle="tab">Configurations de l'horaire</a></li>
+                <li role="presentation"><a href="#schedules" aria-controls="configurations" role="tab" data-toggle="tab">Gestion de l'horaire</a></li>
+                <li role="presentation"><a href="#config" aria-controls="configurations" role="tab" data-toggle="tab">Paramètres</a></li>
             </ul>
 
             <!-- Tab panes -->
@@ -95,8 +96,8 @@
 
                 </div>
 
-                {# Configuration #}
-                <div role="tabpanel"  class="tab-pane " id="configurations">
+                {# Schedules #}
+                <div role="tabpanel"  class="tab-pane " id="schedules">
                     <div class="box box-solid">
                         <div class="box-header with-border">
                             <i class="fa fa-calendar"></i>
@@ -109,6 +110,11 @@
                         </div>
                         <!-- /.box-body -->
                     </div>
+                </div>
+
+                {# Config #}
+                <div role="tabpanel"  class="tab-pane " id="config">
+                    Hello conf
                 </div>
 
             </div>

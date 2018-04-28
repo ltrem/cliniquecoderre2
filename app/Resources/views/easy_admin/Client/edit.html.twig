@@ -121,6 +121,7 @@
                                                 <tr>
                                                     <th>Nom</th>
                                                     <th>Date et heure du rendez-vous</th>
+                                                    <th>Reçu</th>
                                                     <th>Actions</th>
                                                 </tr>
                                                 </thead>
@@ -132,7 +133,14 @@
                                                             <td>{{ event.name }}</td>
                                                             <td>{{ event.startTime|date('Y-m-d H:i:s') }}</td>
                                                             <td>
-                                                                <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-xs btn-info">Note sur le rendez-vous</a>
+                                                                {% if event.receipts|length %}
+                                                                    {% for receipt in event.receipts %}
+                                                                        <a data-toggle="modal" href="{{ path('admin_receipt_show', { 'id': receipt.id }) }}" data-target="#myModal" class="btn btn-xs btn-info">{{ receipt.receiptDate|date('Y-m-d') }} - {{ receipt.amount }} $</a>
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{ path('event_show', { 'id': event.id }) }}" class="btn btn-xs btn-info">Note sur le rendez-vous1</a>
                                                             </td>
                                                         </tr>
                                                     {% endfor %}

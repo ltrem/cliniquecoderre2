@@ -104,7 +104,7 @@ class EmployeController extends BaseAdminController
             $em->getConnection()->beginTransaction();
             $em->flush();
 
-            // Send a notice to the employe to notify of the user creation
+            // TODO: Send a notice to the employe to notify of the user creation
             //$this->get('event_dispatcher')->dispatch(ClientCreatedEvent::NAME, new ClientCreatedEvent($user));
 
             $this->addFlash('notice', 'Welcome '. $user->getEmail());

@@ -87,6 +87,61 @@ class AdminController extends BaseAdminController
     }
 
     /**
+     * @Route("/my-profile", name="my_profile")
+     * @param Request $request
+     * @return Response
+     */
+    public function myProfileAction(Request $request)
+    {
+
+        $user = $this->getUser();
+        if (!is_object($user) || !$user instanceof User) {
+            throw new AccessDeniedException('This user does not have access to this sections.');
+        }
+
+        $this->initialize($request);
+
+        // Get all Appointment availability notification ScheduledCommand
+        {
+            $commands = $this->get('doctrine')->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')->findByCommand('app:appointment_availability_notification');
+            $arrayNotification = array();
+
+            foreach($commands as $command) {
+                $arguments = $command->getArguments(true);
+                $params = [];
+                foreach($arguments as $key => $value) {
+                    $params[substr($key, 2)] = $value;
+                }
+
+                $event = $this->get('doctrine')->getRepository('AppBundle:Event')->find($params['event_id']);
+                if ($event->getEndTime() >= new \DateTime('now')) {
+                    $arrayNotification[] = array(
+                        'command_id' => $params['schedule_command_id'],
+                        'event' => $event,
+                        'last' => $this->get('doctrine')->getRepository('AppBundle:AppointmentAvailabilityNotification')->findLastAppointmentNotificationSent($params['event_id']),
+                        'sent' => $this->get('doctrine')->getRepository('AppBundle:AppointmentAvailabilityNotification')->findAppointmentNotificationSent($params['event_id']),
+                    );
+                }
+            }
+        }
+
+        // Get appointment form
+        $form_event = $this->createForm(AdminAppointmentType::class);
+
+        if (null === $request->query->get('entity')) {
+
+            return $this->render('easy_admin/dashboard.html.twig', array(
+                'employe' => $user->getEmploye(),
+                'form_event' => $form_event->createView(),
+                'form_event_edit' => $form_event->createView(),
+                'availabilityNotifications' => $arrayNotification,
+            ));
+        }
+
+        return parent::indexAction($request);
+    }
+
+    /**
      * Cancel the appointment availability notification command.
      *
      * @Route("/cancel-appointment-notification/{id}", name="admin_appointment_notification_answer")

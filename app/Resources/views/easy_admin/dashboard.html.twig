@@ -240,6 +240,7 @@
                 slotLabelFormat:"HH:mm a",
                 timeFormat: 'HH:mm',
                 defaultView: 'agendaWeek',
+                selectable: true,
                 eventSources: [
                     {
                         events: function(start, end, timezone, callback) {
@@ -255,7 +256,7 @@
                                     // our hypothetical feed requires UNIX timestamps
                                     start: start.unix(),
                                     end: end.unix(),
-                                    employe: $( "[name*='employe']" ).val(),
+                                    employe: $( "[name*='employe']" ).val() ? $( "[name*='employe']" ).val() : 'all',
                                     isEmploye: true
                                 },
                                 success: function(data) {
@@ -272,6 +273,7 @@
                                             end: data[index].end,
                                             textColor: data[index].textColor,
                                             title: data[index].title,
+                                            rendering: data[index].rendering,
                                             qTip: '<span>Hoola!!!</span>'
                                         });
                                     });

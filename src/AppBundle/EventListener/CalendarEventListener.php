@@ -28,6 +28,8 @@ class CalendarEventListener
     public function loadEvents(CalendarEvent $calendarEvent)
     {
 
+        dump($calendarEvent);
+
         // Assign variable
         $blockEvents = [];
 
@@ -172,9 +174,11 @@ class CalendarEventListener
             $startDate = $calendarEvent->getStartDatetime();
             $endDate = $calendarEvent->getEndDatetime();
 
-
             // Get employe schedule
-            $schedule = $this->entityManager->getRepository('AppBundle:Schedule')->findOneByEmployee($selectedEmploye);
+            $schedule = null;
+            if ($selectedEmploye != 'all') {
+                $schedule = $this->entityManager->getRepository('AppBundle:Schedule')->findOneByEmployee($selectedEmploye);
+            }
 
             // Find if time is available from schedule
             $scheduleAvailability = $this->entityManager->getRepository('AppBundle:ScheduleBlock')->findAvailabilityBetweenDate(
@@ -182,7 +186,6 @@ class CalendarEventListener
                 $endDate,
                 $schedule
             );
-
 
             foreach($scheduleAvailability as $scheduleBlock) {
 
@@ -202,7 +205,10 @@ class CalendarEventListener
                         new \DateTime($scheduleBlock->getDateFrom()->format("Y-m-d H:i:s")),
                         new \DateTime($scheduleBlock->getDateTo()->format("Y-m-d H:i:s"))
                     );
-                    $blockEvents[] = $block;
+
+                    if (!$this->blockExist($blockEvents, $block)) {
+                        $blockEvents[] = $block;
+                    }
                 } else {
 
                     while($blockLength['hour']) {
@@ -213,7 +219,10 @@ class CalendarEventListener
                             new \DateTime($blockStartTime->format("Y-m-d H:i:s")),
                             new \DateTime($blockStartTime->modify('+1 hour')->format("Y-m-d H:i:s"))
                         );
-                        $blockEvents[] = $block;
+
+                        if (!$this->blockExist($blockEvents, $block)) {
+                            $blockEvents[] = $block;
+                        }
                         $blockLength['hour']--;
                     }
 
@@ -224,7 +233,10 @@ class CalendarEventListener
                             new \DateTime($blockStartTime->format("Y-m-d H:i:s")),
                             new \DateTime($blockStartTime->modify('+30 minutes')->format("Y-m-d H:i:s"))
                         );
-                        $blockEvents[] = $block;
+
+                        if (!$this->blockExist($blockEvents, $block)) {
+                            $blockEvents[] = $block;
+                        }
                     }
                 }
             }
@@ -274,8 +286,6 @@ class CalendarEventListener
                 $dayStartTime->modify('+1 days');
             }
 */
-
-
 
             foreach ($blockEvents as $blockEvent) {
                 $alreadyAdded = false;
@@ -328,11 +338,8 @@ class CalendarEventListener
                             $titleContent .= ' - ' . $companyEvent->getClient()->getUser()->getEmail();
                             $blockEvent->setTitle($titleContent);
 
-                            if ($companyEvent->getEmploye()->getId() == 2) {
-                                $eventClass = 'unavailable julee-unavailable';
-                            } else {
-                                $eventClass = 'unavailable simon-unavailable';
-                            }
+                            // TODO: Il faudrait assigner des paramètres de configuration pour pouvoir changer la couleur pour chaque employé
+                            $eventClass = 'event_' . $companyEvent->getId() . ' unavailable '. $companyEvent->getEmploye()->getTag() . '-unavailable';
 
                             //optional calendar event settings
                             $blockEvent->setAllDay(false); // default is false, set to true if this is an all day event
@@ -340,6 +347,7 @@ class CalendarEventListener
                             $blockEvent->setFgColor('#FFFFFF'); //set the foreground color of the event's label
                             #$blockEvent->setUrl('http://www.google.com'); // url to send user to when event label is clicked
                             $blockEvent->setCssClass($eventClass); // a custom class you may want to apply to event labels
+                            $blockEvent->addField('rendering', '');
 
                             //finally, add the event to the CalendarEvent for displaying on the calendar
                             $calendarEvent->addEvent($blockEvent);
@@ -356,7 +364,10 @@ class CalendarEventListener
                     $blockEvent->setFgColor('#FFFFFF'); //set the foreground color of the event's label
                     #$blockEvent->setUrl('http://www.google.com'); // url to send user to when event label is clicked
                     $blockEvent->setCssClass($eventClass); // a custom class you may want to apply to event labels
-                    $blockEvent->addField('rendering', 'background');
+
+                    if ($selectedEmploye == 'all') {
+                        $blockEvent->addField('rendering', 'background');
+                    }
 
                     //finally, add the event to the CalendarEvent for displaying on the calendar
                     $calendarEvent->addEvent($blockEvent);
@@ -395,5 +406,24 @@ class CalendarEventListener
             $calendarEvent->addEvent($blockEvent);
         }
         */
+    }
+
+
+    /**
+     * Find out if a EventEntity block exist in the array of blockEvents comparing start and end time
+     *
+     * @param $blockEvents
+     * @param EventEntity $block
+     * @return bool
+     */
+    public function blockExist($blockEvents, EventEntity $block) {
+
+        foreach($blockEvents as $blockEvent) {
+            if ($blockEvent->getStartDatetime() == $block->getStartDatetime() && $blockEvent->getEndDatetime() == $block->getEndDatetime() ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

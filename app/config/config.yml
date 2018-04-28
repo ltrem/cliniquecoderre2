@@ -72,11 +72,15 @@ doctrine:
                 dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
 
 # Stof Doctrine Extension Configuration
+# TODO: Make STOF DOctrine Extensions work!!! loggable
 stof_doctrine_extensions:
     default_locale: "%locale%"
     orm:
         default:
             loggable: true
+
+craue_config:
+  entity_name: AppBundle\Entity\Config
 
 cspoo_swiftmailer_mailgun:
     key: "%mailgun_key%"
@@ -262,7 +266,7 @@ easy_admin:
             list:
                 dql_filter: 'entity.emergency = true'
                 fields:
-                    - { property: 'client', label: 'general.info.name' }
+                    - { property: 'client.fullName', label: 'menu.client' }
                     - { property: 'startTime', label: 'admin.event.table.startTime' }
                     - { property: 'emergency', label: 'admin.event.table.emergency', type: 'boolean' }
                     - { property: 'receipts[0]', label: 'admin.event.table.receipt', template: 'easy_admin/Event/show_receipt.html.twig', base_path: 'receipts_pdf' }

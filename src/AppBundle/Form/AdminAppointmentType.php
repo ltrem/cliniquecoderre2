@@ -22,6 +22,7 @@ class AdminAppointmentType extends AbstractType
                 'class'  => 'AppBundle:Employe',
                 'choice_label'  => 'fullname',
                 'required'  => true,
+                'placeholder' => 'Everyone',
                 'attr' => ['data-select' => 'true']
             ))
             ->add('client', EntityType::class, array(
