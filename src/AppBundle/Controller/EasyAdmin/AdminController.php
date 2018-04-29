@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class AdminController extends BaseAdminController
 {
@@ -161,5 +162,24 @@ class AdminController extends BaseAdminController
         }
 
         return $this->redirectToRoute('easyadmin');
+    }
+
+
+    /**
+     * @Route(path = "/impersonate-user", name = "admin_impersonate_user")
+     * @Security("has_role('ROLE_SUPER_ADMIN')")
+     */
+    public function impersonateUserAction(Request $request)
+    {
+        // change the properties of the given entity and save the changes
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Employe');
+
+        $id = $request->query->get('id');
+        $entity = $repository->find($id);
+
+        // redirect to the 'list' view of the given entity
+        return $this->redirectToRoute('easyadmin', array(
+            '_switch_user' => $entity->getUser()->getEmail(),
+        ));
     }
 }

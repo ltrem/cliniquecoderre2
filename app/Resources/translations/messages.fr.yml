@@ -94,6 +94,9 @@ communication:
         create:
             success: 'Le courriel c''est envoyé avec succès!'
 admin:
+    impersonation:
+        impersonate: 'Connecter en tant que'
+        exit: 'Revenir à mon utilisateur'
     profile:
         schedule:
             table:

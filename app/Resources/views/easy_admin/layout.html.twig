@@ -1,5 +1,16 @@
 {% extends "@EasyAdmin/default/layout.html.twig" %}
 
+{% block user_menu %}
+
+    {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+        <div class="btn-group">
+            <a class="btn" href="?_switch_user=_exit&{{ app.request.queryString }}">{{ 'admin.impersonation.exit'|trans }}</a>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
 {% block body %}
     {{ parent() }}
 

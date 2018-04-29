@@ -242,6 +242,8 @@ easy_admin:
                     - { property: 'user', label: 'employe.email' }
                     - { property: 'phonecell', label: 'general.info.phoneCell', template: 'easy_admin/field_phone.html.twig' }
                     - { property: 'createdAt', label: 'admin.employe.table.createdat' }
+                actions:
+                  - { name: 'admin_impersonate_user', 'icon': 'user', 'label': 'admin.impersonation.impersonate', type: 'route' }
             form:
                 fields:
                     - { type: 'group', label: 'Information général', css_class: 'col-sm-6' }
