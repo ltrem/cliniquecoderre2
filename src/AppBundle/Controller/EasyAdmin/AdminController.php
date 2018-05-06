@@ -172,7 +172,7 @@ class AdminController extends BaseAdminController
     public function impersonateUserAction(Request $request)
     {
         // change the properties of the given entity and save the changes
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Employe');
+        $repository = $this->getDoctrine()->getRepository('AppBundle:'.$request->query->get('entity'));
 
         $id = $request->query->get('id');
         $entity = $repository->find($id);
