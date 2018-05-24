@@ -26,6 +26,8 @@ class EasyAdminExtension extends \Twig_Extension
 
     public function filterActions(array $itemActions, $item)
     {
+        echo 'test';
+
         if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             unset($itemActions['admin_impersonate_user']);
         }
