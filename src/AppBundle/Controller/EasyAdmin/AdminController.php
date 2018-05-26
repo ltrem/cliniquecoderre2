@@ -171,14 +171,19 @@ class AdminController extends BaseAdminController
      */
     public function impersonateUserAction(Request $request)
     {
-        // change the properties of the given entity and save the changes
         $repository = $this->getDoctrine()->getRepository('AppBundle:'.$request->query->get('entity'));
 
         $id = $request->query->get('id');
         $entity = $repository->find($id);
 
+        $route = 'easyadmin';
+
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_CLIENT', $entity->getUser())) {
+            $route = 'user_profile';
+        }
+
         // redirect to the 'list' view of the given entity
-        return $this->redirectToRoute('easyadmin', array(
+        return $this->redirectToRoute($route, array(
             '_switch_user' => $entity->getUser()->getEmail(),
         ));
     }
