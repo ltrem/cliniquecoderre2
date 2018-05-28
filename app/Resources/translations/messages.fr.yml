@@ -145,6 +145,9 @@ admin:
         cancellation:
             title: 'Annuler le rendez-vous'
             submit: 'Je confirme vouloir annuler le rendez-vous!'
+        note:
+            new:
+                success: 'La note a été créé avec succès!'
     employe:
         filter:
             name: 'Nom de l''employé'
