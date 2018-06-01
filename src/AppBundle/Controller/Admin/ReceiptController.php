@@ -81,8 +81,6 @@ class ReceiptController extends Controller
      */
     public function newAction(Request $request, Event $event)
     {
-
-
         $receipt = new Receipt();
 
         $form = $this->createForm(ReceiptType::class, $receipt);

@@ -78,7 +78,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     protected function getDefaultSuccessRedirectUrl()
     {
         if($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
-            return $this->router->generate('admin_dashboard');
+            return $this->router->generate('easyadmin');
         } else {
             return $this->router->generate('homepage');
         }

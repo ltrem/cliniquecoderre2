@@ -99,6 +99,11 @@ class Event
     private $receipts;
 
     /**
+     * @ORM\OneToMany(targetEntity="EventNote", mappedBy="event")
+     */
+    private $eventNotes;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppointmentAvailabilityNotification", mappedBy="eventToReplace")
      */
     private $appointmentAvailabilityNotifications;
@@ -106,6 +111,7 @@ class Event
     public function __construct() {
         $this->eventReminders = new ArrayCollection();
         $this->receipts = new ArrayCollection();
+        $this->eventNotes = new ArrayCollection();
         $this->appointmentAvailabilityNotifications = new ArrayCollection();
     }
 
@@ -380,7 +386,7 @@ class Event
      *
      * @return Client
      */
-    public function addReceipt(\AppBundle\Entity\Receipt $receipt)
+    public function addReceipt(Receipt $receipt)
     {
         $receipt->setEvent($this);
         $this->receipts[] = $receipt;
@@ -393,10 +399,46 @@ class Event
      *
      * @param \AppBundle\Entity\Receipt $receipt
      */
-    public function removeReceipt(\AppBundle\Entity\EventReminder $receipt)
+    public function removeReceipt(Receipt $receipt)
     {
         $this->receipts->removeElement($receipt);
         $receipt->setEvent(null);
+    }
+
+    /**
+     * Get eventNotes
+     *
+     * @return \AppBundle\Entity\EventNote
+     */
+    public function getEventNotes()
+    {
+        return $this->eventNotes;
+    }
+
+    /**
+     * Add eventNote
+     *
+     * @param \AppBundle\Entity\EventNote $eventNote
+     *
+     * @return Client
+     */
+    public function addEventNote(EventNote $eventNote)
+    {
+        $eventNote->setEvent($this);
+        $this->eventNotes[] = $eventNote;
+
+        return $this;
+    }
+
+    /**
+     * Remove eventNote
+     *
+     * @param \AppBundle\Entity\EventNote $eventNote
+     */
+    public function removeEventNote(EventNote $eventNote)
+    {
+        $this->eventNotes->removeElement($eventNote);
+        $eventNote->setEvent(null);
     }
 
     /**

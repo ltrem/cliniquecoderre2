@@ -120,6 +120,13 @@ vich_uploader:
             inject_on_load:     true
             delete_on_update:   true
             delete_on_remove:   true
+        eventNote:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /event_notes
+            upload_destination: '%kernel.root_dir%/../web/event_notes'
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
         image:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /images
@@ -261,7 +268,6 @@ easy_admin:
                     - { type: 'section', label: 'Contact', icon: 'phone' }
                     - { property: 'contacts', css_class: 'collection_wrapper', type: collection, type_options: { entry_type: 'AppBundle\Form\ContactType', allow_add: false, allow_delete: false, by_reference: false } }
             edit:
-                titles: 'New %%entity.firstname%%'
                 fields:
                     - { property: 'email', type: 'text', type_options: { required: true, disabled: true, mapped: true} }
         Event:

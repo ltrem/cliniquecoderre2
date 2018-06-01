@@ -1,19 +1,17 @@
 <?php
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Entity\Client;
-use AppBundle\Entity\Employe;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventCancellation;
-use AppBundle\Entity\Receipt;
+use AppBundle\Entity\EventNote;
 use AppBundle\Event\AppointmentCancelledEvent;
 use AppBundle\Form\AdminAppointmentType;
 use AppBundle\Form\EventCancellationType;
-use AppBundle\Form\EventType;
 use AppBundle\Form\SearchEventType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -312,7 +310,6 @@ class AppointmentController extends Controller
         ));
     }
 
-
     /**
      * Cancel the Event.
      *
@@ -357,6 +354,64 @@ class AppointmentController extends Controller
             ));
         }
     }
+
+    /**
+     * Create new eventNote.
+     *
+     * @Route("/{id}/new/note", options={"expose"=true}, name="admin_eventNote_new")
+     * @Method({"POST"})
+     */
+    public function eventNoteNewAction(Request $request, Event $event)
+    {
+        $eventNote = new EventNote();
+
+        $data = $request->request->get('canvasBase64');
+
+        if ($data) {
+
+            // Generate canvas image in a temporary files
+            $tmp_file = base64_encode(random_bytes(10));
+            $filename = '/tmp/'. $tmp_file . '.png';
+
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $data = base64_decode($data);
+
+            file_put_contents($filename, $data);
+
+            // Create new uploaded file and assign it to event note
+            $newFile = new UploadedFile($filename, $filename, null, filesize($filename), false, true);
+            $eventNote->setImageFile($newFile);
+
+
+            dump($eventNote);
+        }
+
+        // Verify if it's an Ajax call
+        if($request->isXmlHttpRequest()) {
+
+            $event->addEventNote($eventNote);
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($eventNote);
+            $em->flush();
+
+            $response = array(
+                'success' => 1,
+                'message' => $this->get('translator')->trans('admin.event.note.new.success')
+            );
+
+            //return $this->redirectToRoute('admin_event');
+            return new Response(json_encode($response));
+        }
+
+        return $this->render('admin/event/new.html.twig', array(
+            'event' => $event,
+            'form' => $form->createView(),
+        ));
+    }
+
 
     // Generate an array contains a key -> value with the errors where the key is the name of the form field
     protected function getErrorMessages(Form $form)
