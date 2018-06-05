@@ -60,16 +60,24 @@
 
                             <div class="row">
                                 <div class="col-md-6">
-                                    <canvas id='c'  width="500" height="500" style="width: 100%; height:auto"></canvas>
 
+                                    <div class="row">
+                                        <div class="col-xs-8 col-xs-offset-2">
+                                            <div id="canvas-editor"></div>
+                                        </div>
+                                    </div>
+
+
+                                    <canvas id='c'  width="500" height="500" style="width: 100%; height:auto"></canvas>
                                     {% if event.eventNotes|length %}
-                                        {% if event.eventNotes[0] %}
-                                            <input id="eventNoteImg" type="hidden" value="{{ vich_uploader_asset(event.eventNotes[0], 'imageFile') }}" />
+                                        {% if event.eventNotes|last %}
+                                            <input id="eventNoteImg" type="hidden" value="{{ vich_uploader_asset(event.eventNotes|last, 'imageFile') }}" />
                                         {% endif %}
                                     {% endif %}
 
                                 </div>
                                 <div class="col-md-6">
+                                    <input type="file" id="imgLoader">
                                     <button id="drawing-mode" class="btn btn-info">Cancel drawing mode</button><br>
                                     <button id="clear-canvas" class="btn btn-info">Clear</button><br>
                                     <button id="save-image" class="btn btn-info">Save image</button><br>
@@ -137,12 +145,23 @@
             {#pickerPosition: "bottom-left",#}
         });
 
+        /*
         // Canvas
         (function() {
             var $ = function(id){return document.getElementById(id)};
 
             var canvas = this.__canvas = new fabric.Canvas('c', {
-                isDrawingMode: true
+                hoverCursor: 'pointer',
+                selection: false
+            });
+
+            canvas.on({
+                'object:moving': function(e) {
+                    e.target.opacity = 0.5;
+                },
+                'object:modified': function(e) {
+                    e.target.opacity = 1;
+                }
             });
 
             fabric.Object.prototype.transparentCorners = false;
@@ -159,7 +178,190 @@
                 });
             }
 
+            document.getElementById('imgLoader').onchange = function handleImage(e) {
+                var reader = new FileReader();
+                reader.onload = function (event) { console.log('fdsf');
+                    var imgObj = new Image();
+                    imgObj.src = event.target.result;
+                    imgObj.onload = function () {
+                        // start fabricJS stuff
+
+                        var img = new fabric.Image(imgObj);
+                        img.set({
+                            left: fabric.util.getRandomInt(0, 600),
+                            top: fabric.util.getRandomInt(0, 500),
+                            angle: fabric.util.getRandomInt(0, 90)
+                        });
+
+                        img.perPixelTargetFind = true;
+                        img.targetFindTolerance = 4;
+                        img.hasControls = img.hasBorders = false;
+
+                        img.scale(fabric.util.getRandomInt(50, 100) / 100);
+
+                        canvas.add(img);
+                        // end fabricJS stuff
+                    }
+
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            }
+
         })();
+         */
+
+        $(document).ready(function () {
+            var drawerPlugins = [
+                // Drawing tools
+                'Pencil',
+                'Eraser',
+                'Text',
+                'Line',
+                'ArrowOneSide',
+                'ArrowTwoSide',
+                'Triangle',
+                'Rectangle',
+                'Circle',
+                'Image',
+                'BackgroundImage',
+                'Polygon',
+                'ImageCrop',
+
+                // Drawing options
+                //'ColorHtml5',
+                'Color',
+                'ShapeBorder',
+                'BrushSize',
+                'OpacityOption',
+
+                'LineWidth',
+                'StrokeWidth',
+
+                'Resize',
+                'ShapeContextMenu',
+                'CloseButton',
+                'OvercanvasPopup',
+                'OpenPopupButton',
+                'MinimizeButton',
+                'ToggleVisibilityButton',
+                'MovableFloatingMode',
+                'FullscreenModeButton',
+                'Zoom',
+
+                'TextLineHeight',
+                'TextAlign',
+
+                'TextFontFamily',
+                'TextFontSize',
+                'TextFontWeight',
+                'TextFontStyle',
+                'TextDecoration',
+                'TextColor',
+                'TextBackgroundColor'
+            ];
+
+            // drawer is created as global property solely for debug purposes.
+            // doing  in production is considered as bad practice
+            window.drawer = new DrawerJs.Drawer(null, {
+                plugins: drawerPlugins,
+                pluginsConfig: {
+                    Image: {
+                        scaleDownLargeImage: true,
+                        maxImageSizeKb: 10240, //1MB
+                        cropIsActive: true
+                    },
+                    BackgroundImage: {
+                        scaleDownLargeImage: true,
+                        maxImageSizeKb: 10240, //1MB
+                        //fixedBackgroundUrl: '/examples/redactor/images/vanGogh.jpg',
+                        imagePosition: 'center',  // one of  'center', 'stretch', 'top-left', 'top-right', 'bottom-left', 'bottom-right'
+                        acceptedMIMETypes: ['image/jpeg', 'image/png', 'image/gif'] ,
+                        dynamicRepositionImage: true,
+                        dynamicRepositionImageThrottle: 100,
+                        cropIsActive: false
+                    },
+                    Text: {
+                        editIconMode : false,
+                        editIconSize : 'large',
+                        defaultValues : {
+                            fontSize: 72,
+                            lineHeight: 2,
+                            textFontWeight: 'bold'
+                        },
+                        predefined: {
+                            fontSize: [8, 12, 14, 16, 32, 40, 72],
+                            lineHeight: [1, 2, 3, 4, 6]
+                        }
+                    },
+                    Zoom: {
+                        enabled: true,
+                        showZoomTooltip: true,
+                        useWheelEvents: true,
+                        zoomStep: 1.05,
+                        defaultZoom: 1,
+                        maxZoom: 32,
+                        minZoom: 1,
+                        smoothnessOfWheel: 0,
+                        //Moving:
+                        enableMove: true,
+                        enableWhenNoActiveTool: true,
+                        enableButton: true
+                    }
+                },
+                toolbars: {
+                    drawingTools: {
+                        position: 'top',
+                        positionType: 'outside',
+                        customAnchorSelector: '#custom-toolbar-here',
+                        compactType: 'scrollable',
+                        hidden: false,
+                        toggleVisibilityButton: false,
+                        fullscreenMode: {
+                            position: 'top',
+                            hidden: false,
+                            toggleVisibilityButton: false
+                        }
+                    },
+                    toolOptions: {
+                        position: 'bottom',
+                        positionType: 'inside',
+                        compactType: 'popup',
+                        hidden: false,
+                        toggleVisibilityButton: false,
+                        fullscreenMode: {
+                            position: 'bottom',
+                            compactType: 'popup',
+                            hidden: false,
+                            toggleVisibilityButton: false
+                        }
+                    },
+                    settings : {
+                        position : 'right',
+                        positionType: 'inside',
+                        compactType : 'scrollable',
+                        hidden: false,
+                        toggleVisibilityButton: false,
+                        fullscreenMode: {
+                            position : 'right',
+                            hidden: false,
+                            toggleVisibilityButton: false
+                        }
+                    }
+                },
+                defaultImageUrl: $('#eventNoteImg').attr('value'),
+                defaultActivePlugin : { name : 'Pencil', mode : 'lastUsed'},
+                debug: true,
+                activeColor: '#a1be13',
+                transparentBackground: true,
+                align: 'floating',  //one of 'left', 'right', 'center', 'inline', 'floating'
+                lineAngleTooltip: { enabled: true, color: 'blue',  fontSize: 15}
+            }, 600, 400);
+
+            $('#canvas-editor').append(window.drawer.getHtml());
+            window.drawer.onInsert();
+
+
+        });
 
         $( document ).ready(function() {
 
@@ -178,7 +380,7 @@
         $(document).on("click", "#save-image", function (e) {
             e.preventDefault();
 
-            $.post(Routing.generate('admin_eventNote_new', {'id': {{ event.id}} }), { canvasBase64: document.getElementById('c').toDataURL() }, function(response){
+            $.post(Routing.generate('admin_eventNote_new', {'id': {{ event.id}} }), { canvasBase64: window.drawer.api.getCanvasAsImage() }, function(response){
                 if(response.success) {
                     alert(response.message);
                 }

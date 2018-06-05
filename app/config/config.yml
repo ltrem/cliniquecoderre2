@@ -203,7 +203,7 @@ easy_admin:
           - horizontal
           - easy_admin/_form_theme.html.twig
         assets:
-            css: ['/plugin/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css', 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css', '/css/easyadmin/stylesheet.css', 'css/calendar.css']
+            css: ['/plugin/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css', 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css', '/css/easyadmin/stylesheet.css', 'css/calendar.css', '/css/drawerJs.css']
     list:
         actions:
             - { name: 'edit', icon: 'pencil' }
@@ -278,6 +278,7 @@ easy_admin:
                 fields:
                     - { property: 'client.fullName', label: 'menu.client' }
                     - { property: 'startTime', label: 'admin.event.table.startTime' }
+                    - { property: 'employe.fullName', label: 'menu.employe' }
                     - { property: 'emergency', label: 'admin.event.table.emergency', type: 'boolean' }
                     - { property: 'receipts[0]', label: 'admin.event.table.receipt', template: 'easy_admin/Event/show_receipt.html.twig', base_path: 'receipts_pdf' }
             form:
